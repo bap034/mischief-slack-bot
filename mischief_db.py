@@ -12,7 +12,36 @@ app = Flask(__name__)
 __token__ = os.getenv('BOT_OAUTH_ACCESS_TOKEN')
 __auth__ = {"Authorization" : "Bearer " + __token__}
 
-#CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_throw SMALLINT, num_regen SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(9), last_time BIGINT, pod text, team text)
+# CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_throw SMALLINT, num_regen SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(9), last_time BIGINT, pod text, team text)
+
+def create_db(member_info):
+    print("ATTEMPTING CREATE WITH: ", member_info)
+    try:
+        urllib.parse.uses_netloc.append("postgres")
+        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+        conn = psycopg2.connect(
+            database=url.path[1:],
+            user=url.username,
+            password=url.password,
+            host=url.hostname,
+            port=url.port
+        )
+        cursor = conn.cursor()
+        print("Creating db")
+        cursor.execute(sql.SQL("CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_throw SMALLINT, num_regen SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(9), last_time BIGINT, pod text, team text"))
+        
+        if cursor.rowcount == 0 and channel_id == "C03UHTL3J58":
+            for member in member_info['members']:   
+                cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, now())"),
+                               [member['real_name'], member['id'], now()])
+            send_debug_message("%s is new to Mischief" % name)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return True
+    except (Exception, psycopg2.DatabaseError) as error:
+        send_debug_message(error)
+        return False
 
 # this doesn't really work
 def init_db(member_info):
