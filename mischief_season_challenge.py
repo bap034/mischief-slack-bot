@@ -134,7 +134,7 @@ class MischiefSlack:
         mention_names = []
         info = get_group_info()
         if not self._db_init:
-            create_db(info)
+            # create_db(info) << only added to initiate the table
             self._db_init = init_db(info)
         for id in mention_ids:
             for member in info['members']:
