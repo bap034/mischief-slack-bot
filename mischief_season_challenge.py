@@ -248,7 +248,7 @@ class MischiefSlack:
                 # reset_scores()
                 send_debug_message("Creating DB +++")
                 send_message("Creating DB ...", channel=self._channel, bot_name=self._name, url=self._avatar_url)
-                print("Creating DB ---
+                print("Creating DB ---")
                 # groupInfo = get_group_info()
                 # print("groupInfo: ", groupInfo)
                 # create_db(groupInfo)
