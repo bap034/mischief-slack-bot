@@ -244,10 +244,10 @@ class MischiefSlack:
                 # send_tribe_message(to_print, channel=self._channel, bot_name=self._name)
                 # reset_scores()
                 send_debug_message("Creating DB")
-                groupInfo = get_group_info()
-                print("groupInfo: ", groupInfo)
-                create_db(groupInfo)
-                count += 1
+                # groupInfo = get_group_info()
+                # print("groupInfo: ", groupInfo)
+                # create_db(groupInfo)
+                # count += 1
             if '!silence' in self._lower_text and self._user_id == 'U03MGMXE5U6':
                 to_print = collect_stats(1, True)
                 send_tribe_message(to_print, channel=self._channel, bot_name=self._name)
