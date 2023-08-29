@@ -29,12 +29,13 @@ def create_db(member_info):
         cursor = conn.cursor()
         print("Creating db")
         cursor.execute(sql.SQL("CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_throw SMALLINT, num_regen SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(9), last_time BIGINT, pod text, team text"))
+        send_debug_message(conn)
         
-        if cursor.rowcount == 0 and channel_id == "C03UHTL3J58":
-            for member in member_info['members']:   
-                cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, now())"),
-                               [member['real_name'], member['id'], now()])
-            send_debug_message("%s is new to Mischief" % name)
+        # if cursor.rowcount == 0 and channel_id == "C03UHTL3J58":
+        #     for member in member_info['members']:   
+        #         cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, now())"),
+        #                        [member['real_name'], member['id'], now()])
+        #     send_debug_message("%s is new to Mischief" % name)
         conn.commit()
         cursor.close()
         conn.close()
