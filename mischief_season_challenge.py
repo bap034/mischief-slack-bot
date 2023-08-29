@@ -4,6 +4,8 @@ from slack_api import *
 from datetime import datetime
 
 class MischiefSlack:
+    adminSlackId = 'U05BDFHGQQL' 
+    
     def __init__(self, json_data):
         self._event = json_data['event']
         self._repeat = False
@@ -229,18 +231,18 @@ class MischiefSlack:
                 count += 1
                 to_print = collect_stats(1, True)
                 send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
-            if '!subtract' in self._lower_text and self._user_id == 'U03MGMXE5U6':
+            if '!subtract' in self._lower_text and self._user_id == adminSlackId:
                 send_debug_message("SUBTRACTING: " + self._lower_text[-3:] + " FROM: " + str(self._all_names[:-1]))
                 num = subtract_from_db(self._all_names[:-1], float(self._lower_text[-3:]), self._all_ids[:-1])
                 print(num)
                 count += 1
-            if '!reset' in self._lower_text and self._user_id == 'U03MGMXE5U6':
+            if '!reset' in self._lower_text and self._user_id == adminSlackId:
                 to_print = collect_stats(3, True)
                 send_tribe_message(to_print, channel=self._channel, bot_name=self._name)
                 reset_scores()
                 send_debug_message("Resetting leaderboard")
                 count += 1
-            if '!createDB' in self._lower_text and self._user_id == 'U03MGMXE5U6':
+            if '!createDB' in self._lower_text and self._user_id == adminSlackId:
                 # to_print = collect_stats(3, True)
                 # send_tribe_message(to_print, channel=self._channel, bot_name=self._name)
                 # reset_scores()
@@ -249,13 +251,13 @@ class MischiefSlack:
                 # print("groupInfo: ", groupInfo)
                 # create_db(groupInfo)
                 # count += 1
-            if '!silence' in self._lower_text and self._user_id == 'U03MGMXE5U6':
+            if '!silence' in self._lower_text and self._user_id == adminSlackId:
                 to_print = collect_stats(1, True)
                 send_tribe_message(to_print, channel=self._channel, bot_name=self._name)
                 reset_talkative()
                 send_debug_message("Resetting talkative")
                 count += 1
-            if '!add' in self._lower_text and self._user_id == 'U03MGMXE5U6':
+            if '!add' in self._lower_text and self._user_id == adminSlackId:
                 send_debug_message("ADDING: " + self._lower_text[-3:] + " TO: " + str(self._all_names[:-1]))
                 num = add_to_db(self._all_names[:-1], self._lower_text[-3:], 1, self._all_ids[:-1])
                 print(num)
@@ -284,7 +286,7 @@ class MischiefSlack:
             if 'pollo' in self._lower_text:
                 self.like_message(reaction='poultry_leg')
                 send_tribe_message("Pingüino !!", channel=self._channel, bot_name="tracker")    
-            if 'welcome bot' in self._lower_text and self._user_id == 'U03MGMXE5U6':
+            if 'welcome bot' in self._lower_text and self._user_id == adminSlackId:
                 self.like_message(reaction='crown')
                 send_tribe_message("it's botney bitch", channel=self._channel, bot_name="tracker")  
                 count += 1    
