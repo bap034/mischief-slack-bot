@@ -28,7 +28,7 @@ def create_db(member_info):
         )
         cursor = conn.cursor()
         print("Creating db")
-        cursor.execute(sql.SQL("CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_throw SMALLINT, num_regen SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(9), last_time BIGINT, pod text, team text"))
+        cursor.execute(sql.SQL("CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_lifts SMALLINT, num_cardio SMALLINT, num_sprints SMALLINT, num_throws SMALLINT, num_regen SMALLINT, num_play SMALLINT, num_volunteer SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(11), last_time BIGINT)"))
         send_debug_message(conn)
         
         # if cursor.rowcount == 0 and channel_id == "C03UHTL3J58":
