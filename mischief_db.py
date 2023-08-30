@@ -52,6 +52,7 @@ def init_db(member_info):
         )
         cursor = conn.cursor()
         print("Members: ", member_info['members'])
+        print("cursor: ", cursor)
         print("cursor.rowcount: ", cursor.rowcount)
         if cursor.rowcount == 0: #and channel_id == "C03UHTL3J58":
             for member in member_info['members']:   
