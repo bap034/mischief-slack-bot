@@ -247,12 +247,13 @@ class MischiefSlack:
                 # send_tribe_message(to_print, channel=self._channel, bot_name=self._name)
                 # reset_scores()
                 send_debug_message("Creating DB +++")
+                send_tribe_message("Creating DB ***", channel=self._channel, bot_name=self._name)
                 send_message("Creating DB ...", channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 print("Creating DB ---")
-                # groupInfo = get_group_info()
+                # groupInfo = get_group_info()            
                 # print("groupInfo: ", groupInfo)
                 # create_db(groupInfo)
-                # count += 1
+                count += 1
             if '!silence' in self._lower_text and self._user_id == adminSlackId:
                 to_print = collect_stats(1, True)
                 send_tribe_message(to_print, channel=self._channel, bot_name=self._name)
