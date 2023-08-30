@@ -245,7 +245,7 @@ class MischiefSlack:
                 reset_scores()
                 send_debug_message("Resetting leaderboard")
                 count += 1
-            if "!createDB" in self._lower_text: #and self._user_id == adminSlackId:
+            if "!createdb" in self._lower_text: #and self._user_id == adminSlackId:
                 # to_print = collect_stats(3, True)
                 # send_tribe_message(to_print, channel=self._channel, bot_name=self._name)
                 # reset_scores()
