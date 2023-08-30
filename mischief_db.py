@@ -1,3 +1,4 @@
+import time
 import os
 import urllib.parse
 import urllib.request
@@ -59,8 +60,8 @@ def init_db(member_info):
         print("cursor.rowcount: ", cursor.rowcount)        
         if cursor.rowcount == 0: #and channel_id == "C03UHTL3J58":
             for member in member_info['members']:   
-                cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, now())"),
-                               [member['real_name'], member['id'], now()])
+                cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, %d, %s, %s)"),
+                               [member['real_name'], int(time.time()), member['id'], member['real_name']])
             send_debug_message("%s is new to Mischief" % name)
         conn.commit()
         cursor.close()
@@ -86,7 +87,7 @@ def add_num_posts(mention_id, event_time, name, channel_id):
             "UPDATE mischief_data SET num_posts=num_posts+1 WHERE slack_id = %s"),
             [mention_id[0]])
         if cursor.rowcount == 0 and channel_id == "C03UHTL3J58":
-            cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, now(), %s, %s)"),
+            cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, %d, %s, %s)"),
                            [name, mention_id[0], event_time, name, name])
             send_debug_message("%s is new to Mischief" % name)
         conn.commit()
