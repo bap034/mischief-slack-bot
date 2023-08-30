@@ -51,9 +51,12 @@ def init_db(member_info):
             port=url.port
         )
         cursor = conn.cursor()
+        cursor.execute("SELECT * from mischief_data")
+        for record in cursor:
+            print(record)
         print("Members: ", member_info['members'])
         print("cursor: ", cursor)
-        print("cursor.rowcount: ", cursor.rowcount)
+        print("cursor.rowcount: ", cursor.rowcount)        
         if cursor.rowcount == 0: #and channel_id == "C03UHTL3J58":
             for member in member_info['members']:   
                 cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, now())"),
