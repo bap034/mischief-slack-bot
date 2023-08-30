@@ -61,7 +61,7 @@ def init_db(member_info):
         if cursor.rowcount == 0: #and channel_id == "C03UHTL3J58":
             for member in member_info['members']:   
                 cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, %d, %s, %s)"),
-                               [member['real_name'], datetime.datetime.now().timestamp, member['id'], member['real_name']])
+                               [member['real_name'], datetime.datetime.utcnow().timestamp, member['id'], member['real_name']])
             send_debug_message("%s is new to Mischief" % name)
         conn.commit()
         cursor.close()
