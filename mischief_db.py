@@ -52,14 +52,16 @@ def init_db(member_info):
         )
         cursor = conn.cursor()
         cursor.execute("SELECT * from mischief_data")
+        print("Printing records:")
         for record in cursor:
             print(record)
-        print("Members: ", member_info['members'])
-        print("cursor: ", cursor)
-        print("cursor.rowcount: ", cursor.rowcount)        
-        if cursor.rowcount == 0: #and channel_id == "C03UHTL3J58":
+        # print("Members: ", member_info['members'])
+        # print("cursor: ", cursor)
+        # print("cursor.rowcount: ", cursor.rowcount)       
+        print("Inserting members")
+        if cursor.rowcount == 0: #and channel_id == "C03UHTL3J58": << rowcount is based on execute command count (will be -1 if no execute commands)
             for member in member_info['members']:   
-                cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, now(), %s, now())"),
+                cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, now(), %s, extract(epoch from now()))"),
                                [member['real_name'], member['id']])
             send_debug_message("%s is new to Mischief" % name)
         conn.commit()
