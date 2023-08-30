@@ -209,6 +209,7 @@ class MischiefSlack:
 
     def execute_commands(self):
         count = 0
+        print("Test............")
         if not self._repeat:
             ## put the fun stuff here
             if "!help" in self._lower_text:
