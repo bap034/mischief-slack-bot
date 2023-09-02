@@ -42,7 +42,7 @@ def get_table(table_name=None):
     if table_name == None:
         table_name = __table_name__
         
-    print("Fetching DB: ", table_name)
+    print("Fetching Table: ", table_name)
     sqlConnection = getSQLConnection()
     cursor = sqlConnection.cursor()
 
@@ -54,6 +54,7 @@ def get_table(table_name=None):
     for record in table:
         print(record)
 
+    commitAndCloseSQLConnection(sqlConnection)    
     return table
 
 def create_new_table_v2(member_info):
