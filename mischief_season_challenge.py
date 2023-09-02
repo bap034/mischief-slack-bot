@@ -245,11 +245,12 @@ class MischiefSlack:
                 reset_scores()
                 send_debug_message("Resetting leaderboard")
                 count += 1
-            if "!createdb" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
-                print("Creating DB")
-                send_message("Creating DB", channel=self._channel, bot_name=self._name, url=self._avatar_url)
+            if "!create-new-db" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
+                # print("Creating DB")
+                # send_message("Creating DB", channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 groupInfo = get_group_info()     
-                create_db(groupInfo)
+                # create_db(groupInfo)
+                create_new_db_v2(groupInfo)
                 count += 1
             if "!filldb" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 print("Filling DB")
