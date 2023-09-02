@@ -245,18 +245,19 @@ class MischiefSlack:
                 reset_scores()
                 send_debug_message("Resetting leaderboard")
                 count += 1
-            if "!create-new-db" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
-                # print("Creating DB")
-                # send_message("Creating DB", channel=self._channel, bot_name=self._name, url=self._avatar_url)
+            if "!create-new-table" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 groupInfo = get_group_info()     
-                # create_db(groupInfo)
-                create_new_db_v2(groupInfo)
+                create_new_table_v2(groupInfo)
+                send_message("Created new table", channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 count += 1
-            if "!filldb" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
-                print("Filling DB")
-                send_message("Filling DB", channel=self._channel, bot_name=self._name, url=self._avatar_url)
-                groupInfo = get_group_info()     
-                init_db(groupInfo)
+            get_table_command = "!get-table"            
+            if get_table_command in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
+                table_name = self._lower_text.partition(get_table_command + " ")[2]
+                if table_name == "":
+                    table_name = None
+                table = get_table(table_name)
+                message = "Table: " + table_name + "\n" + table.description()
+                send_message(message, channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 count += 1
             if '!silence' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 to_print = collect_stats(1, True)
