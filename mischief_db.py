@@ -48,7 +48,8 @@ def create_new_db_v2(member_info):
         cursor = sqlConnection.cursor()
     
         print("Dropping existing DB: ", __table_name__)
-        cursor.execute(sql.SQL("DROP TABLE IF EXISTS %s"), [__table_name__]) # Requires the empty tuple: https://stackoverflow.com/a/50360509
+        command = "DROP TABLE IF EXISTS " + __table_name__
+        cursor.execute(command) 
         print("Successfully dropped existing DB: ", __table_name__)
         
         print("Creating new DB v2: ", __table_name__)
