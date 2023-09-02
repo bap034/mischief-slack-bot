@@ -11,11 +11,12 @@ from flask import Flask, request, jsonify, make_response
 app = Flask(__name__)
 __token__ = os.getenv('BOT_OAUTH_ACCESS_TOKEN')
 __auth__ = {"Authorization" : "Bearer " + __token__}
+__table_name__  = "mischief_data"
 
 # CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_throw SMALLINT, num_regen SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(9), last_time BIGINT, pod text, team text)
 
-def create_db(member_info):
-    print("ATTEMPTING CREATE WITH: ", member_info)
+# Opens connection to the PostgreSQL DB. Returns a 
+def executeSQL(sqlString):
     try:
         urllib.parse.uses_netloc.append("postgres")
         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
@@ -28,7 +29,7 @@ def create_db(member_info):
         )
         cursor = conn.cursor()
         print("Creating db")
-        cursor.execute(sql.SQL("CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_lifts SMALLINT, num_cardio SMALLINT, num_sprints SMALLINT, num_throws SMALLINT, num_regen SMALLINT, num_play SMALLINT, num_volunteer SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(11), last_time BIGINT)"))        
+        cursor.execute(sqlString)        
         conn.commit()
         cursor.close()
         conn.close()
@@ -36,6 +37,35 @@ def create_db(member_info):
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(error)
         return False
+
+def create_new_db_v2(member_info):
+    print("Dropping existing DB: ", __table_name__)
+    cursor.execute("DROP TABLE IF EXISTS %s", __table_name__)
+    print("Successfully dropped existing DB: ", __table_name__)
+    
+    print("Creating new DB v2: ", __table_name__)
+    executeSQL(
+      """
+      CREATE TABLE %s (
+          name text, 
+          num_posts SMALLINT, 
+          num_workouts SMALLINT, 
+          num_lifts SMALLINT, 
+          num_cardio SMALLINT, 
+          num_sprints SMALLINT, 
+          num_throws SMALLINT, 
+          num_regen SMALLINT,
+          num_play SMALLINT, 
+          num_volunteer SMALLINT, 
+          score numeric(4, 1), 
+          last_post DATE, 
+          slack_id CHAR(11), 
+          last_time BIGINT
+      )
+      """, 
+        __table_name__
+    )
+      
 
 # this doesn't really work
 def init_db(member_info):
