@@ -48,14 +48,13 @@ def create_new_db_v2(member_info):
         cursor = sqlConnection.cursor()
     
         print("Dropping existing DB: ", __table_name__)
-        command = "DROP TABLE IF EXISTS " + __table_name__
-        cursor.execute(command) 
+        dropCommand = "DROP TABLE IF EXISTS " + __table_name__
+        cursor.execute(dropCommand) 
         print("Successfully dropped existing DB: ", __table_name__)
         
         print("Creating new DB v2: ", __table_name__)
-        cursor.execute(sql.SQL(
-          """
-          CREATE TABLE %s (
+        createCommand = """
+            CREATE TABLE {table_name} (
               name text, 
               num_posts SMALLINT, 
               num_workouts SMALLINT, 
@@ -70,10 +69,11 @@ def create_new_db_v2(member_info):
               last_post DATE, 
               slack_id CHAR(11), 
               last_time BIGINT
-          )
-          """), 
-            [__table_name__] # Requires the empty tuple: https://stackoverflow.com/a/50360509
+            )
+        """.format(
+            table_name = __table_name__
         )
+        cursor.execute(createCommand)
         print("Successfully created new DB: ", __table_name__)
     
         commitAndCloseSQLConnection(sqlConnection)   
