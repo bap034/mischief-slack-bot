@@ -38,21 +38,30 @@ def commitAndCloseSQLConnection(conn):
     conn.cursor().close()
     conn.close()
 
-# def get_db(): 
-#     print("Fetching DB: ", __table_name__)
-#     executeSQL(sql.SQL("SELECT * from %s"), __table_name__)
+def get_table(table_name=__table_name__): 
+    print("Fetching DB: ", table_name)
+    sqlConnection = getSQLConnection()
+    cursor = sqlConnection.cursor()
 
-def create_new_db_v2(member_info):
+    command = "SELECT * from " + table_name
+    cursor.execute(command)
+    table = cursor.fetchall()
+    print("Fetched table: ", table)
+    print("Printing records:")
+    for record in table:
+        print(record)
+
+def create_new_table_v2(member_info):
     try:    
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
     
-        print("Dropping existing DB: ", __table_name__)
+        print("Dropping existing table: ", __table_name__)
         dropCommand = "DROP TABLE IF EXISTS " + __table_name__
         cursor.execute(dropCommand) 
-        print("Successfully dropped existing DB: ", __table_name__)
+        print("Successfully dropped existing table: ", __table_name__)
         
-        print("Creating new DB v2: ", __table_name__)
+        print("Creating new table v2: ", __table_name__)
         createCommand = """
             CREATE TABLE {table_name} (
               name text, 
@@ -74,7 +83,7 @@ def create_new_db_v2(member_info):
             table_name = __table_name__
         )
         cursor.execute(createCommand)
-        print("Successfully created new DB: ", __table_name__)
+        print("Successfully created new table: ", __table_name__)
     
         commitAndCloseSQLConnection(sqlConnection)   
         return True
@@ -98,12 +107,7 @@ def init_db(member_info):
             port=url.port
         )
         cursor = conn.cursor()
-        cursor.execute("SELECT * from mischief_data")
-        print("Printing records:")
-        for record in cursor:
-            print(record)
-        # print("Members: ", member_info['members'])
-        # print("cursor: ", cursor)
+        
         # print("cursor.rowcount: ", cursor.rowcount)       
         print("Inserting members")
         if cursor.rowcount == 0: #and channel_id == "C03UHTL3J58": << rowcount is based on execute command count (will be -1 if no execute commands)
