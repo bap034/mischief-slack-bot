@@ -209,7 +209,6 @@ class MischiefSlack:
 
     def execute_commands(self):
         count = 0
-        print("Test............")
         print("is repeat: ", self._repeat)
         print("lowerText: ", self._lower_text)
         if not self._repeat:
@@ -256,7 +255,7 @@ class MischiefSlack:
                 if table_name == "":
                     table_name = None
                 table = get_table(table_name)
-                message = "Table: " + table_name + "\n" + table.description()
+                message = "Table: " + "\n" + table.description()
                 send_message(message, channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 count += 1
             if '!silence' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
