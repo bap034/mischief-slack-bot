@@ -44,7 +44,7 @@ def create_new_db_v2(member_info):
     print("Successfully dropped existing DB: ", __table_name__)
     
     print("Creating new DB v2: ", __table_name__)
-    executeSQL(
+    executeSQL(sql.SQL(
       """
       CREATE TABLE %s (
           name text, 
@@ -64,8 +64,8 @@ def create_new_db_v2(member_info):
       )
       """, 
         __table_name__
-    )
-      
+    ))
+    print("Successfully created new DB: ", __table_name__)
 
 # this doesn't really work
 def init_db(member_info):
