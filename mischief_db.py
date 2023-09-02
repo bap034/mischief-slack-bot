@@ -44,7 +44,7 @@ def get_db():
 
 def create_new_db_v2(member_info):
     print("Dropping existing DB: ", __table_name__)
-    executeSQL(sql.SQL("DROP TABLE IF EXISTS %s", __table_name__))
+    executeSQL(sql.SQL("DROP TABLE IF EXISTS %s"), __table_name__)
     print("Successfully dropped existing DB: ", __table_name__)
     
     print("Creating new DB v2: ", __table_name__)
@@ -66,9 +66,9 @@ def create_new_db_v2(member_info):
           slack_id CHAR(11), 
           last_time BIGINT
       )
-      """, 
+      """), 
         __table_name__
-    ))
+    )
     print("Successfully created new DB: ", __table_name__)
 
 # this doesn't really work
