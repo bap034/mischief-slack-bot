@@ -15,8 +15,7 @@ __table_name__  = "mischief_data"
 
 # CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_throw SMALLINT, num_regen SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(9), last_time BIGINT, pod text, team text)
 
-# Opens connection to the PostgreSQL DB. Returns a 
-def executeSQL(*sqlStrings):
+def executeSQL(sqlString):
     try:
         urllib.parse.uses_netloc.append("postgres")
         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
@@ -28,8 +27,9 @@ def executeSQL(*sqlStrings):
             port=url.port
         )
         cursor = conn.cursor()
-        print("Creating db")
+        
         cursor.execute(sqlString)        
+        
         conn.commit()
         cursor.close()
         conn.close()
@@ -37,6 +37,10 @@ def executeSQL(*sqlStrings):
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(error)
         return False
+
+def get_db():
+    print("Fetching DB: ", __table_name__)
+    executeSQL(sql.SQL("SELECT * from %s"), __table_name__)
 
 def create_new_db_v2(member_info):
     print("Dropping existing DB: ", __table_name__)
@@ -69,7 +73,7 @@ def create_new_db_v2(member_info):
 
 # this doesn't really work
 def init_db(member_info):
-    print("ATTEMPTING INIT WITH: ", member_info)
+    print("ATTEMPTING INIT WITH: ") #, member_info)
     try:
         urllib.parse.uses_netloc.append("postgres")
         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
