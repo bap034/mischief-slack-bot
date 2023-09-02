@@ -255,8 +255,8 @@ class MischiefSlack:
                 if table_name == "":
                     table_name = None
                 table = get_table(table_name)
-                message = "Table: " + "\n" + table.description()
-                send_message(message, channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                # message = "Table: " + "\n" + table.description()
+                # send_message(message, channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 count += 1
             if '!silence' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 to_print = collect_stats(1, True)
