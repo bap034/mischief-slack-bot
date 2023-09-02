@@ -16,7 +16,7 @@ __table_name__  = "mischief_data"
 # CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_throw SMALLINT, num_regen SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(9), last_time BIGINT, pod text, team text)
 
 # Opens connection to the PostgreSQL DB. Returns a 
-def executeSQL(sqlString):
+def executeSQL(*sqlStrings):
     try:
         urllib.parse.uses_netloc.append("postgres")
         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
@@ -40,7 +40,7 @@ def executeSQL(sqlString):
 
 def create_new_db_v2(member_info):
     print("Dropping existing DB: ", __table_name__)
-    executeSQL("DROP TABLE IF EXISTS %s", __table_name__)
+    executeSQL(sql.SQL("DROP TABLE IF EXISTS %s", __table_name__))
     print("Successfully dropped existing DB: ", __table_name__)
     
     print("Creating new DB v2: ", __table_name__)
