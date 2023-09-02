@@ -15,7 +15,7 @@ __table_name__  = "mischief_data"
 
 # CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_throw SMALLINT, num_regen SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(9), last_time BIGINT, pod text, team text)
 
-def executeSQL(sqlString):
+def getSQLConnection():
     try:
         urllib.parse.uses_netloc.append("postgres")
         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
@@ -26,50 +26,62 @@ def executeSQL(sqlString):
             host=url.hostname,
             port=url.port
         )
-        cursor = conn.cursor()
+        return conn
         
-        cursor.execute(sqlString)        
-        
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return True
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(error)
-        return False
+        raise error
 
-def get_db():
-    print("Fetching DB: ", __table_name__)
-    executeSQL(sql.SQL("SELECT * from %s"), __table_name__)
+
+def commitAndCloseSQLConnection(conn):
+    conn.commit()
+    conn.cursor.close()
+    conn.close()
+
+# def get_db(): 
+#     print("Fetching DB: ", __table_name__)
+#     executeSQL(sql.SQL("SELECT * from %s"), __table_name__)
 
 def create_new_db_v2(member_info):
-    print("Dropping existing DB: ", __table_name__)
-    executeSQL(sql.SQL("DROP TABLE IF EXISTS %s"), __table_name__)
-    print("Successfully dropped existing DB: ", __table_name__)
+    try:    
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
     
-    print("Creating new DB v2: ", __table_name__)
-    executeSQL(sql.SQL(
-      """
-      CREATE TABLE %s (
-          name text, 
-          num_posts SMALLINT, 
-          num_workouts SMALLINT, 
-          num_lifts SMALLINT, 
-          num_cardio SMALLINT, 
-          num_sprints SMALLINT, 
-          num_throws SMALLINT, 
-          num_regen SMALLINT,
-          num_play SMALLINT, 
-          num_volunteer SMALLINT, 
-          score numeric(4, 1), 
-          last_post DATE, 
-          slack_id CHAR(11), 
-          last_time BIGINT
-      )
-      """), 
-        __table_name__
-    )
-    print("Successfully created new DB: ", __table_name__)
+        print("Dropping existing DB: ", __table_name__)
+        cursor.execute(sql.SQL("DROP TABLE IF EXISTS %s"), __table_name__)
+        print("Successfully dropped existing DB: ", __table_name__)
+        
+        print("Creating new DB v2: ", __table_name__)
+        cursor.execute(sql.SQL(
+          """
+          CREATE TABLE %s (
+              name text, 
+              num_posts SMALLINT, 
+              num_workouts SMALLINT, 
+              num_lifts SMALLINT, 
+              num_cardio SMALLINT, 
+              num_sprints SMALLINT, 
+              num_throws SMALLINT, 
+              num_regen SMALLINT,
+              num_play SMALLINT, 
+              num_volunteer SMALLINT, 
+              score numeric(4, 1), 
+              last_post DATE, 
+              slack_id CHAR(11), 
+              last_time BIGINT
+          )
+          """), 
+            __table_name__
+        )
+        print("Successfully created new DB: ", __table_name__)
+    
+        commitAndCloseSQLConnection(sqlConnection)   
+        return True
+        
+    except (Exception, psycopg2.DatabaseError) as error:
+        print(error)
+        send_debug_message(error)
+        return False
 
 # this doesn't really work
 def init_db(member_info):
