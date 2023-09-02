@@ -35,7 +35,7 @@ def getSQLConnection():
 
 def commitAndCloseSQLConnection(conn):
     conn.commit()
-    conn.cursor.close()
+    conn.cursor().close()
     conn.close()
 
 # def get_db(): 
