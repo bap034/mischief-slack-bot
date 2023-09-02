@@ -38,7 +38,10 @@ def commitAndCloseSQLConnection(conn):
     conn.cursor().close()
     conn.close()
 
-def get_table(table_name=__table_name__): 
+def get_table(table_name=None):
+    if table_name == None:
+        table_name = __table_name__
+        
     print("Fetching DB: ", table_name)
     sqlConnection = getSQLConnection()
     cursor = sqlConnection.cursor()
