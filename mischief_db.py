@@ -51,6 +51,8 @@ def get_table(table_name=__table_name__):
     for record in table:
         print(record)
 
+    return table
+
 def create_new_table_v2(member_info):
     try:    
         sqlConnection = getSQLConnection()
