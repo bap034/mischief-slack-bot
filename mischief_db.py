@@ -40,7 +40,7 @@ def executeSQL(sqlString):
 
 def create_new_db_v2(member_info):
     print("Dropping existing DB: ", __table_name__)
-    cursor.execute("DROP TABLE IF EXISTS %s", __table_name__)
+    executeSQL("DROP TABLE IF EXISTS %s", __table_name__)
     print("Successfully dropped existing DB: ", __table_name__)
     
     print("Creating new DB v2: ", __table_name__)
