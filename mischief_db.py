@@ -354,67 +354,67 @@ def reset_talkative():  # reset the num_posts of everyone
             cursor.close()
             conn.close()
 
-def add_workout(name, slack_id, workout_type):
-    cursor = None
-    conn = None
-    try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-    except (Exception, psycopg2.DatabaseError) as error:
-        send_debug_message(str(error))
-    finally:
-        if cursor is not None:
-            cursor.close()
-            conn.close()
+# def add_workout(name, slack_id, workout_type):
+#     cursor = None
+#     conn = None
+#     try:
+#         urllib.parse.uses_netloc.append("postgres")
+#         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+#         conn = psycopg2.connect(
+#             database=url.path[1:],
+#             user=url.username,
+#             password=url.password,
+#             host=url.hostname,
+#             port=url.port
+#         )
+#     except (Exception, psycopg2.DatabaseError) as error:
+#         send_debug_message(str(error))
+#     finally:
+#         if cursor is not None:
+#             cursor.close()
+#             conn.close()
 
-def get_workouts_after_date(date, type, slack_id):
-    cursor = None
-    conn = None
-    workouts = []
-    try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-    except (Exception, psycopg2.DatabaseError) as error:
-        send_debug_message(str(error))
-    finally:
-        if cursor is not None:
-            cursor.close()
-            conn.close()
-    return workouts
+# def get_workouts_after_date(date, type, slack_id):
+#     cursor = None
+#     conn = None
+#     workouts = []
+#     try:
+#         urllib.parse.uses_netloc.append("postgres")
+#         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+#         conn = psycopg2.connect(
+#             database=url.path[1:],
+#             user=url.username,
+#             password=url.password,
+#             host=url.hostname,
+#             port=url.port
+#         )
+#     except (Exception, psycopg2.DatabaseError) as error:
+#         send_debug_message(str(error))
+#     finally:
+#         if cursor is not None:
+#             cursor.close()
+#             conn.close()
+#     return workouts
 
-def get_group_workouts_after_date(date, type):
-    cursor = None
-    conn = None
-    workouts = []
-    print(date, type)
-    try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-    except (Exception, psycopg2.DatabaseError) as error:
-        send_debug_message(str(error))
-    finally:
-        if cursor is not None:
-            cursor.close()
-            conn.close()
-    return workouts
+# def get_group_workouts_after_date(date, type):
+#     cursor = None
+#     conn = None
+#     workouts = []
+#     print(date, type)
+#     try:
+#         urllib.parse.uses_netloc.append("postgres")
+#         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
+#         conn = psycopg2.connect(
+#             database=url.path[1:],
+#             user=url.username,
+#             password=url.password,
+#             host=url.hostname,
+#             port=url.port
+#         )
+#     except (Exception, psycopg2.DatabaseError) as error:
+#         send_debug_message(str(error))
+#     finally:
+#         if cursor is not None:
+#             cursor.close()
+#             conn.close()
+#     return workouts
