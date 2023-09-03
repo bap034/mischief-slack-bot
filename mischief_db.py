@@ -117,7 +117,7 @@ def fill_table_v2(member_info):
                 num_play = 0, 
                 num_volunteer = 0, 
                 score = 0, 
-                last_post = datetime.datetime.now()
+                last_post = datetime.datetime.now().isoformat()
             )
             print("Executing: ", insertCommand) 
             cursor.execute(insertCommand)
