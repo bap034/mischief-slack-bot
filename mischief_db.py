@@ -120,7 +120,7 @@ def fill_table_v2(member_info):
             )
             print("Executing: ", insertCommand) 
             cursor.execute(insertCommand)
-            send_debug_message("%s is new to Mischief" % member_real_name)
+            send_debug_message("%s is new to Mischief" % member['real_name'])
                 
         commitAndCloseSQLConnection(sqlConnection)
         return True
