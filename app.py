@@ -14,6 +14,8 @@ def webhook():
     print("event received")
     BOT_CHANNEL = "C03UHTL3J58"
     data = request.get_json()
+    print("Webhook data: ", data)
+    print("Request Environment: ", request.__dict__['environ'])
     if data['type'] == "url_verification":
         return jsonify({'challenge': data['challenge']})
     print('HTTP_X_SLACK_RETRY_NUM' in list(request.__dict__['environ'].keys()))
