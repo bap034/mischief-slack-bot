@@ -245,9 +245,13 @@ class MischiefSlack:
                 send_debug_message("Resetting leaderboard")
                 count += 1
             if "!create-new-table" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
-                groupInfo = get_group_info()     
-                create_new_table_v2(groupInfo)
+                create_new_table_v2()
                 send_message("Created new table", channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                count += 1
+            if "!fill-table" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
+                groupInfo = get_group_info()     
+                init_db_v2(groupInfo)
+                send_message("Filled table with slack members", channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 count += 1
             get_table_command = "!get-table"            
             if get_table_command in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
