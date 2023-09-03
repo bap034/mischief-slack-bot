@@ -84,7 +84,7 @@ def insert_into_table_v2(slackId, name):
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
         
-        print("Inserting member: %s, id: %s" % [name, slackId])                        
+        print("Inserting member: %s, id: %s" % name, slackId)                        
         insertCommand = """
             INSERT INTO {table_name} VALUES (
                 '{slack_id}',
