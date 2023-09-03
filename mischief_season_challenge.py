@@ -196,9 +196,9 @@ class MischiefSlack:
         if not self._repeat:
             num = add_to_db(self._channel, self._all_names, self._points_to_add, self.lift_req_filled, self.cardio_req_filled, self.sprint_req_filled,
                 self.throw_req_filled, self.regen_req_filled, self.play_req_filled, self.volunteer_req_filled, len(self._additions), self._all_ids)
-            for i in range(len(self._all_names)):
-                for workout in self._additions:
-                    add_workout(self._all_names[i], self._all_ids[i], workout)
+            # for i in range(len(self._all_names)):
+            #     for workout in self._additions:
+            #         add_workout(self._all_names[i], self._all_ids[i], workout)
             if num == len(self._all_names):
                 self.like_message()
             else:
