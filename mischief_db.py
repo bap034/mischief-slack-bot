@@ -79,12 +79,12 @@ def create_new_table_v2():
         return False
 
 def insert_into_table_v2(slackId, name):
-    print("Filling Table %s V2 WITH: " % __table_name__) #, member_info)
+    print("Insert into Table %s V2 WITH: " % __table_name__) #, member_info)
     try:
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
         
-        print("Inserting member: %s, id: %s" % name, slackId)                        
+        print("Inserting member: %s id: %s" % (name, slackId))                        
         insertCommand = """
             INSERT INTO {table_name} VALUES (
                 '{slack_id}',
