@@ -1,3 +1,4 @@
+import datetime
 import os
 import urllib.parse
 import urllib.request
@@ -13,8 +14,8 @@ __token__ = os.getenv('BOT_OAUTH_ACCESS_TOKEN')
 __auth__ = {"Authorization" : "Bearer " + __token__}
 __table_name__  = "mischief_data"
 
-# CREATE TABLE mischief_data(name text, num_posts SMALLINT, num_workouts SMALLINT, num_throw SMALLINT, num_regen SMALLINT, score numeric(4, 1), last_post DATE, slack_id CHAR(9), last_time BIGINT, pod text, team text)
-
+# START SQL Connection Methods ----------------------------------------------------
+# Always pair this method with the `commitAndCloseSQLConnection()` to properly close completed connections
 def getSQLConnection():
     try:
         urllib.parse.uses_netloc.append("postgres")
@@ -32,30 +33,11 @@ def getSQLConnection():
         send_debug_message(error)
         raise error
 
-
 def commitAndCloseSQLConnection(conn):
     conn.commit()
     conn.cursor().close()
     conn.close()
-
-def get_table(table_name=None):
-    if table_name == None:
-        table_name = __table_name__
-        
-    print("Fetching Table: ", table_name)
-    sqlConnection = getSQLConnection()
-    cursor = sqlConnection.cursor()
-
-    command = "SELECT * from " + table_name
-    cursor.execute(command)
-    table = cursor.fetchall()
-    print("Fetched table: ", table)
-    print("Printing records:")
-    for record in table:
-        print(record)
-
-    commitAndCloseSQLConnection(sqlConnection)    
-    return table
+# END SQL Connection Methods -------------------------------------------------------    
 
 def create_new_table_v2(member_info):
     try:    
@@ -70,20 +52,18 @@ def create_new_table_v2(member_info):
         print("Creating new table v2: ", __table_name__)
         createCommand = """
             CREATE TABLE {table_name} (
-              name text, 
-              num_posts SMALLINT, 
-              num_workouts SMALLINT, 
-              num_lifts SMALLINT, 
-              num_cardio SMALLINT, 
-              num_sprints SMALLINT, 
-              num_throws SMALLINT, 
-              num_regen SMALLINT,
-              num_play SMALLINT, 
-              num_volunteer SMALLINT, 
-              score numeric(4, 1), 
-              last_post DATE, 
-              slack_id CHAR(11), 
-              last_time BIGINT
+                slack_id CHAR(11),
+                name text, 
+                num_posts SMALLINT, 
+                num_lifts SMALLINT, 
+                num_cardio SMALLINT, 
+                num_sprints SMALLINT, 
+                num_throws SMALLINT, 
+                num_regen SMALLINT,
+                num_play SMALLINT, 
+                num_volunteer SMALLINT, 
+                score numeric(4, 1), 
+                last_post DATE
             )
         """.format(
             table_name = __table_name__
@@ -96,6 +76,55 @@ def create_new_table_v2(member_info):
         
     except (Exception, psycopg2.DatabaseError) as error:
         print(error)
+        send_debug_message(error)
+        return False
+
+def init_db_v2(member_info):
+    print("ATTEMPTING INIT V2 WITH: ") #, member_info)
+    try:
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
+        
+        print("Inserting members")
+        for member in member_info['members']:   
+            print("Member real_name: ", member['real_name'])
+            print("Member id: ", member['id'])                
+            insertCommand = """
+                INSERT INTO {table_name} VALUES (
+                    {slack_id} CHAR(11),
+                    {name} text, 
+                    {num_posts} SMALLINT, 
+                    {num_lifts} SMALLINT, 
+                    {num_cardio} SMALLINT, 
+                    {num_sprints} SMALLINT, 
+                    {num_throws} SMALLINT, 
+                    {num_regen} SMALLINT,
+                    {num_play} SMALLINT, 
+                    {num_volunteer} SMALLINT, 
+                    {score} numeric(4, 1), 
+                    {last_post} DATE
+                )
+            """.format(
+                table_name = __table_name__,
+                slack_id = member['id'],
+                name = member['real_name'], 
+                num_posts = 0, 
+                num_lifts = 0, 
+                num_cardio = 0, 
+                num_sprints = 0, 
+                num_throws = 0, 
+                num_regen = 0,
+                num_play = 0, 
+                num_volunteer = 0, 
+                score = 0, 
+                last_post = datetime.datetime.now()
+            )
+            cursor.execute(insertCommand)
+            send_debug_message("%s is new to Mischief" % member_real_name)
+                
+        commitAndCloseSQLConnection(sqlConnection)
+        return True
+    except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(error)
         return False
 
@@ -158,6 +187,25 @@ def add_num_posts(mention_id, event_time, name, channel_id):
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(error)
         return True
+
+def get_table(table_name=None):
+    if table_name == None:
+        table_name = __table_name__
+        
+    print("Fetching Table: ", table_name)
+    sqlConnection = getSQLConnection()
+    cursor = sqlConnection.cursor()
+
+    command = "SELECT * from " + table_name
+    cursor.execute(command)
+    table = cursor.fetchall()
+    print("Fetched table: ", table)
+    print("Printing records:")
+    for record in table:
+        print(record)
+
+    commitAndCloseSQLConnection(sqlConnection)    
+    return table
 
 def collect_stats(datafield, rev):
     try:
