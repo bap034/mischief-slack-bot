@@ -91,18 +91,18 @@ def fill_table_v2(member_info):
             print("Member id: ", member['id'])                
             insertCommand = """
                 INSERT INTO {table_name} VALUES (
-                    {slack_id} CHAR(11),
-                    {name} text, 
-                    {num_posts} SMALLINT, 
-                    {num_lifts} SMALLINT, 
-                    {num_cardio} SMALLINT, 
-                    {num_sprints} SMALLINT, 
-                    {num_throws} SMALLINT, 
-                    {num_regen} SMALLINT,
-                    {num_play} SMALLINT, 
-                    {num_volunteer} SMALLINT, 
-                    {score} numeric(4, 1), 
-                    {last_post} DATE
+                    {slack_id},
+                    {name}, 
+                    {num_posts}, 
+                    {num_lifts}, 
+                    {num_cardio}, 
+                    {num_sprints}, 
+                    {num_throws}, 
+                    {num_regen},
+                    {num_play}, 
+                    {num_volunteer}, 
+                    {score}, 
+                    {last_post}
                 )
             """.format(
                 table_name = __table_name__,
@@ -119,6 +119,7 @@ def fill_table_v2(member_info):
                 score = 0, 
                 last_post = datetime.datetime.now()
             )
+            print("Executing: ", insertCommand) 
             cursor.execute(insertCommand)
             send_debug_message("%s is new to Mischief" % member_real_name)
                 
