@@ -250,7 +250,7 @@ class MischiefSlack:
                 count += 1
             if "!fill-table" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 groupInfo = get_group_info()     
-                init_db_v2(groupInfo)
+                fill_table_v2(groupInfo)
                 send_message("Filled table with slack members", channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 count += 1
             get_table_command = "!get-table"            
