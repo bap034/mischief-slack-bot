@@ -90,8 +90,8 @@ def fill_table_v2(member_info):
             print("Member id: ", member['id'])                
             insertCommand = """
                 INSERT INTO {table_name} VALUES (
-                    {slack_id},
-                    {name}, 
+                    '{slack_id}',
+                    '{name}', 
                     {num_posts}, 
                     {num_lifts}, 
                     {num_cardio}, 
