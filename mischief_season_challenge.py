@@ -248,6 +248,14 @@ class MischiefSlack:
                 create_new_table_v2()
                 send_message("Created new table", channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 count += 1
+            insert_into_command = "!insert"
+            if insert_into_command in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
+                parameters = self._lower_text.split()
+                slackId = parameters[1]
+                name = parameters[2]
+                insert_into_table_v2(slackId, name)
+                send_message("Inserted member", channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                count += 1
             if "!fill-table" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 groupInfo = get_group_info()     
                 fill_table_v2(groupInfo)
