@@ -79,8 +79,8 @@ def create_new_table_v2():
         send_debug_message(error)
         return False
 
-def init_db_v2(member_info):
-    print("ATTEMPTING INIT V2 WITH: ") #, member_info)
+def fill_table_v2(member_info):
+    print("Filling Table %s V2 WITH: ", __table_name__) #, member_info)
     try:
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
