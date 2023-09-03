@@ -78,8 +78,54 @@ def create_new_table_v2():
         send_debug_message(error)
         return False
 
+def insert_into_table_v2(slackId, name):
+    print("Filling Table %s V2 WITH: " % __table_name__) #, member_info)
+    try:
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
+        
+        print("Inserting member: %s, id: %s" % [name, slackId])                        
+        insertCommand = """
+            INSERT INTO {table_name} VALUES (
+                '{slack_id}',
+                '{name}', 
+                {num_posts}, 
+                {num_lifts}, 
+                {num_cardio}, 
+                {num_sprints}, 
+                {num_throws}, 
+                {num_regen},
+                {num_play}, 
+                {num_volunteer}, 
+                {score}, 
+                {last_post}
+            )
+        """.format(
+            table_name = __table_name__,
+            slack_id = slackId,
+            name = name, 
+            num_posts = 0, 
+            num_lifts = 0, 
+            num_cardio = 0, 
+            num_sprints = 0, 
+            num_throws = 0, 
+            num_regen = 0,
+            num_play = 0, 
+            num_volunteer = 0, 
+            score = 0, 
+            last_post = "now()"
+        )
+        print("Executing: ", insertCommand) 
+        cursor.execute(insertCommand)
+        send_debug_message("%s is new to Mischief" % member['real_name'])
+                
+        commitAndCloseSQLConnection(sqlConnection)
+        return True
+    except (Exception, psycopg2.DatabaseError) as error:
+        send_debug_message(error)
+        return False
 def fill_table_v2(member_info):
-    print("Filling Table %s V2 WITH: ", __table_name__) #, member_info)
+    print("Filling Table %s V2 WITH: " % __table_name__) #, member_info)
     try:
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
