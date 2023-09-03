@@ -117,7 +117,7 @@ def insert_into_table_v2(slackId, name):
         )
         print("Executing: ", insertCommand) 
         cursor.execute(insertCommand)
-        send_debug_message("%s is new to Mischief" % member['real_name'])
+        send_debug_message("%s is new to Mischief" % name)
                 
         commitAndCloseSQLConnection(sqlConnection)
         return True
