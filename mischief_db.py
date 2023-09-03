@@ -39,7 +39,7 @@ def commitAndCloseSQLConnection(conn):
     conn.close()
 # END SQL Connection Methods -------------------------------------------------------    
 
-def create_new_table_v2(member_info):
+def create_new_table_v2():
     try:    
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
