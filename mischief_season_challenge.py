@@ -47,10 +47,10 @@ class MischiefSlack:
             self._previous_message = self._event['previous_message']
             self._bot = True
             self._channel = self._event['channel']
-            if self._channel != 'GBR6LQBMJ':
-                send_debug_message("Found a deleted message in channel %s written by %s" % (
-                self._channel, self._previous_message['user']))
-                send_debug_message(self._previous_message['text'])
+            # if self._channel != 'GBR6LQBMJ':
+            #     send_debug_message("Found a deleted message in channel %s written by %s" % (
+            #     self._channel, self._previous_message['user']))
+            #     send_debug_message(self._previous_message['text'])
         elif self._subtype == 'message_changed':
             self._check_for_commands = True
             self._previous_message = self._event['previous_message']
@@ -59,8 +59,8 @@ class MischiefSlack:
             self._text = self._event['message']['text']
             self._channel = self._event['channel']
             self._ts = self._event['message']['ts']
-            send_debug_message("Found a edited message in channel %s that used to say:" % self._channel)
-            send_debug_message(self._previous_message_text)
+            # send_debug_message("Found a edited message in channel %s that used to say:" % self._channel)
+            # send_debug_message(self._previous_message_text)
         elif self._subtype == 'bot_message':
             self._bot = True
             self._channel_type = self._event['channel_type']
