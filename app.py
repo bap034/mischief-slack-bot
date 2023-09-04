@@ -23,7 +23,7 @@ def webhook():
         print("Retry Number " + request.__dict__['environ']['HTTP_X_SLACK_RETRY_NUM'])
         if int(request.__dict__['environ']['HTTP_X_SLACK_RETRY_NUM']):
             return make_response("Ok", 200, )
-    print(data)
+    # print(data)
     obj = MischiefSlack(data)
     if not obj._bot and not obj._reaction_added and not obj._reaction_removed:
         print("not a bot")
