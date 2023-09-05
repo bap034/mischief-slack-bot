@@ -30,6 +30,7 @@ def send_calendar_message(msg):
 def get_group_info():
     url = "https://slack.com/api/users.list"
     json = requests.get(url, headers=__auth__).json()
+    print("Slack user list: ", json)
     return json
 
 
