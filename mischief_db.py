@@ -12,6 +12,7 @@ app = Flask(__name__)
 __token__ = os.getenv('BOT_OAUTH_ACCESS_TOKEN')
 __auth__ = {"Authorization" : "Bearer " + __token__}
 __table_name__  = "mischief_data"
+__fitness_channel_id__ = "C05B44X6P3R"
 
 # START SQL Connection Methods ----------------------------------------------------
 # Always pair this method with the `commitAndCloseSQLConnection()` to properly close completed connections
@@ -182,61 +183,22 @@ def fill_table_v2(member_info):
         send_debug_message(error)
         return False
 
-# this doesn't really work
-def init_db(member_info):
-    print("ATTEMPTING INIT WITH: ") #, member_info)
-    try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-        cursor = conn.cursor()
-        
-        # print("cursor.rowcount: ", cursor.rowcount)       
-        print("Inserting members")
-        if cursor.rowcount == 0: #and channel_id == "C03UHTL3J58": << rowcount is based on execute command count (will be -1 if no execute commands)
-            for member in member_info['members']:   
-                member_real_name = member['real_name']
-                print("Member real_name: ", member_real_name)
-                print("Member id: ", member['id'])
-                cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, now(), %s, extract(epoch from now()))"),
-                               [member_real_name, member['id']])
-                send_debug_message("%s is new to Mischief" % member_real_name)
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return True
-    except (Exception, psycopg2.DatabaseError) as error:
-        send_debug_message(error)
-        return False
-
 def add_num_posts(mention_id, event_time, name, channel_id):
+    posterSlackId = mention_id[0]
+    
     try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-        cursor = conn.cursor()
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
+        
         cursor.execute(sql.SQL(
             "UPDATE mischief_data SET num_posts=num_posts+1 WHERE slack_id = %s"),
-            [mention_id[0]])
-        if cursor.rowcount == 0 and channel_id == "C03UHTL3J58":
-            cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, %d, %s, now())"),
-                           [name, mention_id[0], event_time, name])
-            send_debug_message("%s is new to Mischief" % name)
-        conn.commit()
-        cursor.close()
-        conn.close()
+            [posterSlackId])
+        if cursor.rowcount == 0: #and channel_id == __fitness_channel_id__:
+            insert_into_table_v2(posterSlackId, name)
+            # cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, %d, %s, now())"),
+            #                [name, mention_id[0], event_time, name])
+            # send_debug_message("%s is new to Mischief" % name)
+        commitAndCloseSQLConnection(sqlConnection)
         return True
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(error)
@@ -263,16 +225,9 @@ def get_table(table_name=None):
 
 def collect_stats(datafield, rev):
     try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-        cursor = conn.cursor()
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
+        
         # get all of the people whose scores are greater than 0 (any non players have a workout score of -1; anyone participating will eventually have score over 0)
         cursor.execute(sql.SQL(
             "SELECT * FROM mischief_data WHERE score > 0"), )
@@ -291,16 +246,8 @@ def collect_stats(datafield, rev):
 
 def collect_leaderboard(datafield, rev):
     try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-        cursor = conn.cursor()
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
         # get all of the people whose scores are greater than 0 (any non players have a workout score of -1; anyone participating will eventually have score over 0)
         cursor.execute(sql.SQL(
             "SELECT * FROM mischief_data WHERE score > 0"), )
@@ -319,6 +266,7 @@ def collect_leaderboard(datafield, rev):
 def get_group_info():
     url = "https://slack.com/api/users.list"
     json = requests.get(url, headers=__auth__).json()
+    print("Slack user list: ", json)
     return json
 
 
@@ -333,18 +281,11 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
     conn = None
     num_committed = 0
     try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
+        
         print("names: ", names)
         print("ids: ", ids)
-        cursor = conn.cursor()
         for x in range(0, len(names)):
             print("starting", names[x])
             cursor.execute(sql.SQL(
@@ -352,13 +293,33 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
             score = cursor.fetchall()[0][0]
             score = int(score)
             if score != -1:
-                cursor.execute(sql.SQL("""
-                    UPDATE mischief_data SET num_workouts=num_workouts+%s,
-                    num_lifts=num_lifts+%s, num_cardio=num_cardio+%s, num_sprints=num_sprints+%s, num_throws=num_throws+%s, num_regen=num_regen+%s, 
-                    num_play=num_play+%s, num_volunteer=num_volunteer+%s,
-                    score=score+%s, last_post=now() WHERE slack_id = %s
-                    """),
-                    [str(num_workouts), str(lift_num), str(cardio_num), str(sprint_num), str(throw_num), str(regen_num), str(play_num), str(volunteer_num), str(addition), ids[x]])
+                updateCommand = """
+                    UPDATE {table_name} SET
+                    num_lifts=num_lifts+{lift_num_key}, 
+                    num_cardio=num_cardio+{cardio_num_key}, 
+                    num_sprints=num_sprints+{sprint_num_key}, 
+                    num_throws=num_throws+{throw_num_key}, 
+                    num_regen=num_regen+{regen_num_key}, 
+                    num_play=num_play+{play_num_key}, 
+                    num_volunteer=num_volunteer+{volunteer_num_key},
+                    score=score+{score_val_key}, 
+                    last_post={last_post} WHERE slack_id = {slack_id}                
+                """.format(
+                    table_name = __table_name__,
+                    slack_id = ids[x],
+                    lift_num_key = str(lift_num), 
+                    cardio_num_key = str(cardio_num), 
+                    sprint_num_key = str(sprint_num), 
+                    throw_num_key = str(throw_num), 
+                    regen_num_key = str(regen_num),
+                    play_num_key = str(play_num), 
+                    volunteer_num_key = str(volunteer_num), 
+                    score_val_key = str(score_val), 
+                    last_post = "now()"
+                )
+                print("Executing: ", updateCommand) 
+                cursor.execute(updateCommand)
+                
                 conn.commit()
                 send_debug_message("committed %s with %s points" % (names[x], str(addition)))
                 print("committed %s" % names[x])
@@ -379,16 +340,8 @@ def subtract_from_db(names, subtraction, ids):  # subtract "subtraction" from ea
     conn = None
     num_committed = 0
     try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-        cursor = conn.cursor()
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
         for x in range(0, len(names)):
             cursor.execute(sql.SQL(
                 "UPDATE mischief_data SET score = score - %s WHERE slack_id = %s"),
@@ -409,20 +362,38 @@ def reset_scores():  # reset the scores of everyone
     cursor = None
     conn = None
     try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
+        # cursor.execute(sql.SQL("""
+        #     UPDATE mischief_data SET num_workouts = 0, num_lifts = 0, num_cardio = 0, num_sprints = 0, num_throws = 0, num_regen = 0, num_play = 0, 
+        #     num_volunteer = 0, score = 0, last_post = now() WHERE score != -1
+        # """))
+
+        updateCommand = """
+            UPDATE {table_name} SET
+            num_lifts=num_lifts+{lift_num_key}, 
+            num_cardio=num_cardio+{cardio_num_key}, 
+            num_sprints=num_sprints+{sprint_num_key}, 
+            num_throws=num_throws+{throw_num_key}, 
+            num_regen=num_regen+{regen_num_key}, 
+            num_play=num_play+{play_num_key}, 
+            num_volunteer=num_volunteer+{volunteer_num_key},
+            score=score+{score_val_key}, 
+            last_post={last_post} WHERE score != -1                
+        """.format(
+            table_name = __table_name__,
+            lift_num_key = 0, 
+            cardio_num_key = 0, 
+            sprint_num_key = 0, 
+            throw_num_key = 0, 
+            regen_num_key = 0,
+            play_num_key = 0, 
+            volunteer_num_key = 0, 
+            score_val_key = 0, 
+            last_post = "now()"
         )
-        cursor = conn.cursor()
-        cursor.execute(sql.SQL("""
-            UPDATE mischief_data SET num_workouts = 0, num_lifts = 0, num_cardio = 0, num_sprints = 0, num_throws = 0, num_regen = 0, num_play = 0, 
-            num_volunteer = 0, score = 0, last_post = now() WHERE score != -1
-        """))
+        print("Executing: ", updateCommand) 
+        cursor.execute(updateCommand)
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(str(error))
@@ -436,16 +407,8 @@ def reset_talkative():  # reset the num_posts of everyone
     cursor = None
     conn = None
     try:
-        urllib.parse.uses_netloc.append("postgres")
-        url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-        conn = psycopg2.connect(
-            database=url.path[1:],
-            user=url.username,
-            password=url.password,
-            host=url.hostname,
-            port=url.port
-        )
-        cursor = conn.cursor()
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
         cursor.execute(sql.SQL(
             "UPDATE mischief_data SET num_posts = 0 WHERE workout_score != -1"))
         conn.commit()
