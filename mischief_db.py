@@ -221,16 +221,14 @@ def get_table(table_name=None):
     print("Printing records:")
     column_names = [desc[0] for desc in cursor.description]
     columnNamesStringArray = [str(element) for element in column_names]    
-    tableString = '\t'.join(columnNamesStringArray) # Convert the array to a string, using a space as a separator
+    tableString = '\t'.join(columnNamesStringArray) # Convert the array to a string, using a tab as a separator
     
-    # print(column_names)
+    print(column_names)
     for record in table:
-        # print(record)
+        print(record)
         recordStringArray = [str(element) for element in record]
         recordString = '\t'.join(recordStringArray)
         tableString += '\n' + recordString
-
-    print(tableString)
     send_debug_message(tableString)
 
     commitAndCloseSQLConnection(sqlConnection)    
@@ -242,24 +240,34 @@ def collect_stats(datafield, rev):
         cursor = sqlConnection.cursor()
         
         # get all of the people whose scores are greater than 0 (any non players have a workout score of -1; anyone participating will eventually have score over 0)
-        command = "SELECT * FROM %s WHERE score > 0 ORDER BY score" % __table_name__
+        command = "SELECT * FROM %s WHERE score >= 0 ORDER BY score" % __table_name__
         print("Executing: ", command) 
         cursor.execute(command)
         
         leaderboard = cursor.fetchall()
         # leaderboard.sort(key=lambda s: s[10], reverse=rev)  # sort the leaderboard by score descending
-        string1 = "Leaderboard:\n"
+        string1 = "Stats:\n"
         for x in range(0, len(leaderboard)):
-            string1 += '%d) %s with %.1f point(s); %.1d lift(s); %.1d cardio; %.1d sprints; %.1d throw(s); %.1d regen; %.1d goalty/mini/tryouts; %.1d volunteer. \n' % (x + 1, 
-                                                                                                                                                                        leaderboard[x][1],    # name 
-                                                                                                                                                                        leaderboard[x][10],   # score
-                                                                                                                                                                        leaderboard[x][3],    # lifts 
-                                                                                                                                                                        leaderboard[x][4],    # cardio
-                                                                                                                                                                        leaderboard[x][5],    # sprints 
-                                                                                                                                                                        leaderboard[x][6],    # throws
-                                                                                                                                                                        leaderboard[x][7],    # regen 
-                                                                                                                                                                        leaderboard[x][8],    # play
-                                                                                                                                                                        leaderboard[x][9])    # volunteer
+            string1 += "%d) %s points: %.1f, lifts: %.1d, cardio: %.1d, sprints: %.1d, throws: %.1d, regen: %.1d, playing: %.1d, volunteer: %.1d \n" % (x + 1, 
+                                                                                                                                                        leaderboard[x][1],    # name 
+                                                                                                                                                        leaderboard[x][10],   # score
+                                                                                                                                                        leaderboard[x][3],    # lifts 
+                                                                                                                                                        leaderboard[x][4],    # cardio
+                                                                                                                                                        leaderboard[x][5],    # sprints 
+                                                                                                                                                        leaderboard[x][6],    # throws
+                                                                                                                                                        leaderboard[x][7],    # regen 
+                                                                                                                                                        leaderboard[x][8],    # play
+                                                                                                                                                        leaderboard[x][9])
+            # string1 += '%d) %s with %.1f point(s); %.1d lift(s); %.1d cardio; %.1d sprints; %.1d throw(s); %.1d regen; %.1d goalty/mini/tryouts; %.1d volunteer. \n' % (x + 1, 
+            #                                                                                                                                                             leaderboard[x][1],    # name 
+            #                                                                                                                                                             leaderboard[x][10],   # score
+            #                                                                                                                                                             leaderboard[x][3],    # lifts 
+            #                                                                                                                                                             leaderboard[x][4],    # cardio
+            #                                                                                                                                                             leaderboard[x][5],    # sprints 
+            #                                                                                                                                                             leaderboard[x][6],    # throws
+            #                                                                                                                                                             leaderboard[x][7],    # regen 
+            #                                                                                                                                                             leaderboard[x][8],    # play
+            #                                                                                                                                                             leaderboard[x][9])    # volunteer
         cursor.close()
         sqlConnection.close()
         return string1
