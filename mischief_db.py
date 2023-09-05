@@ -61,7 +61,8 @@ def create_new_table_v2():
                 num_throws SMALLINT, 
                 num_regen SMALLINT,
                 num_play SMALLINT, 
-                num_volunteer SMALLINT, 
+                num_volunteer SMALLINT,
+                num_visualize SMALLINT,
                 score numeric(4, 1), 
                 last_post DATE
             )
@@ -97,7 +98,8 @@ def insert_into_table_v2(slackId, name):
                 {num_throws}, 
                 {num_regen},
                 {num_play}, 
-                {num_volunteer}, 
+                {num_volunteer},
+                {num_visualize},
                 {score}, 
                 {last_post}
             )
@@ -113,6 +115,7 @@ def insert_into_table_v2(slackId, name):
             num_regen = 0,
             num_play = 0, 
             num_volunteer = 0, 
+            num_visualize = 0,
             score = 0, 
             last_post = "now()"
         )
@@ -155,6 +158,7 @@ def fill_table_v2(member_info):
                     {num_regen},
                     {num_play}, 
                     {num_volunteer}, 
+                    {num_visualize},
                     {score}, 
                     {last_post}
                 )
@@ -170,6 +174,7 @@ def fill_table_v2(member_info):
                 num_regen = 0,
                 num_play = 0, 
                 num_volunteer = 0, 
+                num_visualize = 0,
                 score = 0, 
                 last_post = "now()"
             )
@@ -250,14 +255,15 @@ def collect_stats(datafield, rev):
             string1 += "{0:>2}) {1:<20} points: *{2}*, lifts: {3}, cardio: {4}, sprints: {5}, throws: {6}, regen: {7}, playing: {8}, volunteer: {9} \n".format(
                 x + 1, 
                 leaderboard[x][1],    # name 
-                leaderboard[x][10],   # score
+                leaderboard[x][11],   # score
                 leaderboard[x][3],    # lifts 
                 leaderboard[x][4],    # cardio
                 leaderboard[x][5],    # sprints 
                 leaderboard[x][6],    # throws
                 leaderboard[x][7],    # regen 
                 leaderboard[x][8],    # play
-                leaderboard[x][9]     # volunteer
+                leaderboard[x][9],    # volunteer
+                leaderboard[x][10]    # visualize
             )
             
         cursor.close()
@@ -279,9 +285,9 @@ def collect_leaderboard(datafield, rev):
         # leaderboard.sort(key=lambda s: s[10], reverse=rev)  # sort the leaderboard by score descending
         string1 = "Leaderboard:\n"
         for x in range(0, len(leaderboard)):
-            string1 += '%d) %s		 with %.1f points \n' % (x + 1, 
-                                                            leaderboard[x][1],     # name
-                                                            leaderboard[x][10])    # score
+            string1 += '%d) %s	with %.1f points \n' % (x + 1, 
+                                                        leaderboard[x][1],     # name
+                                                        leaderboard[x][11])    # score
         cursor.close()
         sqlConnection.close()
         return string1
@@ -301,7 +307,7 @@ def get_emojis():
     return json
 
 
-def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, throw_num, regen_num, play_num, volunteer_num, num_workouts, ids):  # add "addition" to each of the "names" in the db
+def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, throw_num, regen_num, play_num, volunteer_num, visualize_num, num_workouts, ids):  # add "addition" to each of the "names" in the db
     cursor = None
     sqlConnection = None
     num_committed = 0
@@ -327,6 +333,7 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
                     num_regen=num_regen+{regen_num_key}, 
                     num_play=num_play+{play_num_key}, 
                     num_volunteer=num_volunteer+{volunteer_num_key},
+                    num_visualize=num_visualize+{visualize_num_key},
                     score=score+{score_val_key}, 
                     last_post={last_post} WHERE slack_id = '{slack_id}'
                 """.format(
@@ -339,6 +346,7 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
                     regen_num_key = str(regen_num),
                     play_num_key = str(play_num), 
                     volunteer_num_key = str(volunteer_num), 
+                    visualize_num_key = str(visualize_num),
                     score_val_key = str(new_score), 
                     last_post = "now()"
                 )
@@ -403,6 +411,7 @@ def reset_scores():  # reset the scores of everyone
             num_regen={regen_num_key}, 
             num_play={play_num_key}, 
             num_volunteer={volunteer_num_key},
+            num_visualize={visualize_num_key},
             score={score_val_key}, 
             last_post={last_post} WHERE score != -1                
         """.format(
@@ -414,6 +423,7 @@ def reset_scores():  # reset the scores of everyone
             regen_num_key = 0,
             play_num_key = 0, 
             volunteer_num_key = 0, 
+            visualize_num_key = 0,
             score_val_key = 0, 
             last_post = "now()"
         )
