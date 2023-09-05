@@ -222,7 +222,7 @@ def get_table(table_name=None):
         print(record)
 
     print("Test Cursor description: ")
-    cursorDescription = = pandas.read_sql(command, sqlConnection)
+    cursorDescription = pandas.read_sql(command, sqlConnection)
     print(cursorDescription)
 
     commitAndCloseSQLConnection(sqlConnection)    
