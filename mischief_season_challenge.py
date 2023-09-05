@@ -5,20 +5,24 @@ from datetime import datetime
 
 class MischiefSlack:
     adminSlackId = 'U05BDFHGQQL' 
+    fitnessChannelId = 'C05B44X6P3R'
+    botDebugChannelId = 'C05PYDSSMUK'
     
     def __init__(self, json_data):
         self._event = json_data['event']
         self._repeat = False
 
         ## point values
-        self.LIFT_POINTS = 2.0
+        self.LIFT_POINTS = 1.0
         self.CARDIO_POINTS = 1.0
-        self.SPRINT_POINTS = 2.0
+        self.SPRINT_POINTS = 1.0
         self.THROW_POINTS = 1.0
-        self.REGEN_POINTS = 1.5
-        self.PLAY_POINTS = 3.0
-        self.VOLUNTEER_POINTS = 3.0
-        self.VISUALIZE_POINTS = 1.5
+        self.REGEN_POINTS = 1.0
+        self.PLAY_POINTS = 1.0
+        self.VOLUNTEER_POINTS = 1.0
+        self.VISUALIZE_WHITE_POINTS = 1.0
+        self.VISUALIZE_RED_POINTS = 2.0
+        self.VISUALIZE_BLACK_POINTS = 3.0
         self._additions = []
         self._reaction_added = False
         self._reaction_removed = False
@@ -102,7 +106,7 @@ class MischiefSlack:
             else:
                 self.user_id = self._event['bot_id'] if 'bot_id' in list(self._event.keys()) else ''
 
-        if self._check_for_commands:
+        if self._check_for_commands and (self._channel == fitnessChannelId or self._channel == botDebugChannelId):
             self.parse_text_for_mentions()
 
             if not self._bot:
@@ -148,6 +152,16 @@ class MischiefSlack:
         else:
             self._name = ""
 
+    def conditionalMultiplier(text):
+        multiplier = 1.0
+        if '!visualize' in self._lower_text:
+            if 'white' in self._lower_text:
+                multiplier = 1.0
+            if 'red' in self._lower_text:
+                multiplier = 2.0
+            if 'black' in self._lower_text:
+                multiplier = 3.0
+    
     def parse_for_additions(self):
         ## TODO: update point reqs
         #DB reqs added
@@ -218,12 +232,12 @@ class MischiefSlack:
             ## put the fun stuff here
             if "!help" in self._lower_text:
                 send_tribe_message("Available commands:\n!leaderboard\n!points"
-                                   "\n!lift\n!cardio\n!sprint\n!throw\n!regen/!yoga/!stretch/!pt\n!play/!goalty/!mini/!tryouts\n!volunteer\n!visualize\n",
+                                   "\n!lift\n!cardio\n!sprint\n!throw\n!regen/!yoga/!stretch/!pt\n!play/!goalty/!mini/!tryouts\n!volunteer\n!visualize-[white/red/black]\n",
                                    channel=self._channel, bot_name="tracker")
             if "!points" in self._lower_text:
-                send_tribe_message("Point Values:\nlift: %.1f\ncardio: %.1f\nsprint: %.1f\nthrow: %.1f\nregen: %.1f\nplay: %.1f\nvolunteer: %.1f\nvisualize: %.1f"
+                send_tribe_message("Point Values:\nlift: %.1f\ncardio: %.1f\nsprint: %.1f\nthrow: %.1f\nregen: %.1f\nplay: %.1f\nvolunteer: %.1f\nvisualize-white: %.1f\nvisualize-red: %.1f\nvisualize-black: %.1f"
                                    % (self.LIFT_POINTS, self.CARDIO_POINTS, self.SPRINT_POINTS, self.THROW_POINTS, self.REGEN_POINTS, 
-                                    self.PLAY_POINTS, self.VOLUNTEER_POINTS, self.VISUALIZE_POINTS), channel=self._channel)
+                                    self.PLAY_POINTS, self.VOLUNTEER_POINTS, self.VISUALIZE_WHITE_POINTS, self.VISUALIZE_RED_POINTS, self.VISUALIZE_BLACK_POINTS), channel=self._channel)
             if "!leaderboard" in self._lower_text:
                 count += 1
                 to_print = collect_leaderboard(3, True)
