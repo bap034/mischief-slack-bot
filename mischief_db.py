@@ -215,10 +215,14 @@ def get_table(table_name=None):
     command = "SELECT * from " + table_name
     cursor.execute(command)
     table = cursor.fetchall()
-    print("Fetched table: ", table)
+    print("Fetched table")
     print("Printing records:")
     for record in table:
         print(record)
+
+    print("Test Cursor description: ")
+    cursorDescription = cursor.description
+    print(cursorDescription)
 
     commitAndCloseSQLConnection(sqlConnection)    
     return table
