@@ -291,7 +291,7 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
             cursor.execute(sql.SQL(
                 "SELECT score FROM mischief_data WHERE slack_id = %s"), [str(ids[x])])
             score = cursor.fetchall()[0][0]
-            score = int(score)
+            score_val = int(score)
             if score != -1:
                 updateCommand = """
                     UPDATE {table_name} SET
