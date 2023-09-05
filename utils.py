@@ -1,3 +1,4 @@
+import json
 
 def stringFromSeconds(seconds):
     if seconds < 0:
@@ -11,3 +12,9 @@ def stringFromSeconds(seconds):
         fracMinutes = minutes - int(minutes)
         seconds = fracMinutes * 60
         return "%d days, %d hours, %d minutes, %d seconds" % (days, minutes, hours, seconds)
+
+def prettyPrintJson(jsonString):
+    json_object = json.loads(jsonString)
+    json_formatted_str = json.dumps(json_object, indent=2)
+    print(json_formatted_str)
+    
