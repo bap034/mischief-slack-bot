@@ -245,19 +245,30 @@ def collect_stats(datafield, rev):
         cursor.execute(command)
         
         leaderboard = cursor.fetchall()
-        # leaderboard.sort(key=lambda s: s[10], reverse=rev)  # sort the leaderboard by score descending
         string1 = "Stats:\n"
         for x in range(0, len(leaderboard)):
-            string1 += "%d) %s \t points: %.1f lifts: %.1d cardio: %.1d sprints: %.1d throws: %.1d regen: %.1d playing: %.1d volunteer: %.1d \n" % (x + 1, 
-                                                                                                                                                        leaderboard[x][1],    # name 
-                                                                                                                                                        leaderboard[x][10],   # score
-                                                                                                                                                        leaderboard[x][3],    # lifts 
-                                                                                                                                                        leaderboard[x][4],    # cardio
-                                                                                                                                                        leaderboard[x][5],    # sprints 
-                                                                                                                                                        leaderboard[x][6],    # throws
-                                                                                                                                                        leaderboard[x][7],    # regen 
-                                                                                                                                                        leaderboard[x][8],    # play
-                                                                                                                                                        leaderboard[x][9])
+            string1 += "{0}) {1:<25} points: {2:>4} lifts: {3} cardio: {4} sprints: {5} throws: {6} regen: {7} playing: {8} volunteer: {9} \n".format(
+                x + 1, 
+                leaderboard[x][1],    # name 
+                leaderboard[x][10],   # score
+                leaderboard[x][3],    # lifts 
+                leaderboard[x][4],    # cardio
+                leaderboard[x][5],    # sprints 
+                leaderboard[x][6],    # throws
+                leaderboard[x][7],    # regen 
+                leaderboard[x][8],    # play
+                leaderboard[x][9]     # volunteer
+            )
+            # string1 += "%d) %s \t points: %.1f lifts: %.1d cardio: %.1d sprints: %.1d throws: %.1d regen: %.1d playing: %.1d volunteer: %.1d \n" % (x + 1, 
+            #                                                                                                                                             leaderboard[x][1],    # name 
+            #                                                                                                                                             leaderboard[x][10],   # score
+            #                                                                                                                                             leaderboard[x][3],    # lifts 
+            #                                                                                                                                             leaderboard[x][4],    # cardio
+            #                                                                                                                                             leaderboard[x][5],    # sprints 
+            #                                                                                                                                             leaderboard[x][6],    # throws
+            #                                                                                                                                             leaderboard[x][7],    # regen 
+            #                                                                                                                                             leaderboard[x][8],    # play
+            #                                                                                                                                             leaderboard[x][9])    # volunteer
             # string1 += '%d) %s with %.1f point(s); %.1d lift(s); %.1d cardio; %.1d sprints; %.1d throw(s); %.1d regen; %.1d goalty/mini/tryouts; %.1d volunteer. \n' % (x + 1, 
             #                                                                                                                                                             leaderboard[x][1],    # name 
             #                                                                                                                                                             leaderboard[x][10],   # score
