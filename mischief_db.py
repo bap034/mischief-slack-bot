@@ -253,7 +253,7 @@ def collect_stats(datafield, rev):
         leaderboard = cursor.fetchall()
         string1 = "Stats:\n"
         for x in range(0, len(leaderboard)):
-            string1 += "{0:>2}) {1:<20} points: *{2}*, lifts: {3}, cardio: {4}, sprints: {5}, throws: {6}, regen: {7}, playing: {8}, volunteer: {9} \n".format(
+            string1 += "{0:>2}) {1:<20} points: *{2}*, lifts: {3}, cardio: {4}, sprints: {5}, throws: {6}, regen: {7}, playing: {8}, volunteer: {9}, visualize: {10} \n".format(
                 x + 1, 
                 leaderboard[x][1],    # name 
                 leaderboard[x][11],   # score
