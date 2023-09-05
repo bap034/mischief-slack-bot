@@ -79,7 +79,7 @@ def create_new_table_v2():
         return False
 
 def insert_into_table_v2(slackId, name):
-    print("Insert into Table %s V2 WITH: " % __table_name__) #, member_info)
+    print("Insert into Table %s V2 WITH: " % __table_name__)
     try:
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
@@ -125,7 +125,9 @@ def insert_into_table_v2(slackId, name):
         send_debug_message(error)
         return False
 def fill_table_v2(member_info):
-    print("Filling Table %s V2 WITH: " % __table_name__) #, member_info)
+    print("Filling Table %s V2 WITH: " % __table_name__)
+    prettyPrintJson(member_info)
+    
     try:
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
