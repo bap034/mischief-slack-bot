@@ -126,16 +126,21 @@ def insert_into_table_v2(slackId, name):
         return False
 def fill_table_v2(member_info):
     print("Filling Table %s V2 WITH: " % __table_name__)
-    print("member_info: ", member_info)
-    prettyPrintJson(member_info)
+    # print("member_info: ", member_info)
     
     try:
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
         
         print("Inserting members")
-        for member in member_info['members']:   
-            print("Member real_name: ", member['real_name'])
+        for member in member_info['members']: 
+            if member["deleted"] == True: 
+                continue
+            if member["is_bot"] == True: 
+                continue
+    
+            realName = member["profile"]["real_name"] # Note: deleted users do not have a `member["real_name"]` value but all users have a `profile` with a `real_name`
+            print("Member real_name: ", realName)
             print("Member id: ", member['id'])                
             insertCommand = """
                 INSERT INTO {table_name} VALUES (
@@ -155,7 +160,7 @@ def fill_table_v2(member_info):
             """.format(
                 table_name = __table_name__,
                 slack_id = member['id'],
-                name = member['real_name'], 
+                name = realName, 
                 num_posts = 0, 
                 num_lifts = 0, 
                 num_cardio = 0, 
@@ -169,7 +174,7 @@ def fill_table_v2(member_info):
             )
             print("Executing: ", insertCommand) 
             cursor.execute(insertCommand)
-            send_debug_message("%s is new to Mischief" % member['real_name'])
+            send_debug_message("%s is new to Mischief" % realName)
                 
         commitAndCloseSQLConnection(sqlConnection)
         return True
