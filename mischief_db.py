@@ -239,7 +239,7 @@ def collect_stats(datafield, rev):
                 leaderboard[x][10], leaderboard[x][3], leaderboard[x][4], leaderboard[x][5], leaderboard[x][6],
                 leaderboard[x][7], leaderboard[x][8], leaderboard[x][9])
         cursor.close()
-        conn.close()
+        sqlConnection.close()
         return string1
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(error)
@@ -258,7 +258,7 @@ def collect_leaderboard(datafield, rev):
             string1 += '%d) %s with %.1f point(s)\n' % (x + 1, leaderboard[x][0], 
                 leaderboard[x][10])
         cursor.close()
-        conn.close()
+        sqlConnection.close()
         return string1
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(error)        
@@ -278,7 +278,7 @@ def get_emojis():
 
 def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, throw_num, regen_num, play_num, volunteer_num, num_workouts, ids):  # add "addition" to each of the "names" in the db
     cursor = None
-    conn = None
+    sqlConnection = None
     num_committed = 0
     try:
         sqlConnection = getSQLConnection()
@@ -320,7 +320,7 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
                 print("Executing: ", updateCommand) 
                 cursor.execute(updateCommand)
                 
-                conn.commit()
+                sqlConnection.commit()
                 send_debug_message("committed %s with %s points" % (names[x], str(addition)))
                 print("committed %s" % names[x])
                 num_committed += 1
@@ -331,13 +331,13 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
     finally:
         if cursor is not None:
             cursor.close()
-            conn.close()
+            sqlConnection.close()
         return num_committed
 
 
 def subtract_from_db(names, subtraction, ids):  # subtract "subtraction" from each of the "names" in the db
     cursor = None
-    conn = None
+    sqlConnection = None
     num_committed = 0
     try:
         sqlConnection = getSQLConnection()
@@ -346,7 +346,7 @@ def subtract_from_db(names, subtraction, ids):  # subtract "subtraction" from ea
             cursor.execute(sql.SQL(
                 "UPDATE mischief_data SET score = score - %s WHERE slack_id = %s"),
                 [subtraction, ids[x]])
-            conn.commit()
+            sqlConnection.commit()
             send_debug_message("subtracted %s" % names[x])
             num_committed += 1
     except (Exception, psycopg2.DatabaseError) as error:
@@ -354,13 +354,13 @@ def subtract_from_db(names, subtraction, ids):  # subtract "subtraction" from ea
     finally:
         if cursor is not None:
             cursor.close()
-            conn.close()
+            sqlConnection.close()
         return num_committed
 
 
 def reset_scores():  # reset the scores of everyone
     cursor = None
-    conn = None
+    sqlConnection = None
     try:
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
@@ -394,30 +394,30 @@ def reset_scores():  # reset the scores of everyone
         )
         print("Executing: ", updateCommand) 
         cursor.execute(updateCommand)
-        conn.commit()
+        sqlConnection.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(str(error))
     finally:
         if cursor is not None:
             cursor.close()
-            conn.close()
+            sqlConnection.close()
 
 
 def reset_talkative():  # reset the num_posts of everyone
     cursor = None
-    conn = None
+    sqlConnection = None
     try:
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
         cursor.execute(sql.SQL(
             "UPDATE mischief_data SET num_posts = 0 WHERE workout_score != -1"))
-        conn.commit()
+        sqlConnection.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(str(error))
     finally:
         if cursor is not None:
             cursor.close()
-            conn.close()
+            sqlConnection.close()
 
 # def add_workout(name, slack_id, workout_type):
 #     cursor = None
