@@ -126,6 +126,7 @@ def insert_into_table_v2(slackId, name):
         return False
 def fill_table_v2(member_info):
     print("Filling Table %s V2 WITH: " % __table_name__)
+    print("member_info: ", member_info)
     prettyPrintJson(member_info)
     
     try:
