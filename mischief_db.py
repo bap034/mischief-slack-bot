@@ -216,12 +216,22 @@ def get_table(table_name=None):
     print("Executing: ", command) 
     cursor.execute(command)
     table = cursor.fetchall()
+    
     print("Fetched table")
     print("Printing records:")
     column_names = [desc[0] for desc in cursor.description]
-    print(column_names)
+    columnNamesStringArray = [str(element) for element in column_names]    
+    tableString = '\t'.join(columnNamesStringArray) # Convert the array to a string, using a space as a separator
+    
+    # print(column_names)
     for record in table:
-        print(record)
+        # print(record)
+        recordStringArray = [str(element) for element in record]
+        recordString = '\t'.join(recordStringArray)
+        tableString += '\n' + recordString
+
+    print(tableString)
+    send_debug_message(tableString)
 
     commitAndCloseSQLConnection(sqlConnection)    
     return table
