@@ -9,7 +9,6 @@ class MischiefSlack:
     def __init__(self, json_data):
         self._event = json_data['event']
         self._repeat = False
-        self._db_init = False
 
         ## point values
         self.LIFT_POINTS = 2.0
@@ -135,13 +134,11 @@ class MischiefSlack:
         self._all_avatars = []
         mention_names = []
         info = get_group_info()
-        if not self._db_init:
-            # create_db(info) << only added to initiate the table
-            self._db_init = init_db(info)
+        
         for id in mention_ids:
             for member in info['members']:
                 if member['id'] == id:
-                    mention_names.append(member['real_name'])
+                    mention_names.append(member['profile']['real_name'])
                     self._all_avatars.append(member['profile']['image_512'])
         self._all_names = mention_names
         if len(self._all_names) > 0:
