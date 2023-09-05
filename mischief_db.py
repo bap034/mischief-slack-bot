@@ -303,7 +303,7 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
                     num_play=num_play+{play_num_key}, 
                     num_volunteer=num_volunteer+{volunteer_num_key},
                     score=score+{score_val_key}, 
-                    last_post={last_post} WHERE slack_id = {slack_id}                
+                    last_post={last_post} WHERE slack_id = '{slack_id}'
                 """.format(
                     table_name = __table_name__,
                     slack_id = ids[x],
