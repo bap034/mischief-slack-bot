@@ -248,7 +248,7 @@ def collect_stats(datafield, rev):
         # leaderboard.sort(key=lambda s: s[10], reverse=rev)  # sort the leaderboard by score descending
         string1 = "Stats:\n"
         for x in range(0, len(leaderboard)):
-            string1 += "%d) %s points: %.1f, lifts: %.1d, cardio: %.1d, sprints: %.1d, throws: %.1d, regen: %.1d, playing: %.1d, volunteer: %.1d \n" % (x + 1, 
+            string1 += "%d) %s \t points: %.1f lifts: %.1d cardio: %.1d sprints: %.1d throws: %.1d regen: %.1d playing: %.1d volunteer: %.1d \n" % (x + 1, 
                                                                                                                                                         leaderboard[x][1],    # name 
                                                                                                                                                         leaderboard[x][10],   # score
                                                                                                                                                         leaderboard[x][3],    # lifts 
@@ -287,7 +287,7 @@ def collect_leaderboard(datafield, rev):
         # leaderboard.sort(key=lambda s: s[10], reverse=rev)  # sort the leaderboard by score descending
         string1 = "Leaderboard:\n"
         for x in range(0, len(leaderboard)):
-            string1 += '%d) %s with %.1f point(s)\n' % (x + 1, 
+            string1 += '%d) %s with %.1f points \n' % (x + 1, 
                                                         leaderboard[x][1],     # name
                                                         leaderboard[x][10])    # score
         cursor.close()
