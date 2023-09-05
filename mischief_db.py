@@ -2,6 +2,7 @@ import os
 import urllib.parse
 import urllib.request
 import psycopg2
+import pandas
 
 from psycopg2 import sql
 from slack_api import *
@@ -221,7 +222,7 @@ def get_table(table_name=None):
         print(record)
 
     print("Test Cursor description: ")
-    cursorDescription = cursor.description
+    cursorDescription = = pandas.read_sql(command, sqlConnection)
     print(cursorDescription)
 
     commitAndCloseSQLConnection(sqlConnection)    
