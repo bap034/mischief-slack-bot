@@ -2,7 +2,6 @@ import os
 import urllib.parse
 import urllib.request
 import psycopg2
-import pandas
 
 from psycopg2 import sql
 from slack_api import *
@@ -213,17 +212,15 @@ def get_table(table_name=None):
     sqlConnection = getSQLConnection()
     cursor = sqlConnection.cursor()
 
-    command = "SELECT * from " + table_name
+    command = "SELECT * from %s ORDER BY score" % (table_name)
     cursor.execute(command)
     table = cursor.fetchall()
     print("Fetched table")
     print("Printing records:")
+    column_names = [desc[0] for desc in cursor.description]
+    print(column_names)
     for record in table:
         print(record)
-
-    print("Test Cursor description: ")
-    cursorDescription = pandas.read_sql(command, sqlConnection)
-    print(cursorDescription)
 
     commitAndCloseSQLConnection(sqlConnection)    
     return table
