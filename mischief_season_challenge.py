@@ -18,6 +18,7 @@ class MischiefSlack:
         self.REGEN_POINTS = 1.5
         self.PLAY_POINTS = 3.0
         self.VOLUNTEER_POINTS = 3.0
+        self.VISUALIZE_POINTS = 1.5
         self._additions = []
         self._reaction_added = False
         self._reaction_removed = False
@@ -158,6 +159,7 @@ class MischiefSlack:
         self.regen_req_filled = 0
         self.play_req_filled = 0
         self.volunteer_req_filled = 0
+        self.visualize_req_filled = 0
         self._req_filled = 0
         if '!lift' in self._lower_text:
             self._points_to_add += self.LIFT_POINTS
@@ -187,12 +189,16 @@ class MischiefSlack:
             self._points_to_add += self.VOLUNTEER_POINTS
             self.volunteer_req_filled += 1
             self._additions.append('!volunteer')
+        if '!visualize' in self._lower_text:
+            self._points_to_add += self.VISUALIZE_POINTS
+            self.visualize_req_filled += 1
+            self._additions.append('!visualize')
 
     def handle_db(self):
         #added reqs
         if not self._repeat:
             num = add_to_db(self._channel, self._all_names, self._points_to_add, self.lift_req_filled, self.cardio_req_filled, self.sprint_req_filled,
-                self.throw_req_filled, self.regen_req_filled, self.play_req_filled, self.volunteer_req_filled, len(self._additions), self._all_ids)
+                self.throw_req_filled, self.regen_req_filled, self.play_req_filled, self.volunteer_req_filled, self.visualize_req_filled, len(self._additions), self._all_ids)
             # for i in range(len(self._all_names)):
             #     for workout in self._additions:
             #         add_workout(self._all_names[i], self._all_ids[i], workout)
@@ -212,12 +218,12 @@ class MischiefSlack:
             ## put the fun stuff here
             if "!help" in self._lower_text:
                 send_tribe_message("Available commands:\n!leaderboard\n!points"
-                                   "\n!lift\n!cardio\n!sprint\n!throw\n!regen/!yoga/!stretch/!pt\n!play/!goalty/!mini/!tryouts\n!volunteer\n",
+                                   "\n!lift\n!cardio\n!sprint\n!throw\n!regen/!yoga/!stretch/!pt\n!play/!goalty/!mini/!tryouts\n!volunteer\n!visualize\n",
                                    channel=self._channel, bot_name="tracker")
             if "!points" in self._lower_text:
-                send_tribe_message("Point Values:\nlift: %.1f\n cardio: %.1f\nsprint: %.1f\nthrow: %.1f\nregen: %.1f\nplay: %.1f\nvolunteer: %.1f\n"
+                send_tribe_message("Point Values:\nlift: %.1f\ncardio: %.1f\nsprint: %.1f\nthrow: %.1f\nregen: %.1f\nplay: %.1f\nvolunteer: %.1f\nvisualize: %.1f"
                                    % (self.LIFT_POINTS, self.CARDIO_POINTS, self.SPRINT_POINTS, self.THROW_POINTS, self.REGEN_POINTS, 
-                                    self.PLAY_POINTS, self.VOLUNTEER_POINTS), channel=self._channel)
+                                    self.PLAY_POINTS, self.VOLUNTEER_POINTS, self.VISUALIZE_POINTS), channel=self._channel)
             if "!leaderboard" in self._lower_text:
                 count += 1
                 to_print = collect_leaderboard(3, True)
