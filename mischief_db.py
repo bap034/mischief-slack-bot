@@ -247,7 +247,7 @@ def collect_stats(datafield, rev):
         leaderboard = cursor.fetchall()
         string1 = "Stats:\n"
         for x in range(0, len(leaderboard)):
-            string1 += "{0:>2}) {1:<25} points: {2} lifts: {3} cardio: {4} sprints: {5} throws: {6} regen: {7} playing: {8} volunteer: {9} \n".format(
+            string1 += "{0:>2}) {1:<25}		points: *{2}* lifts: {3} cardio: {4} sprints: {5} throws: {6} regen: {7} playing: {8} volunteer: {9} \n".format(
                 x + 1, 
                 leaderboard[x][1],    # name 
                 leaderboard[x][10],   # score
@@ -298,9 +298,9 @@ def collect_leaderboard(datafield, rev):
         # leaderboard.sort(key=lambda s: s[10], reverse=rev)  # sort the leaderboard by score descending
         string1 = "Leaderboard:\n"
         for x in range(0, len(leaderboard)):
-            string1 += '%d) %s with %.1f points \n' % (x + 1, 
-                                                        leaderboard[x][1],     # name
-                                                        leaderboard[x][10])    # score
+            string1 += '%d) %s		 with %.1f points \n' % (x + 1, 
+                                                            leaderboard[x][1],     # name
+                                                            leaderboard[x][10])    # score
         cursor.close()
         sqlConnection.close()
         return string1
