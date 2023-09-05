@@ -396,14 +396,14 @@ def reset_scores():  # reset the scores of everyone
 
         updateCommand = """
             UPDATE {table_name} SET
-            num_lifts=num_lifts+{lift_num_key}, 
-            num_cardio=num_cardio+{cardio_num_key}, 
-            num_sprints=num_sprints+{sprint_num_key}, 
-            num_throws=num_throws+{throw_num_key}, 
-            num_regen=num_regen+{regen_num_key}, 
-            num_play=num_play+{play_num_key}, 
-            num_volunteer=num_volunteer+{volunteer_num_key},
-            score=score+{score_val_key}, 
+            num_lifts={lift_num_key}, 
+            num_cardio={cardio_num_key}, 
+            num_sprints={sprint_num_key}, 
+            num_throws={throw_num_key}, 
+            num_regen={regen_num_key}, 
+            num_play={play_num_key}, 
+            num_volunteer={volunteer_num_key},
+            score={score_val_key}, 
             last_post={last_post} WHERE score != -1                
         """.format(
             table_name = __table_name__,
