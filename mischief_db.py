@@ -198,11 +198,12 @@ def add_num_posts(mention_id, event_time, name, channel_id):
         cursor.execute(sql.SQL(
             "UPDATE mischief_data SET num_posts=num_posts+1 WHERE slack_id = %s"),
             [posterSlackId])
-        if cursor.rowcount == 0: #and channel_id == __fitness_channel_id__:
-            insert_into_table_v2(posterSlackId, name)
-            # cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, %d, %s, now())"),
-            #                [name, mention_id[0], event_time, name])
-            # send_debug_message("%s is new to Mischief" % name)
+        # Commenting out below since have the `fill-table` method to manually add everyone into the table (can come back to being more fancy with this style of conditional)
+        # if cursor.rowcount == 0: #and channel_id == __fitness_channel_id__:
+        #     insert_into_table_v2(posterSlackId, name)
+        #     # cursor.execute(sql.SQL("INSERT INTO mischief_data VALUES (%s, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, %d, %s, now())"),
+        #     #                [name, mention_id[0], event_time, name])
+        #     # send_debug_message("%s is new to Mischief" % name)
         commitAndCloseSQLConnection(sqlConnection)
         return True
     except (Exception, psycopg2.DatabaseError) as error:
