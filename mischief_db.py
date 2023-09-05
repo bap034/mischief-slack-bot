@@ -212,7 +212,7 @@ def get_table(table_name=None):
     sqlConnection = getSQLConnection()
     cursor = sqlConnection.cursor()
 
-    command = "SELECT * from %s ORDER BY score" % (table_name)
+    command = "SELECT * from %s ORDER BY score DESC" % (table_name)
     print("Executing: ", command) 
     cursor.execute(command)
     table = cursor.fetchall()
@@ -240,7 +240,7 @@ def collect_stats(datafield, rev):
         cursor = sqlConnection.cursor()
         
         # get all of the people whose scores are greater than 0 (any non players have a workout score of -1; anyone participating will eventually have score over 0)
-        command = "SELECT * FROM %s WHERE score >= 0 ORDER BY score" % __table_name__
+        command = "SELECT * FROM %s WHERE score >= 0 ORDER BY score DESC" % __table_name__
         print("Executing: ", command) 
         cursor.execute(command)
         
@@ -279,7 +279,7 @@ def collect_leaderboard(datafield, rev):
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
         # get all of the people whose scores are greater than 0 (any non players have a workout score of -1; anyone participating will eventually have score over 0)
-        command = "SELECT * FROM %s WHERE score > 0 ORDER BY score" % __table_name__
+        command = "SELECT * FROM %s WHERE score > 0 ORDER BY score DESC" % __table_name__
         print("Executing: ", command) 
         cursor.execute(command)
         
