@@ -421,7 +421,7 @@ def update_scores(userScores): # Expecting `userScores` as a map of {'slack_id':
             cursor.execute(command)
             
         commitAndCloseSQLConnection(sqlConnection)  
-        print("Successfully updated Scores)
+        print("Successfully updated Scores")
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(str(error))
 
