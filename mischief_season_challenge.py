@@ -375,6 +375,7 @@ class MischiefSlack:
                   record['num_visualize_red'] * self.VISUALIZE_RED_POINTS,
                   record['num_visualize_black'] * self.VISUALIZE_BLACK_POINTS]
         newScore = sum(scores)
+        print("Name: %s Score: %d -> %d" % (record['name'], oldScore, newScore))
         return newScore
 
     def __repr__(self):
