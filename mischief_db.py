@@ -407,6 +407,23 @@ def subtract_from_db(names, subtraction, ids):  # subtract "subtraction" from ea
             sqlConnection.close()
         return num_committed
 
+def update_scores(userScores): # Expecting `userScores` as a map of {'slack_id': int(score)}
+    try:
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
+        for user, score in userScores.items():
+            command = "UPDATE {table_name} SET score = {new_score} WHERE slack_id = {user_id}".format(
+                table_name = __table_name__,
+                new_score = score,
+                user_id = user
+            )
+            print("Executing: ", command)
+            cursor.execute(command)
+            
+        commitAndCloseSQLConnection(sqlConnection)  
+        print("Successfully updated Scores)
+    except (Exception, psycopg2.DatabaseError) as error:
+        send_debug_message(str(error))
 
 def reset_scores():  # reset the scores of everyone
     cursor = None
