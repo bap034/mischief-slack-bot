@@ -197,7 +197,7 @@ def fill_table_v2(member_info):
         send_debug_message(error)
         return False
 
-def add_num_posts(mention_id, event_time, name, channel_id):
+def add_num_posts(mention_id, event_time, channel_id): # Removed `name` parameter if not using for below comment
     posterSlackId = mention_id[0]
     
     try:
