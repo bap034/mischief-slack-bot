@@ -256,7 +256,7 @@ class MischiefSlack:
                 num = subtract_from_db(self._all_names[:-1], float(self._lower_text[-3:]), self._all_ids[:-1])
                 print(num)
                 count += 1
-            if '!recalculateScores' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
+            if '!recalculate-scores' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 send_debug_message("Recalculating scores", channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 table = get_table()
                 userScores = {}
