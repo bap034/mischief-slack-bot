@@ -262,8 +262,7 @@ class MischiefSlack:
                 userScores = {}
                 for record in table:
                     newScore = self.recalculateScore(record)
-                    slack_id = record[0]
-                    userScores[slack_id] = newScore
+                    userScores[record['slack_id']] = newScore
 
                 print("New User Scores: ", userScores)
                 if len(userScores) > 0:
@@ -358,18 +357,18 @@ class MischiefSlack:
                 self.like_message(reaction='jack_o_lantern')
 
     def recalculateScore(self, record):
-        name = record[1]
-        oldScore = record[2]
-        scores = [record[5] * self.LIFT_POINTS,
-                  record[6] * self.CARDIO_POINTS,
-                  record[7] * self.SPRINT_POINTS,
-                  record[8] * self.THROW_POINTS,
-                  record[9] * self.REGEN_POINTS,
-                  record[10] * self.PLAY_POINTS,
-                  record[11] * self.VOLUNTEER_POINTS,
-                  record[12] * self.VISUALIZE_WHITE_POINTS,
-                  record[13] * self.VISUALIZE_RED_POINTS,
-                  record[14] * self.VISUALIZE_BLACK_POINTS]
+        name = record['name']
+        oldScore = record['score']
+        scores = [record['num_lifts'] * self.LIFT_POINTS,
+                  record['num_cardio'] * self.CARDIO_POINTS,
+                  record['num_sprints'] * self.SPRINT_POINTS,
+                  record['num_throws'] * self.THROW_POINTS,
+                  record['num_regen'] * self.REGEN_POINTS,
+                  record['num_play'] * self.PLAY_POINTS,
+                  record['num_volunteer'] * self.VOLUNTEER_POINTS,
+                  record['num_visualize_white'] * self.VISUALIZE_WHITE_POINTS,
+                  record['num_visualize_red'] * self.VISUALIZE_RED_POINTS,
+                  record['num_visualize_black'] * self.VISUALIZE_BLACK_POINTS]
         newScore = sum(scores)
         print("Name: %s Score: %d -> %d" % (name, oldScore, newScore))
         return newScore
