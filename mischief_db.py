@@ -445,9 +445,9 @@ def reset_scores():  # reset the scores of everyone
             regen_num_key = 0,
             play_num_key = 0, 
             volunteer_num_key = 0, 
-            visualize_white_num_key = str(visualize_white_num),
-            visualize_red_num_key = str(visualize_red_num),
-            visualize_black_num_key = str(visualize_black_num)
+            visualize_white_num_key = 0,
+            visualize_red_num_key = 0,
+            visualize_black_num_key = 0
         )
         print("Executing: ", updateCommand) 
         cursor.execute(updateCommand)
