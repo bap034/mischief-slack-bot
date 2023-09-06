@@ -12,7 +12,6 @@ app = Flask(__name__)
 __token__ = os.getenv('BOT_OAUTH_ACCESS_TOKEN')
 __auth__ = {"Authorization" : "Bearer " + __token__}
 __table_name__  = "mischief_data"
-__fitness_channel_id__ = "C05B44X6P3R"
 
 # START SQL Connection Methods ----------------------------------------------------
 # Always pair this method with the `commitAndCloseSQLConnection()` to properly close completed connections
