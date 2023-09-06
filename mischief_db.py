@@ -337,19 +337,20 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
             new_score = float(score) + float(addition)
             if score != -1:
                 updateCommand = """
-                    UPDATE {table_name} SET
-                    score=score+{score_val_key}, 
-                    last_post={last_post} WHERE slack_id = '{slack_id}',
-                    num_lifts=num_lifts+{lift_num_key}, 
-                    num_cardio=num_cardio+{cardio_num_key}, 
-                    num_sprints=num_sprints+{sprint_num_key}, 
-                    num_throws=num_throws+{throw_num_key}, 
-                    num_regen=num_regen+{regen_num_key}, 
-                    num_play=num_play+{play_num_key}, 
-                    num_volunteer=num_volunteer+{volunteer_num_key},
-                    num_visualize_white=num_visualize_white+{visualize_white_num_key},
-                    num_visualize_red=num_visualize_red+{visualize_red_num_key},
-                    num_visualize_black=num_visualize_black+{visualize_black_num_key}
+                    UPDATE {table_name} 
+                    SET score=score+{score_val_key}, 
+                        last_post={last_post},
+                        num_lifts=num_lifts+{lift_num_key}, 
+                        num_cardio=num_cardio+{cardio_num_key}, 
+                        num_sprints=num_sprints+{sprint_num_key}, 
+                        num_throws=num_throws+{throw_num_key}, 
+                        num_regen=num_regen+{regen_num_key}, 
+                        num_play=num_play+{play_num_key}, 
+                        num_volunteer=num_volunteer+{volunteer_num_key},
+                        num_visualize_white=num_visualize_white+{visualize_white_num_key},
+                        num_visualize_red=num_visualize_red+{visualize_red_num_key},
+                        num_visualize_black=num_visualize_black+{visualize_black_num_key}
+                    WHERE slack_id = '{slack_id}'
                 """.format(
                     table_name = __table_name__,
                     slack_id = ids[x],
@@ -419,19 +420,20 @@ def reset_scores():  # reset the scores of everyone
         # """))
 
         updateCommand = """
-            UPDATE {table_name} SET
-            score={score_val_key}, 
-            last_post={last_post} WHERE score != -1,
-            num_lifts={lift_num_key}, 
-            num_cardio={cardio_num_key}, 
-            num_sprints={sprint_num_key}, 
-            num_throws={throw_num_key}, 
-            num_regen={regen_num_key}, 
-            num_play={play_num_key}, 
-            num_volunteer={volunteer_num_key},
-            num_visualize_white={visualize_white_num_key},
-            num_visualize_red={visualize_red_num_key},
-            num_visualize_black={visualize_black_num_key}
+            UPDATE {table_name} 
+            SET score={score_val_key}, 
+                last_post={last_post},
+                num_lifts={lift_num_key}, 
+                num_cardio={cardio_num_key}, 
+                num_sprints={sprint_num_key}, 
+                num_throws={throw_num_key}, 
+                num_regen={regen_num_key}, 
+                num_play={play_num_key}, 
+                num_volunteer={volunteer_num_key},
+                num_visualize_white={visualize_white_num_key},
+                num_visualize_red={visualize_red_num_key},
+                num_visualize_black={visualize_black_num_key}
+            WHERE score != -1
         """.format(
             table_name = __table_name__,
             score_val_key = 0, 
