@@ -262,7 +262,8 @@ class MischiefSlack:
                 userScores = {}
                 for record in table:
                     newScore = self.recalculateScore(record)
-                    userScores[record['slack_id']] = newScore
+                    slack_id = record[0]
+                    userScores[slack_id] = newScore
 
                 print("New User Scores: ", userScores)
                 if len(userScores) > 0:
