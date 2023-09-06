@@ -235,16 +235,9 @@ def get_table(table_name=None):
     print("Fetched table")
     print("Printing records:")
     column_names = [desc[0] for desc in cursor.description]
-    columnNamesStringArray = [str(element) for element in column_names]    
-    tableString = '\t'.join(columnNamesStringArray) # Convert the array to a string, using a tab as a separator
-    
     print(column_names)
     for record in table:
-        print(record)
-        recordStringArray = [str(element) for element in record]
-        recordString = '\t'.join(recordStringArray)
-        tableString += '\n' + recordString
-    send_debug_message(tableString)
+        print(record)        
 
     commitAndCloseSQLConnection(sqlConnection)    
     return table
