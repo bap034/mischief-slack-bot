@@ -359,7 +359,7 @@ class MischiefSlack:
     def recalculateScore(self, record):
         name = record[1]
         oldScore = record[2]
-        scores = [record[5] * self.LIFT_PONTS,
+        scores = [record[5] * self.LIFT_POINTS,
                   record[6] * self.CARDIO_POINTS,
                   record[7] * self.SPRINT_POINTS,
                   record[8] * self.THROW_POINTS,
