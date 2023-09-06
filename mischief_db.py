@@ -4,6 +4,7 @@ import urllib.request
 import psycopg2
 
 from psycopg2 import sql
+from psycopg2.extras import RealDictCursor
 from slack_api import *
 
 from flask import Flask, request, jsonify, make_response
@@ -225,7 +226,7 @@ def get_table(table_name=None):
         
     print("Fetching Table: ", table_name)
     sqlConnection = getSQLConnection()
-    cursor = sqlConnection.cursor()
+    cursor = sqlConnection.cursor(cursor_factory=RealDictCursor)
 
     command = "SELECT * from %s ORDER BY score DESC" % (table_name)
     print("Executing: ", command) 
@@ -237,7 +238,7 @@ def get_table(table_name=None):
     column_names = [desc[0] for desc in cursor.description]
     print(column_names)
     for record in table:
-        print(record)        
+        print("test: ", record['name'], record)        
 
     commitAndCloseSQLConnection(sqlConnection)    
     return table
