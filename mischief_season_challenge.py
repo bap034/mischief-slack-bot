@@ -258,7 +258,15 @@ class MischiefSlack:
                 count += 1
             if '!recalculateScores' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 send_debug_message("Recalculating scores", channel=self._channel, bot_name=self._name, url=self._avatar_url)
-                recalculate_scores()
+                table = get_table()
+                userScores = {}
+                for record in table:
+                    newScore = recalculateScore(record)
+                    userScores[record['slack_id']] = newScore
+
+                if len(userScores) > 0:
+                    update_scores(userScores)
+                send_debug_message("Successfully recalculated scores")
                 count += 1
             if '!reset' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 to_print = collect_stats(3, True)
@@ -345,6 +353,21 @@ class MischiefSlack:
         sc = SlackClient(slack_token)
         res = sc.api_call("reactions.add", name=reaction, channel=self._channel, timestamp=self._ts)
         print("response: ", res)
+
+    def recalculateScore(record):
+        oldScore = record['score']
+        scores = [record['num_lifts'] * self.LIFT_PONTS,
+                  record['num_cardio'] * self.CARDIO_POINTS,
+                  record['num_sprints'] * self.SPRINT_POINTS,
+                  record['num_throws'] * self.THROW_POINTS,
+                  record['num_regen'] * self.REGEN_POINTS,
+                  record['num_play'] * self.PLAY_POINTS,
+                  record['num_volunteer'] * self.VOLUNTEER_POINTS,
+                  record['num_visualize_white'] * self.VISUALIZE_WHITE_POINTS,
+                  record['num_visualize_red'] * self.VISUALIZE_RED_POINTS,
+                  record['num_visualize_black'] * self.VISUALIZE_BLACK_POINTS]
+        newScore = sum(scores)
+        return newScore
 
     def __repr__(self):
         return str(self.__dict__)
