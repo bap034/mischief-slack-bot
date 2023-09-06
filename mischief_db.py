@@ -235,10 +235,10 @@ def get_table(table_name=None):
     
     print("Fetched table")
     print("Printing records:")
-    column_names = [desc[0] for desc in cursor.description]
-    print(column_names)
+    # column_names = [desc[0] for desc in cursor.description]
+    # print(column_names)
     for record in table:
-        print("test: ", record['name'], record)        
+        print(record)        
 
     commitAndCloseSQLConnection(sqlConnection)    
     return table
@@ -246,7 +246,7 @@ def get_table(table_name=None):
 def collect_stats(datafield, rev):
     try:
         sqlConnection = getSQLConnection()
-        cursor = sqlConnection.cursor()
+        cursor = sqlConnection.cursor(cursor_factory=RealDictCursor)
         
         # get all of the people whose scores are greater than 0 (any non players have a workout score of -1; anyone participating will eventually have score over 0)
         command = "SELECT * FROM %s WHERE score > 0 ORDER BY score DESC" % __table_name__
@@ -258,20 +258,19 @@ def collect_stats(datafield, rev):
         for x in range(0, len(leaderboard)):
             string1 += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` \n".format(
                 x + 1, 
-                leaderboard[x][1],    # name 
-                leaderboard[x][2],    # score
-                leaderboard[x][5],    # lifts 
-                leaderboard[x][6],    # cardio
-                leaderboard[x][7],    # sprints 
-                leaderboard[x][8],    # throws
-                leaderboard[x][9],    # regen 
-                leaderboard[x][10],   # play
-                leaderboard[x][11],   # volunteer
-                leaderboard[x][12],   # visualize_white
-                leaderboard[x][13],   # visualize_red
-                leaderboard[x][14]    # visualize_black
+                leaderboard[x]['name'],
+                leaderboard[x]['score'],
+                leaderboard[x]['num_lifts'], 
+                leaderboard[x]['num_cardio'],
+                leaderboard[x]['num_sprints'],
+                leaderboard[x]['num_throws'], 
+                leaderboard[x]['num_regen'],  
+                leaderboard[x]['num_play'],   
+                leaderboard[x]['num_volunteer'],
+                leaderboard[x]['num_visualize_white'], 
+                leaderboard[x]['num_visualize_red'],
+                leaderboard[x]['num_visualize_black']
             )
-            
         cursor.close()
         sqlConnection.close()
         return string1
@@ -292,8 +291,8 @@ def collect_leaderboard(datafield, rev):
         string1 = "Leaderboard:\n"
         for x in range(0, len(leaderboard)):
             string1 += '%d) %s	with %.1f points \n' % (x + 1, 
-                                                        leaderboard[x][1],     # name
-                                                        leaderboard[x][2])     # score
+                                                        leaderboard[x]['name'],
+                                                        leaderboard[x]['score'])
         cursor.close()
         sqlConnection.close()
         return string1
@@ -327,7 +326,7 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
             print("starting", names[x])
             cursor.execute(sql.SQL(
                 "SELECT score FROM mischief_data WHERE slack_id = %s"), [str(ids[x])])
-            score = cursor.fetchall()[0][0]
+            score = cursor.fetchall()[0]['score']
             new_score = float(score) + float(addition)
             if score != -1:
                 updateCommand = """
