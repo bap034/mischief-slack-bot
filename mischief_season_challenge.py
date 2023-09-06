@@ -264,6 +264,7 @@ class MischiefSlack:
                     newScore = recalculateScore(record)
                     userScores[record['slack_id']] = newScore
 
+                print("New User Scores: ", userScores)
                 if len(userScores) > 0:
                     update_scores(userScores)
                 send_debug_message("Successfully recalculated scores")
