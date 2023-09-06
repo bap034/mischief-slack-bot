@@ -16,7 +16,7 @@ class MischiefSlack:
         self.LIFT_POINTS = 1.0
         self.CARDIO_POINTS = 1.0
         self.SPRINT_POINTS = 1.0
-        self.THROW_POINTS = 1.0
+        self.THROW_POINTS = 2.0
         self.REGEN_POINTS = 1.0
         self.PLAY_POINTS = 1.0
         self.VOLUNTEER_POINTS = 1.0
@@ -152,16 +152,6 @@ class MischiefSlack:
         else:
             self._name = ""
 
-    def conditionalMultiplier(text):
-        multiplier = 1.0
-        if '!visualize' in self._lower_text:
-            if 'white' in self._lower_text:
-                multiplier = 1.0
-            if 'red' in self._lower_text:
-                multiplier = 2.0
-            if 'black' in self._lower_text:
-                multiplier = 3.0
-    
     def parse_for_additions(self):
         ## TODO: update point reqs
         #DB reqs added
@@ -173,7 +163,9 @@ class MischiefSlack:
         self.regen_req_filled = 0
         self.play_req_filled = 0
         self.volunteer_req_filled = 0
-        self.visualize_req_filled = 0
+        self.visualize_white_req_filled = 0
+        self.visualize_red_req_filled = 0
+        self.visualize_black_req_filled = 0
         self._req_filled = 0
         if '!lift' in self._lower_text:
             self._points_to_add += self.LIFT_POINTS
@@ -203,16 +195,24 @@ class MischiefSlack:
             self._points_to_add += self.VOLUNTEER_POINTS
             self.volunteer_req_filled += 1
             self._additions.append('!volunteer')
-        if '!visualize' in self._lower_text:
-            self._points_to_add += self.VISUALIZE_POINTS
-            self.visualize_req_filled += 1
-            self._additions.append('!visualize')
+        if '!visualize-white' in self._lower_text:
+            self._points_to_add += self.VISUALIZE_WHITE_POINTS
+            self.visualize_white_req_filled += 1
+            self._additions.append('!visualize-white')
+        if '!visualize-red' in self._lower_text:
+            self._points_to_add += self.VISUALIZE_RED_POINTS
+            self.visualize_red_req_filled += 1
+            self._additions.append('!visualize-red')
+        if '!visualize-black' in self._lower_text:
+            self._points_to_add += self.VISUALIZE_BLACK_POINTS
+            self.visualize_black_req_filled += 1
+            self._additions.append('!visualize-black')
 
     def handle_db(self):
         #added reqs
         if not self._repeat:
             num = add_to_db(self._channel, self._all_names, self._points_to_add, self.lift_req_filled, self.cardio_req_filled, self.sprint_req_filled,
-                self.throw_req_filled, self.regen_req_filled, self.play_req_filled, self.volunteer_req_filled, self.visualize_req_filled, len(self._additions), self._all_ids)
+                self.throw_req_filled, self.regen_req_filled, self.play_req_filled, self.volunteer_req_filled, self.visualize_white_req_filled, self.visualize_red_req_filled, self.visualize_black_req_filled, len(self._additions), self._all_ids)
             # for i in range(len(self._all_names)):
             #     for workout in self._additions:
             #         add_workout(self._all_names[i], self._all_ids[i], workout)
