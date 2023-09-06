@@ -261,7 +261,7 @@ class MischiefSlack:
                 table = get_table()
                 userScores = {}
                 for record in table:
-                    newScore = self.recalculateScore(record)
+                    newScore = recalculateScore(record)
                     userScores[record['slack_id']] = newScore
 
                 print("New User Scores: ", userScores)
@@ -362,21 +362,22 @@ class MischiefSlack:
         res = sc.api_call("reactions.add", name=reaction, channel=self._channel, timestamp=self._ts)
         print("response: ", res)
 
-    def recalculateScore(record):
-        oldScore = record['score']
-        scores = [record['num_lifts'] * self.LIFT_PONTS,
-                  record['num_cardio'] * self.CARDIO_POINTS,
-                  record['num_sprints'] * self.SPRINT_POINTS,
-                  record['num_throws'] * self.THROW_POINTS,
-                  record['num_regen'] * self.REGEN_POINTS,
-                  record['num_play'] * self.PLAY_POINTS,
-                  record['num_volunteer'] * self.VOLUNTEER_POINTS,
-                  record['num_visualize_white'] * self.VISUALIZE_WHITE_POINTS,
-                  record['num_visualize_red'] * self.VISUALIZE_RED_POINTS,
-                  record['num_visualize_black'] * self.VISUALIZE_BLACK_POINTS]
-        newScore = sum(scores)
-        print("Name: %s Score: %d -> %d" % (record['name'], oldScore, newScore))
-        return newScore
-
     def __repr__(self):
         return str(self.__dict__)
+
+# Defined outside of the class since it doesn't depend on any instance of `self`
+def recalculateScore(record):
+    oldScore = record['score']
+    scores = [record['num_lifts'] * self.LIFT_PONTS,
+              record['num_cardio'] * self.CARDIO_POINTS,
+              record['num_sprints'] * self.SPRINT_POINTS,
+              record['num_throws'] * self.THROW_POINTS,
+              record['num_regen'] * self.REGEN_POINTS,
+              record['num_play'] * self.PLAY_POINTS,
+              record['num_volunteer'] * self.VOLUNTEER_POINTS,
+              record['num_visualize_white'] * self.VISUALIZE_WHITE_POINTS,
+              record['num_visualize_red'] * self.VISUALIZE_RED_POINTS,
+              record['num_visualize_black'] * self.VISUALIZE_BLACK_POINTS]
+    newScore = sum(scores)
+    print("Name: %s Score: %d -> %d" % (record['name'], oldScore, newScore))
+    return newScore
