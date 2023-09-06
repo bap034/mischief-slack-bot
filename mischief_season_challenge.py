@@ -261,7 +261,7 @@ class MischiefSlack:
                 table = get_table()
                 userScores = {}
                 for record in table:
-                    newScore = recalculateScore(record)
+                    newScore = self.recalculateScore(record)
                     userScores[record['slack_id']] = newScore
 
                 print("New User Scores: ", userScores)
@@ -356,6 +356,23 @@ class MischiefSlack:
             if count >= 1:
                 self.like_message(reaction='jack_o_lantern')
 
+    def recalculateScore(self, record):
+        name = record[1]
+        oldScore = record[2]
+        scores = [record[5] * self.LIFT_PONTS,
+                  record[6] * self.CARDIO_POINTS,
+                  record[7] * self.SPRINT_POINTS,
+                  record[8] * self.THROW_POINTS,
+                  record[9] * self.REGEN_POINTS,
+                  record[10] * self.PLAY_POINTS,
+                  record[11] * self.VOLUNTEER_POINTS,
+                  record[12] * self.VISUALIZE_WHITE_POINTS,
+                  record[13] * self.VISUALIZE_RED_POINTS,
+                  record[14] * self.VISUALIZE_BLACK_POINTS]
+        newScore = sum(scores)
+        print("Name: %s Score: %d -> %d" % (name, oldScore, newScore))
+        return newScore
+    
     def like_message(self, reaction='robot_face'):
         slack_token = os.getenv('BOT_OAUTH_ACCESS_TOKEN')
         sc = SlackClient(slack_token)
@@ -364,21 +381,3 @@ class MischiefSlack:
 
     def __repr__(self):
         return str(self.__dict__)
-
-# Defined outside of the class since it doesn't depend on any instance of `self`
-def recalculateScore(record):
-    name = record[1]
-    oldScore = record[2]
-    scores = [record[5] * self.LIFT_PONTS,
-              record[6] * self.CARDIO_POINTS,
-              record[7] * self.SPRINT_POINTS,
-              record[8] * self.THROW_POINTS,
-              record[9] * self.REGEN_POINTS,
-              record[10] * self.PLAY_POINTS,
-              record[11] * self.VOLUNTEER_POINTS,
-              record[12] * self.VISUALIZE_WHITE_POINTS,
-              record[13] * self.VISUALIZE_RED_POINTS,
-              record[14] * self.VISUALIZE_BLACK_POINTS]
-    newScore = sum(scores)
-    print("Name: %s Score: %d -> %d" % (name, oldScore, newScore))
-    return newScore
