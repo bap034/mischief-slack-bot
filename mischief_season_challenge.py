@@ -251,9 +251,14 @@ class MischiefSlack:
                 to_print = collect_stats(1, True)
                 send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
             if '!subtract' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
+                # format is "!subtract @user #.#" <-- specifically looks for the last 3 characters to determine how many points to subtract via `self._lower_text[-3:]`
                 send_debug_message("SUBTRACTING: " + self._lower_text[-3:] + " FROM: " + str(self._all_names[:-1]))
                 num = subtract_from_db(self._all_names[:-1], float(self._lower_text[-3:]), self._all_ids[:-1])
                 print(num)
+                count += 1
+            if '!recalculateScores' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
+                send_debug_message("Recalculating scores", channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                recalculate_scores()
                 count += 1
             if '!reset' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 to_print = collect_stats(3, True)
