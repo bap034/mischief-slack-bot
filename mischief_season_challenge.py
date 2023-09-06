@@ -106,7 +106,7 @@ class MischiefSlack:
             else:
                 self.user_id = self._event['bot_id'] if 'bot_id' in list(self._event.keys()) else ''
 
-        if self._check_for_commands and (self._channel == fitnessChannelId or self._channel == botDebugChannelId):
+        if self._check_for_commands and (self._channel == MischiefSlack.fitnessChannelId or self._channel == MischiefSlack.botDebugChannelId):
             self.parse_text_for_mentions()
 
             if not self._bot:
