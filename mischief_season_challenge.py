@@ -261,7 +261,7 @@ class MischiefSlack:
                 table = get_table()
                 userScores = {}
                 for record in table:
-                    newScore = recalculateScore(record)
+                    newScore = self.recalculateScore(record)
                     userScores[record['slack_id']] = newScore
 
                 print("New User Scores: ", userScores)
