@@ -53,7 +53,9 @@ def create_new_table_v2():
         createCommand = """
             CREATE TABLE {table_name} (
                 slack_id CHAR(11),
-                name text, 
+                name text,
+                score numeric(4, 1), 
+                last_post DATE,
                 num_posts SMALLINT, 
                 num_lifts SMALLINT, 
                 num_cardio SMALLINT, 
@@ -62,9 +64,9 @@ def create_new_table_v2():
                 num_regen SMALLINT,
                 num_play SMALLINT, 
                 num_volunteer SMALLINT,
-                num_visualize SMALLINT,
-                score numeric(4, 1), 
-                last_post DATE
+                num_visualize_white SMALLINT,
+                num_visualize_red SMALLINT,
+                num_visualize_black SMALLINT
             )
         """.format(
             table_name = __table_name__
@@ -91,6 +93,8 @@ def insert_into_table_v2(slackId, name):
             INSERT INTO {table_name} VALUES (
                 '{slack_id}',
                 '{name}', 
+                {score}, 
+                {last_post},
                 {num_posts}, 
                 {num_lifts}, 
                 {num_cardio}, 
@@ -99,14 +103,16 @@ def insert_into_table_v2(slackId, name):
                 {num_regen},
                 {num_play}, 
                 {num_volunteer},
-                {num_visualize},
-                {score}, 
-                {last_post}
+                {num_visualize_white},
+                {num_visualize_red},
+                {num_visualize_black}
             )
         """.format(
             table_name = __table_name__,
             slack_id = slackId,
             name = name, 
+            score = 0, 
+            last_post = "now()",
             num_posts = 0, 
             num_lifts = 0, 
             num_cardio = 0, 
@@ -115,9 +121,9 @@ def insert_into_table_v2(slackId, name):
             num_regen = 0,
             num_play = 0, 
             num_volunteer = 0, 
-            num_visualize = 0,
-            score = 0, 
-            last_post = "now()"
+            num_visualize_white = 0,
+            num_visualize_red = 0,
+            num_visualize_black = 0
         )
         print("Executing: ", insertCommand) 
         cursor.execute(insertCommand)
@@ -150,6 +156,8 @@ def fill_table_v2(member_info):
                 INSERT INTO {table_name} VALUES (
                     '{slack_id}',
                     '{name}', 
+                    {score}, 
+                    {last_post},
                     {num_posts}, 
                     {num_lifts}, 
                     {num_cardio}, 
@@ -158,14 +166,16 @@ def fill_table_v2(member_info):
                     {num_regen},
                     {num_play}, 
                     {num_volunteer}, 
-                    {num_visualize},
-                    {score}, 
-                    {last_post}
+                    {num_visualize_white},
+                    {num_visualize_red},
+                    {num_visualize_black}
                 )
             """.format(
                 table_name = __table_name__,
                 slack_id = member['id'],
                 name = realName, 
+                score = 0, 
+                last_post = "now()",
                 num_posts = 0, 
                 num_lifts = 0, 
                 num_cardio = 0, 
@@ -174,9 +184,9 @@ def fill_table_v2(member_info):
                 num_regen = 0,
                 num_play = 0, 
                 num_volunteer = 0, 
-                num_visualize = 0,
-                score = 0, 
-                last_post = "now()"
+                num_visualize_white = 0,
+                num_visualize_red = 0,
+                num_visualize_black = 0
             )
             print("Executing: ", insertCommand) 
             cursor.execute(insertCommand)
@@ -253,18 +263,20 @@ def collect_stats(datafield, rev):
         leaderboard = cursor.fetchall()
         string1 = "Stats:\n"
         for x in range(0, len(leaderboard)):
-            string1 += "{0:>2}) {1:<20} points: *{2}*, lifts: {3}, cardio: {4}, sprints: {5}, throws: {6}, regen: {7}, playing: {8}, volunteer: {9}, visualize: {10} \n".format(
+            string1 += "{0:>2}) {1:<20} points: *{2}*, lifts: {3}, cardio: {4}, sprints: {5}, throws: {6}, regen: {7}, playing: {8}, volunteer: {9}, visualize-white: {10}, visualize-red: {11}, visualize-black: {12} \n".format(
                 x + 1, 
                 leaderboard[x][1],    # name 
-                leaderboard[x][11],   # score
-                leaderboard[x][3],    # lifts 
-                leaderboard[x][4],    # cardio
-                leaderboard[x][5],    # sprints 
-                leaderboard[x][6],    # throws
-                leaderboard[x][7],    # regen 
-                leaderboard[x][8],    # play
-                leaderboard[x][9],    # volunteer
-                leaderboard[x][10]    # visualize
+                leaderboard[x][2],    # score
+                leaderboard[x][5],    # lifts 
+                leaderboard[x][6],    # cardio
+                leaderboard[x][7],    # sprints 
+                leaderboard[x][8],    # throws
+                leaderboard[x][9],    # regen 
+                leaderboard[x][10],   # play
+                leaderboard[x][11],   # volunteer
+                leaderboard[x][12],   # visualize_white
+                leaderboard[x][13],   # visualize_red
+                leaderboard[x][14]    # visualize_black
             )
             
         cursor.close()
@@ -288,7 +300,7 @@ def collect_leaderboard(datafield, rev):
         for x in range(0, len(leaderboard)):
             string1 += '%d) %s	with %.1f points \n' % (x + 1, 
                                                         leaderboard[x][1],     # name
-                                                        leaderboard[x][11])    # score
+                                                        leaderboard[x][2])     # score
         cursor.close()
         sqlConnection.close()
         return string1
@@ -308,7 +320,7 @@ def get_emojis():
     return json
 
 
-def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, throw_num, regen_num, play_num, volunteer_num, visualize_num, num_workouts, ids):  # add "addition" to each of the "names" in the db
+def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, throw_num, regen_num, play_num, volunteer_num, visualize_white_num, visualize_red_num, visualize_black_num, num_workouts, ids):  # add "addition" to each of the "names" in the db
     cursor = None
     sqlConnection = None
     num_committed = 0
@@ -327,6 +339,8 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
             if score != -1:
                 updateCommand = """
                     UPDATE {table_name} SET
+                    score=score+{score_val_key}, 
+                    last_post={last_post} WHERE slack_id = '{slack_id}',
                     num_lifts=num_lifts+{lift_num_key}, 
                     num_cardio=num_cardio+{cardio_num_key}, 
                     num_sprints=num_sprints+{sprint_num_key}, 
@@ -334,12 +348,14 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
                     num_regen=num_regen+{regen_num_key}, 
                     num_play=num_play+{play_num_key}, 
                     num_volunteer=num_volunteer+{volunteer_num_key},
-                    num_visualize=num_visualize+{visualize_num_key},
-                    score=score+{score_val_key}, 
-                    last_post={last_post} WHERE slack_id = '{slack_id}'
+                    num_visualize_white=num_visualize_white+{visualize_white_num_key},
+                    num_visualize_red=num_visualize_red+{visualize_red_num_key},
+                    num_visualize_black=num_visualize_black+{visualize_black_num_key}
                 """.format(
                     table_name = __table_name__,
                     slack_id = ids[x],
+                    score_val_key = str(new_score), 
+                    last_post = "now()",
                     lift_num_key = str(lift_num), 
                     cardio_num_key = str(cardio_num), 
                     sprint_num_key = str(sprint_num), 
@@ -347,9 +363,9 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
                     regen_num_key = str(regen_num),
                     play_num_key = str(play_num), 
                     volunteer_num_key = str(volunteer_num), 
-                    visualize_num_key = str(visualize_num),
-                    score_val_key = str(new_score), 
-                    last_post = "now()"
+                    visualize_white_num_key = str(visualize_white_num),
+                    visualize_red_num_key = str(visualize_red_num),
+                    visualize_black_num_key = str(visualize_black_num)
                 )
                 print("Executing: ", updateCommand) 
                 cursor.execute(updateCommand)
@@ -405,6 +421,8 @@ def reset_scores():  # reset the scores of everyone
 
         updateCommand = """
             UPDATE {table_name} SET
+            score={score_val_key}, 
+            last_post={last_post} WHERE score != -1,
             num_lifts={lift_num_key}, 
             num_cardio={cardio_num_key}, 
             num_sprints={sprint_num_key}, 
@@ -412,11 +430,13 @@ def reset_scores():  # reset the scores of everyone
             num_regen={regen_num_key}, 
             num_play={play_num_key}, 
             num_volunteer={volunteer_num_key},
-            num_visualize={visualize_num_key},
-            score={score_val_key}, 
-            last_post={last_post} WHERE score != -1                
+            num_visualize_white={visualize_white_num_key},
+            num_visualize_red={visualize_red_num_key},
+            num_visualize_black={visualize_black_num_key}
         """.format(
             table_name = __table_name__,
+            score_val_key = 0, 
+            last_post = "now()",
             lift_num_key = 0, 
             cardio_num_key = 0, 
             sprint_num_key = 0, 
@@ -424,9 +444,9 @@ def reset_scores():  # reset the scores of everyone
             regen_num_key = 0,
             play_num_key = 0, 
             volunteer_num_key = 0, 
-            visualize_num_key = 0,
-            score_val_key = 0, 
-            last_post = "now()"
+            visualize_white_num_key = str(visualize_white_num),
+            visualize_red_num_key = str(visualize_red_num),
+            visualize_black_num_key = str(visualize_black_num)
         )
         print("Executing: ", updateCommand) 
         cursor.execute(updateCommand)
