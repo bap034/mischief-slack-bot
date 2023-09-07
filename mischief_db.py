@@ -318,7 +318,7 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
     num_committed = 0
     try:
         sqlConnection = getSQLConnection()
-        cursor = sqlConnection.cursor()
+        cursor = sqlConnection.cursor(cursor_factory=RealDictCursor)
         
         print("names: ", names)
         print("ids: ", ids)
