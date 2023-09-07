@@ -405,7 +405,7 @@ def update_scores(userScores): # Expecting `userScores` as a map of {'slack_id':
         sqlConnection = getSQLConnection()
         cursor = sqlConnection.cursor()
         for user, score in userScores.items():
-            command = "UPDATE {table_name} SET score = {new_score} WHERE slack_id = {user_id}".format(
+            command = "UPDATE {table_name} SET score = {new_score} WHERE slack_id = '{user_id}'".format(
                 table_name = __table_name__,
                 new_score = score,
                 user_id = user
