@@ -240,11 +240,33 @@ class MischiefSlack:
                                     self.PLAY_POINTS, self.VOLUNTEER_POINTS, self.VISUALIZE_WHITE_POINTS, self.VISUALIZE_RED_POINTS, self.VISUALIZE_BLACK_POINTS), channel=self._channel)
             if "!leaderboard" in self._lower_text:
                 count += 1
-                to_print = collect_leaderboard(3, True)
+                leaderboard = get_table()
+                to_print = "Leaderboard:\n"
+                for x in range(0, len(leaderboard)):
+                    to_print += '%d) %s	with %.1f points \n' % (x + 1, 
+                                                                leaderboard[x]['name'],
+                                                                leaderboard[x]['score'])
                 send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
             if "!stats" in self._lower_text:
                 count += 1
-                to_print = collect_stats(3, True)
+                leaderboard = get_table()
+                to_print = "Stats:\n"
+                for x in range(0, len(leaderboard)):
+                    to_print += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` \n".format(
+                        x + 1, 
+                        leaderboard[x]['name'],
+                        leaderboard[x]['score'],
+                        leaderboard[x]['num_lifts'], 
+                        leaderboard[x]['num_cardio'],
+                        leaderboard[x]['num_sprints'],
+                        leaderboard[x]['num_throws'], 
+                        leaderboard[x]['num_regen'],  
+                        leaderboard[x]['num_play'],   
+                        leaderboard[x]['num_volunteer'],
+                        leaderboard[x]['num_visualize_white'], 
+                        leaderboard[x]['num_visualize_red'],
+                        leaderboard[x]['num_visualize_black']
+                    )
                 send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
             if '!yummy' in self._lower_text:  # displays the leaderboard for who posts the most
                 count += 1
