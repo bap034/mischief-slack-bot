@@ -327,13 +327,9 @@ class MischiefSlack:
                     table_name = None
                 table = get_table(table_name)
 
-                print("Printing records:")
                 tableString = "Table: \n"
-                for record in table:
-                    print(record)
-                    recordStringArray = [str(element) for element in record]
-                    recordString = '\t'.join(recordStringArray)
-                    tableString += '\n' + recordString
+                for record in table:                
+                    tableString += '\n' + record
                 send_debug_message(tableString)
                 count += 1
             if '!silence' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
