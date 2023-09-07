@@ -329,7 +329,7 @@ class MischiefSlack:
 
                 tableString = "Table: \n"
                 for record in table:                
-                    tableString += '\n' + record
+                    tableString += '\n' + dict(record)
                 send_debug_message(tableString)
                 count += 1
             if '!silence' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
