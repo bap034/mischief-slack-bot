@@ -243,6 +243,9 @@ class MischiefSlack:
                 leaderboard = get_table()
                 to_print = "Leaderboard:\n"
                 for x in range(0, len(leaderboard)):
+                    if leaderboard[x]['score'] <= 0:
+                        continue
+                        
                     to_print += '%d) %s	with %.1f points \n' % (x + 1, 
                                                                 leaderboard[x]['name'],
                                                                 leaderboard[x]['score'])
@@ -252,6 +255,9 @@ class MischiefSlack:
                 leaderboard = get_table()
                 to_print = "Stats:\n"
                 for x in range(0, len(leaderboard)):
+                    if leaderboard[x]['score'] <= 0:
+                        continue
+                        
                     to_print += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` \n".format(
                         x + 1, 
                         leaderboard[x]['name'],
