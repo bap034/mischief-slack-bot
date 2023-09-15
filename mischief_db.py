@@ -323,52 +323,45 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
         print("names: ", names)
         print("ids: ", ids)
         for x in range(0, len(names)):
-            print("starting", names[x])
-            cursor.execute(sql.SQL(
-                "SELECT score FROM mischief_data WHERE slack_id = %s"), [str(ids[x])])
-            score = cursor.fetchall()[0]['score']
-            new_score = float(score) + float(addition)
-            if score != -1:
-                updateCommand = """
-                    UPDATE {table_name} 
-                    SET score=score+{score_val_key}, 
-                        last_post={last_post},
-                        num_lifts=num_lifts+{lift_num_key}, 
-                        num_cardio=num_cardio+{cardio_num_key}, 
-                        num_sprints=num_sprints+{sprint_num_key}, 
-                        num_throws=num_throws+{throw_num_key}, 
-                        num_regen=num_regen+{regen_num_key}, 
-                        num_play=num_play+{play_num_key}, 
-                        num_volunteer=num_volunteer+{volunteer_num_key},
-                        num_visualize_white=num_visualize_white+{visualize_white_num_key},
-                        num_visualize_red=num_visualize_red+{visualize_red_num_key},
-                        num_visualize_black=num_visualize_black+{visualize_black_num_key}
-                    WHERE slack_id = '{slack_id}'
-                """.format(
-                    table_name = __table_name__,
-                    slack_id = ids[x],
-                    score_val_key = str(new_score), 
-                    last_post = "now()",
-                    lift_num_key = str(lift_num), 
-                    cardio_num_key = str(cardio_num), 
-                    sprint_num_key = str(sprint_num), 
-                    throw_num_key = str(throw_num), 
-                    regen_num_key = str(regen_num),
-                    play_num_key = str(play_num), 
-                    volunteer_num_key = str(volunteer_num), 
-                    visualize_white_num_key = str(visualize_white_num),
-                    visualize_red_num_key = str(visualize_red_num),
-                    visualize_black_num_key = str(visualize_black_num)
-                )
-                print("Executing: ", updateCommand) 
-                cursor.execute(updateCommand)
-                
-                sqlConnection.commit()
-                send_debug_message("committed %s with %s points" % (names[x], str(addition)))
-                print("committed %s" % names[x])
-                num_committed += 1
-            else:
-                send_debug_message("invalid workout poster found " + names[x])
+            print("starting", names[x])            
+            updateCommand = """
+                UPDATE {table_name} 
+                SET score=score+{score_val_key}, 
+                    last_post={last_post},
+                    num_lifts=num_lifts+{lift_num_key}, 
+                    num_cardio=num_cardio+{cardio_num_key}, 
+                    num_sprints=num_sprints+{sprint_num_key}, 
+                    num_throws=num_throws+{throw_num_key}, 
+                    num_regen=num_regen+{regen_num_key}, 
+                    num_play=num_play+{play_num_key}, 
+                    num_volunteer=num_volunteer+{volunteer_num_key},
+                    num_visualize_white=num_visualize_white+{visualize_white_num_key},
+                    num_visualize_red=num_visualize_red+{visualize_red_num_key},
+                    num_visualize_black=num_visualize_black+{visualize_black_num_key}
+                WHERE slack_id = '{slack_id}'
+            """.format(
+                table_name = __table_name__,
+                slack_id = ids[x],
+                score_val_key = float(addition), 
+                last_post = "now()",
+                lift_num_key = str(lift_num), 
+                cardio_num_key = str(cardio_num), 
+                sprint_num_key = str(sprint_num), 
+                throw_num_key = str(throw_num), 
+                regen_num_key = str(regen_num),
+                play_num_key = str(play_num), 
+                volunteer_num_key = str(volunteer_num), 
+                visualize_white_num_key = str(visualize_white_num),
+                visualize_red_num_key = str(visualize_red_num),
+                visualize_black_num_key = str(visualize_black_num)
+            )
+            print("Executing: ", updateCommand) 
+            cursor.execute(updateCommand)
+            
+            sqlConnection.commit()
+            send_debug_message("committed %s with %s points" % (names[x], str(addition)))
+            print("committed %s" % names[x])
+            num_committed += 1
     except (Exception, psycopg2.DatabaseError) as error:
         send_debug_message(str(error))
     finally:
