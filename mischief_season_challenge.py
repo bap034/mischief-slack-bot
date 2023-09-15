@@ -233,17 +233,17 @@ class MischiefSlack:
             ## put the fun stuff here
             if "!help" in self._lower_text:
                 send_tribe_message("""Available commands:
-                                        \n!leaderboard
-                                        \n!leaderboard-botb (botb=battle of the bays)
-                                        \n!points
-                                        \n!lift
-                                        \n!cardio/!bike
-                                        \n!sprint
-                                        \n!throw
-                                        \n!regen/!yoga/!stretch/!pt
-                                        \n!play/!goalty/!mini/!tryouts
-                                        \n!volunteer
-                                        \n!visualize-[white/red/black]\n""", channel=self._channel, bot_name="tracker")
+                                        !leaderboard
+                                        !battle-of-the-bays
+                                        !points
+                                        !lift
+                                        !cardio/!bike
+                                        !sprint
+                                        !throw
+                                        !regen/!yoga/!stretch/!pt
+                                        !play/!goalty/!mini/!tryouts
+                                        !volunteer
+                                        !visualize-[white/red/black]""", channel=self._channel, bot_name="tracker")
             if "!points" in self._lower_text:
                 send_tribe_message("Point Values:\nlift: %.1f\ncardio: %.1f\nsprint: %.1f\nthrow: %.1f\nregen: %.1f\nplay: %.1f\nvolunteer: %.1f\nvisualize-white: %.1f\nvisualize-red: %.1f\nvisualize-black: %.1f"
                                    % (self.LIFT_POINTS, self.CARDIO_POINTS, self.SPRINT_POINTS, self.THROW_POINTS, self.REGEN_POINTS, 
@@ -253,7 +253,7 @@ class MischiefSlack:
                 leaderboard = get_table()
                 to_print = self.getLeaderboardText(leaderboard)
                 send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
-            if "!leaderboard-botb" in self._lower_text:
+            if "!battle-of-the-bays" in self._lower_text:
                 count += 1
                 leaderboard = get_table()
                 to_print = self.getBattleOfBaysLeaderboardText(leaderboard)
@@ -470,31 +470,31 @@ class MischiefSlack:
         southBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
         outerBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
         
-        eastBayScoreText = getScoreText(eastBayRecords)
-        cityBayScoreText = getScoreText(cityBayRecords)
-        southBayScoreText = getScoreText(southBayRecords)
-        outerBayScoreText = getScoreText(outerBayRecords)
+        eastBayScoreText = self.getScoreText(eastBayRecords)
+        cityBayScoreText = self.getScoreText(cityBayRecords)
+        southBayScoreText = self.getScoreText(southBayRecords)
+        outerBayScoreText = self.getScoreText(outerBayRecords)
         
         leaderboardText = "Battle of the Bays Leaderboard:"
         leaderboardText += "\n\n"
         leaderboardText += "`Beast Bay: {scoreText}`".format(scoreText=eastBayScoreText)
         leaderboardText += "\n"
-        leaderboardText += getLeaderboardText(eastBayRecords, showZero=True)
+        leaderboardText += self.getLeaderboardText(eastBayRecords, showZero=True)
         
         leaderboardText += "\n\n"
         leaderboardText += "`City Bay: {scoreText}`".format(scoreText=cityBayScoreText)
         leaderboardText += "\n"
-        leaderboardText += getLeaderboardText(cityBayRecords, showZero=True)
+        leaderboardText += self.getLeaderboardText(cityBayRecords, showZero=True)
         
         leaderboardText += "\n\n"
         leaderboardText += "`South Bay: {scoreText}`".format(scoreText=southBayScoreText)
         leaderboardText += "\n"
-        leaderboardText += getLeaderboardText(southBayRecords, showZero=True)
+        leaderboardText += self.getLeaderboardText(southBayRecords, showZero=True)
         
         leaderboardText += "\n\n"
         leaderboardText += "`Outer Bay: {scoreText}`".format(scoreText=outerBayScoreText)
         leaderboardText += "\n"
-        leaderboardText += getLeaderboardText(outerBayRecords, showZero=True)
+        leaderboardText += self.getLeaderboardText(outerBayRecords, showZero=True)
         return leaderboardText
 
     def getLeaderboardText(self, records, showZero=False):
