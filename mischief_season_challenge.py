@@ -2,6 +2,7 @@ from mischief_db import *
 from utils import *
 from slack_api import *
 from datetime import datetime
+import operator
 
 class MischiefSlack:
     adminSlackId = 'U05BDFHGQQL' 
@@ -171,7 +172,7 @@ class MischiefSlack:
             self._points_to_add += self.LIFT_POINTS
             self.lift_req_filled += 1
             self._additions.append('!lift')
-        if '!cardio' in self._lower_text:
+        if '!cardio' in self._lower_text or '!bike' in self._lower_text:
             self._points_to_add += self.CARDIO_POINTS
             self.cardio_req_filled += 1
             self._additions.append('!cardio')
@@ -231,9 +232,18 @@ class MischiefSlack:
         if not self._repeat:
             ## put the fun stuff here
             if "!help" in self._lower_text:
-                send_tribe_message("Available commands:\n!leaderboard\n!points"
-                                   "\n!lift\n!cardio\n!sprint\n!throw\n!regen/!yoga/!stretch/!pt\n!play/!goalty/!mini/!tryouts\n!volunteer\n!visualize-[white/red/black]\n",
-                                   channel=self._channel, bot_name="tracker")
+                send_tribe_message("""Available commands:
+                                        \n!leaderboard
+                                        \n!leaderboard-botb (botb=battle of the bays)
+                                        \n!points
+                                        \n!lift
+                                        \n!cardio/!bike
+                                        \n!sprint
+                                        \n!throw
+                                        \n!regen/!yoga/!stretch/!pt
+                                        \n!play/!goalty/!mini/!tryouts
+                                        \n!volunteer
+                                        \n!visualize-[white/red/black]\n""", channel=self._channel, bot_name="tracker")
             if "!points" in self._lower_text:
                 send_tribe_message("Point Values:\nlift: %.1f\ncardio: %.1f\nsprint: %.1f\nthrow: %.1f\nregen: %.1f\nplay: %.1f\nvolunteer: %.1f\nvisualize-white: %.1f\nvisualize-red: %.1f\nvisualize-black: %.1f"
                                    % (self.LIFT_POINTS, self.CARDIO_POINTS, self.SPRINT_POINTS, self.THROW_POINTS, self.REGEN_POINTS, 
@@ -241,14 +251,12 @@ class MischiefSlack:
             if "!leaderboard" in self._lower_text:
                 count += 1
                 leaderboard = get_table()
-                to_print = "Leaderboard:\n"
-                for x in range(0, len(leaderboard)):
-                    if leaderboard[x]['score'] <= 0:
-                        continue
-                        
-                    to_print += '%d) %s	with %.1f points \n' % (x + 1, 
-                                                                leaderboard[x]['name'],
-                                                                leaderboard[x]['score'])
+                to_print = self.getLeaderboardText(leaderboard)
+                send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
+            if "!leaderboard-botb" in self._lower_text:
+                count += 1
+                leaderboard = get_table()
+                to_print = self.getBattleOfBaysLeaderboardText(leaderboard)
                 send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
             if "!stats" in self._lower_text:
                 count += 1
@@ -329,7 +337,7 @@ class MischiefSlack:
 
                 tableString = "Table: \n"
                 for record in table:                
-                    tableString += '\n' + str(dict(record))
+                    tableString += '\n' + '`' + str(dict(record)) + '`'
                 send_debug_message(tableString)
                 count += 1
             if '!silence' in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
@@ -396,6 +404,126 @@ class MischiefSlack:
         newScore = sum(scores)
         print("Name: %s Score: %d -> %d" % (name, oldScore, newScore))
         return newScore
+
+    def getBattleOfBaysLeaderboardText(self, table):
+        eastBaySlackIds = ['U05BAUGSUAX',    # beth
+                           'U05BB2SN49Y',    # munis
+                           'U05KVP65DHQ',    # cody
+                           'U05B4CVD0T0',    # phellon
+                           'U05BFAWCLP4',    # gu
+                           'U05BB2S8KDY',    # cory
+                           'U05BU08K8D7',    # lupa
+                           'U05BDFHGQQL',    # brett
+                           'U05B84JNRPF',    # viv
+                           'U05B84JA353',    # dre
+                           #'U05BAUGDLCB',    # berry
+                           'U05C526NQ2U']    # sonja
+                          
+        cityBaySlackIds = ['U05AWGDEKF1',    # vicki
+                           'U05BRFCEYLW',    # josh
+                           'U05BDFHA1V2',    # craw
+                           'U05MT0UE144',    # james
+                           'U05BF779VEX',    # mars
+                           'U05B8LZC154',    # jess
+                           'U05BCCP2N13',    # addy
+                           'U05C2D8GFA8',    # liam
+                           'U05BPMJ727K',    # manks
+                           'U05BFAW8Z50',    # cass
+                           'U05CE8N36D8',    # allan
+                           # 'U05C0PGPGQY',    # nate
+                           'U05B4CV6CS2',    # jeff
+                           'U05BB2SF4US',    # mitch
+                           'U05BPMJDLUR']    # pin
+        
+        southBaySlackIds = ['U05BDFH3D3N',    # chris lung
+                            'U05C5261Z0Q',    # milan
+                            'U05BAUGL2QK',    # lily
+                            'U05B84JGC93',    # kyle
+                            'U05C0PH11CG',    # robin
+                            'U05BG9U74V9',    # jackie
+                            'U05AWGCPGJ3']    # kitty  
+        
+        outerBaySlackIds = ['U05ML4F8284']    # dylan                                                    
+        
+        # Add overall ranking
+        table.sort(key=operator.itemgetter('score'), reverse=True)
+        for x in range(0, len(table)):
+            table[x]['rank'] = x+1
+        
+        eastBayRecords = []
+        cityBayRecords = []
+        southBayRecords = []
+        outerBayRecords = []
+        
+        for record in table:
+            if record['slack_id'] in eastBaySlackIds:
+                eastBayRecords.append(record)
+            if record['slack_id'] in cityBaySlackIds:
+                cityBayRecords.append(record)
+            if record['slack_id'] in southBaySlackIds:
+                southBayRecords.append(record)
+            if record['slack_id'] in outerBaySlackIds:
+                outerBayRecords.append(record)
+    
+        eastBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
+        cityBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
+        southBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
+        outerBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
+        
+        eastBayScoreText = getScoreText(eastBayRecords)
+        cityBayScoreText = getScoreText(cityBayRecords)
+        southBayScoreText = getScoreText(southBayRecords)
+        outerBayScoreText = getScoreText(outerBayRecords)
+        
+        leaderboardText = "Battle of the Bays Leaderboard:"
+        leaderboardText += "\n\n"
+        leaderboardText += "`Beast Bay: {scoreText}`".format(scoreText=eastBayScoreText)
+        leaderboardText += "\n"
+        leaderboardText += getLeaderboardText(eastBayRecords, showZero=True)
+        
+        leaderboardText += "\n\n"
+        leaderboardText += "`City Bay: {scoreText}`".format(scoreText=cityBayScoreText)
+        leaderboardText += "\n"
+        leaderboardText += getLeaderboardText(cityBayRecords, showZero=True)
+        
+        leaderboardText += "\n\n"
+        leaderboardText += "`South Bay: {scoreText}`".format(scoreText=southBayScoreText)
+        leaderboardText += "\n"
+        leaderboardText += getLeaderboardText(southBayRecords, showZero=True)
+        
+        leaderboardText += "\n\n"
+        leaderboardText += "`Outer Bay: {scoreText}`".format(scoreText=outerBayScoreText)
+        leaderboardText += "\n"
+        leaderboardText += getLeaderboardText(outerBayRecords, showZero=True)
+        return leaderboardText
+
+    def getLeaderboardText(self, records, showZero=False):
+        to_print = "Leaderboard:"
+        for x in range(0, len(records)):
+            if not showZero and records[x]['score'] <= 0:
+                continue
+            if 'rank' in records:
+                rank = records[x]['rank']
+            else:
+                rank = x + 1
+            to_print += '\n%d) %s with %.1f points' % (rank, 
+                                                       records[x]['name'],
+                                                       records[x]['score'])
+        return to_print
+    
+    def getScoreText(self, records):
+        scoreSum = sum(record['score'] for record in records)
+        numRecords = float(len(records))
+        if numRecords == 0:
+            finalScore = 0
+        else:
+            finalScore = scoreSum/numRecords
+        combinedScoreText = "{score} = {sum}pts / {count}ppl".format(
+            sum = scoreSum,
+            count = numRecords,
+            score = finalScore
+        )
+        return combinedScoreText
     
     def like_message(self, reaction='robot_face'):
         slack_token = os.getenv('BOT_OAUTH_ACCESS_TOKEN')
