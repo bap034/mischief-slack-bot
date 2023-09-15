@@ -501,15 +501,16 @@ class MischiefSlack:
     def getLeaderboardText(self, records, showZero=False):
         to_print = "Leaderboard:"
         for x in range(0, len(records)):
-            if not showZero and records[x]['score'] <= 0:
+            record = records[x]
+            if not showZero and record['score'] <= 0:
                 continue
-            if 'rank' in records:
-                rank = records[x]['rank']
+            if 'rank' in record:
+                rank = record['rank']
             else:
                 rank = x + 1
             to_print += '\n%d) %s with %.1f points' % (rank, 
-                                                       records[x]['name'],
-                                                       records[x]['score'])
+                                                       record['name'],
+                                                       record['score'])
         return to_print
     
     def getScoreText(self, records):
@@ -519,7 +520,7 @@ class MischiefSlack:
             finalScore = 0
         else:
             finalScore = float(scoreSum)/float(numRecords)
-        combinedScoreText = "{score} = {sum}pts / {count}ppl".format(
+        combinedScoreText = "{score:.2f} = {sum}pts / {count}ppl".format(
             sum = scoreSum,
             count = numRecords,
             score = finalScore
