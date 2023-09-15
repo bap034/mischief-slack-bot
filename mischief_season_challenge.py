@@ -232,18 +232,19 @@ class MischiefSlack:
         if not self._repeat:
             ## put the fun stuff here
             if "!help" in self._lower_text:
-                send_tribe_message("""Available commands:
-                                        !leaderboard
-                                        !battle-of-the-bays
-                                        !points
-                                        !lift
-                                        !cardio/!bike
-                                        !sprint
-                                        !throw
-                                        !regen/!yoga/!stretch/!pt
-                                        !play/!goalty/!mini/!tryouts
-                                        !volunteer
-                                        !visualize-[white/red/black]""", channel=self._channel, bot_name="tracker")
+                send_tribe_message("""
+                Available commands:
+                    !leaderboard
+                    !battle-of-the-bays
+                    !points
+                    !lift
+                    !cardio/!bike
+                    !sprint
+                    !throw
+                    !regen/!yoga/!stretch/!pt
+                    !play/!goalty/!mini/!tryouts
+                    !volunteer
+                    !visualize-[white/red/black]""", channel=self._channel, bot_name="tracker")
             if "!points" in self._lower_text:
                 send_tribe_message("Point Values:\nlift: %.1f\ncardio: %.1f\nsprint: %.1f\nthrow: %.1f\nregen: %.1f\nplay: %.1f\nvolunteer: %.1f\nvisualize-white: %.1f\nvisualize-red: %.1f\nvisualize-black: %.1f"
                                    % (self.LIFT_POINTS, self.CARDIO_POINTS, self.SPRINT_POINTS, self.THROW_POINTS, self.REGEN_POINTS, 
