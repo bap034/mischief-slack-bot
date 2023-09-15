@@ -513,11 +513,11 @@ class MischiefSlack:
     
     def getScoreText(self, records):
         scoreSum = sum(record['score'] for record in records)
-        numRecords = float(len(records))
+        numRecords = len(records)
         if numRecords == 0:
             finalScore = 0
         else:
-            finalScore = scoreSum/numRecords
+            finalScore = float(scoreSum)/float(numRecords)
         combinedScoreText = "{score} = {sum}pts / {count}ppl".format(
             sum = scoreSum,
             count = numRecords,
