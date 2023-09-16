@@ -442,9 +442,10 @@ class MischiefSlack:
                             'U05B84JGC93',    # kyle
                             'U05C0PH11CG',    # robin
                             'U05BG9U74V9',    # jackie
-                            'U05AWGCPGJ3']    # kitty  
+                            'U05AWGCPGJ3',    # kitty  
+                            'U05ML4F8284']    # dylan                                                    
         
-        outerBaySlackIds = ['U05ML4F8284']    # dylan                                                    
+        outerBaySlackIds = []    
         
         # Add overall ranking
         table.sort(key=operator.itemgetter('score'), reverse=True)
@@ -492,10 +493,10 @@ class MischiefSlack:
         leaderboardText += "\n"
         leaderboardText += self.getLeaderboardText(southBayRecords, showZero=True)
         
-        leaderboardText += "\n\n"
-        leaderboardText += "`Outer Bay: {scoreText}`".format(scoreText=outerBayScoreText)
-        leaderboardText += "\n"
-        leaderboardText += self.getLeaderboardText(outerBayRecords, showZero=True)
+        # leaderboardText += "\n\n"
+        # leaderboardText += "`Outer Bay: {scoreText}`".format(scoreText=outerBayScoreText)
+        # leaderboardText += "\n"
+        # leaderboardText += self.getLeaderboardText(outerBayRecords, showZero=True)
         return leaderboardText
 
     def getLeaderboardText(self, records, showZero=False):
