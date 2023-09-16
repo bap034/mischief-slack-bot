@@ -29,7 +29,7 @@ def webhook():
         print("not a bot")
         obj.isRepeat()
         obj._repeat = False
-        if obj._points_to_add > 0:
+        if hasattr(obj, '_points_to_add') and obj._points_to_add > 0:
             print("points to add")
             obj.handle_db()
         else:
