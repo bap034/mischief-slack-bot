@@ -458,13 +458,15 @@ class MischiefSlack:
         outerBayRecords = []
         
         for record in table:
+            if record['score'] == 0:
+                continue
             if record['slack_id'] in eastBaySlackIds:
                 eastBayRecords.append(record)
-            if record['slack_id'] in cityBaySlackIds:
+            else if record['slack_id'] in cityBaySlackIds:
                 cityBayRecords.append(record)
-            if record['slack_id'] in southBaySlackIds:
+            else if record['slack_id'] in southBaySlackIds:
                 southBayRecords.append(record)
-            if record['slack_id'] in outerBaySlackIds:
+            else if record['slack_id'] in outerBaySlackIds:
                 outerBayRecords.append(record)
     
         eastBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
