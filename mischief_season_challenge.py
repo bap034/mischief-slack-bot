@@ -18,12 +18,12 @@ class MischiefSlack:
         self.CARDIO_POINTS = 1.0
         self.SPRINT_POINTS = 1.0
         self.THROW_POINTS = 1.0
-        self.REGEN_POINTS = 1.0
+        self.REGEN_POINTS = 2.0
         self.PLAY_POINTS = 1.0
         self.VOLUNTEER_POINTS = 1.0
-        self.VISUALIZE_WHITE_POINTS = 2.0
-        self.VISUALIZE_RED_POINTS = 4.0
-        self.VISUALIZE_BLACK_POINTS = 6.0
+        self.VISUALIZE_WHITE_POINTS = 1.0
+        self.VISUALIZE_RED_POINTS = 2.0
+        self.VISUALIZE_BLACK_POINTS = 3.0
         self._additions = []
         self._reaction_added = False
         self._reaction_removed = False
