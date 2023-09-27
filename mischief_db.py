@@ -243,39 +243,39 @@ def get_table(table_name=None):
     commitAndCloseSQLConnection(sqlConnection)    
     return table
 
-# def collect_stats(datafield, rev):
-#     try:
-#         sqlConnection = getSQLConnection()
-#         cursor = sqlConnection.cursor(cursor_factory=RealDictCursor)
+def collect_stats(datafield, rev):
+    try:
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor(cursor_factory=RealDictCursor)
         
-#         # get all of the people whose scores are greater than 0 (any non players have a workout score of -1; anyone participating will eventually have score over 0)
-#         command = "SELECT * FROM %s WHERE score > 0 ORDER BY score DESC" % __table_name__
-#         print("Executing: ", command) 
-#         cursor.execute(command)
+        # get all of the people whose scores are greater than 0 (any non players have a workout score of -1; anyone participating will eventually have score over 0)
+        command = "SELECT * FROM %s WHERE score > 0 ORDER BY score DESC" % __table_name__
+        print("Executing: ", command) 
+        cursor.execute(command)
         
-#         leaderboard = cursor.fetchall()
-#         string1 = "Stats:\n"
-#         for x in range(0, len(leaderboard)):
-#             string1 += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` \n".format(
-#                 x + 1, 
-#                 leaderboard[x]['name'],
-#                 leaderboard[x]['score'],
-#                 leaderboard[x]['num_lifts'], 
-#                 leaderboard[x]['num_cardio'],
-#                 leaderboard[x]['num_sprints'],
-#                 leaderboard[x]['num_throws'], 
-#                 leaderboard[x]['num_regen'],  
-#                 leaderboard[x]['num_play'],   
-#                 leaderboard[x]['num_volunteer'],
-#                 leaderboard[x]['num_visualize_white'], 
-#                 leaderboard[x]['num_visualize_red'],
-#                 leaderboard[x]['num_visualize_black']
-#             )
-#         cursor.close()
-#         sqlConnection.close()
-#         return string1
-#     except (Exception, psycopg2.DatabaseError) as error:
-#         send_debug_message(error)
+        leaderboard = cursor.fetchall()
+        string1 = "Stats:\n"
+        for x in range(0, len(leaderboard)):
+            string1 += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` \n".format(
+                x + 1, 
+                leaderboard[x]['name'],
+                leaderboard[x]['score'],
+                leaderboard[x]['num_lifts'], 
+                leaderboard[x]['num_cardio'],
+                leaderboard[x]['num_sprints'],
+                leaderboard[x]['num_throws'], 
+                leaderboard[x]['num_regen'],  
+                leaderboard[x]['num_play'],   
+                leaderboard[x]['num_volunteer'],
+                leaderboard[x]['num_visualize_white'], 
+                leaderboard[x]['num_visualize_red'],
+                leaderboard[x]['num_visualize_black']
+            )
+        cursor.close()
+        sqlConnection.close()
+        return string1
+    except (Exception, psycopg2.DatabaseError) as error:
+        send_debug_message(error)
 
 # def collect_leaderboard(datafield, rev):
 #     try:
