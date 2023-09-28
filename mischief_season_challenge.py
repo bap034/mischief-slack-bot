@@ -416,9 +416,8 @@ class MischiefSlack:
                            'U05BU08K8D7',    # lupa
                            'U05BDFHGQQL',    # brett
                            'U05B84JNRPF',    # viv
-                           'U05B84JA353',    # dre
-                           #'U05BAUGDLCB',    # berry
-                           'U05C526NQ2U']    # sonja
+                           #'U05BAUGDLCB',    # berry                           
+                           'U05B84JA353']    # dre
                           
         cityBaySlackIds = ['U05AWGDEKF1',    # vicki
                            'U05BRFCEYLW',    # josh
@@ -434,6 +433,7 @@ class MischiefSlack:
                            # 'U05C0PGPGQY',    # nate
                            'U05B4CV6CS2',    # jeff
                            'U05BB2SF4US',    # mitch
+                           'U05C526NQ2U',    # sonja
                            'U05BPMJDLUR']    # pin
         
         southBaySlackIds = ['U05BDFH3D3N',    # chris lung
