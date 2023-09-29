@@ -238,7 +238,7 @@ class MischiefSlack:
                  !battle-of-the-bays
                  !points
                  !lift
-                 !cardio/!bike
+                 !cardio/!bike/!breathe
                  !sprint
                  !throw
                  !regen/!yoga/!stretch/!pt
