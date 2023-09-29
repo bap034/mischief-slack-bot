@@ -172,7 +172,7 @@ class MischiefSlack:
             self._points_to_add += self.LIFT_POINTS
             self.lift_req_filled += 1
             self._additions.append('!lift')
-        if '!cardio' in self._lower_text or '!bike' in self._lower_text:
+        if '!cardio' in self._lower_text or '!bike' in self._lower_text or '!breathe' in self._lower_text:
             self._points_to_add += self.CARDIO_POINTS
             self.cardio_req_filled += 1
             self._additions.append('!cardio')
@@ -386,6 +386,9 @@ class MischiefSlack:
                 self.like_message(reaction='stache') 
             if 'spoopy' in self._lower_text or 'boo' in self._lower_text:
                 self.like_message(reaction='ghost')    
+            if 'breath' in self._lower_text:
+                self.like_message(reaction='wind_blowing_face')
+                self.like_message(reaction='phellon-inside-voice')
             if count >= 1:
                 self.like_message(reaction='jack_o_lantern')
 
