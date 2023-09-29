@@ -387,7 +387,6 @@ class MischiefSlack:
             if 'spoopy' in self._lower_text or 'boo' in self._lower_text:
                 self.like_message(reaction='ghost')    
             if 'breath' in self._lower_text:
-                self.like_message(reaction='wind_blowing_face')
                 self.like_message(reaction='phellon-inside-voice')
             if count >= 1:
                 self.like_message(reaction='jack_o_lantern')
