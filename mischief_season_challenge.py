@@ -383,7 +383,7 @@ class MischiefSlack:
             if 'sloop' in self._lower_text:
                 self.like_message(reaction='crown')
             if 'brabara' in self._lower_text:
-                self.like_message(reaction='stache') 
+                self.like_message(reaction='robin-cheese') 
             if 'spoopy' in self._lower_text or 'boo' in self._lower_text:
                 self.like_message(reaction='ghost')    
             if 'breath' in self._lower_text:
