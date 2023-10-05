@@ -5,7 +5,6 @@ from requests.structures import CaseInsensitiveDict
 
 __token__ = os.getenv('BOT_OAUTH_ACCESS_TOKEN')
 __auth__ = {"Authorization" : "Bearer " + __token__}
-__user_list__ = None
 
 def send_message(msg, channel="#bot-beta-testing", url='', bot_name='Workout-Bot V.1'):
     slack_token = os.getenv('BOT_OAUTH_ACCESS_TOKEN')
@@ -30,12 +29,10 @@ def send_calendar_message(msg):
 
 def get_group_info():
     url = "https://slack.com/api/users.list"
-    json = requests.get(url, headers=__auth__).json()    
-    if json['ok'] == False:
-        print("Slack user list: ", json)
-        json = __user_list__
-    else:
-        __user_list__ = json
+    headers = __auth__
+    headers.update({'limit':100}) # Stricter rate limiting if not using pagination: https://api.slack.com/docs/rate-limits#pagination
+    json = requests.get(url, headers=headers).json()    
+    print("Slack user list: ", json)
     return json
 
 
