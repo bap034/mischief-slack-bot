@@ -419,7 +419,8 @@ class MischiefSlack:
                            'U05BU08K8D7',    # lupa
                            'U05BDFHGQQL',    # brett
                            'U05B84JNRPF',    # viv
-                           #'U05BAUGDLCB',    # berry                           
+                           #'U05BAUGDLCB',    # berry  
+                           'U05BFAW8Z50',    # cass
                            'U05B84JA353']    # dre
                           
         cityBaySlackIds = ['U05AWGDEKF1',    # vicki
@@ -431,7 +432,6 @@ class MischiefSlack:
                            'U05BCCP2N13',    # addy
                            'U05C2D8GFA8',    # liam
                            'U05BPMJ727K',    # manks
-                           'U05BFAW8Z50',    # cass
                            'U05CE8N36D8',    # allan
                            # 'U05C0PGPGQY',    # nate
                            'U05B4CV6CS2',    # jeff
