@@ -29,7 +29,7 @@ def send_calendar_message(msg):
 
 def get_group_info():
     url = "https://slack.com/api/users.list"
-    combinedHeaders = {**auth, **{'limit':100}} # Stricter rate limiting if not using pagination: https://api.slack.com/docs/rate-limits#pagination    
+    combinedHeaders = {**__auth__, **{'limit':100}} # Stricter rate limiting if not using pagination: https://api.slack.com/docs/rate-limits#pagination    
     json = requests.get(url, headers=combinedHeaders).json()    
     print("Slack user list: ", json)
     return json
