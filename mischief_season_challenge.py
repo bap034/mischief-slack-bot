@@ -6,7 +6,7 @@ import operator
 
 class MischiefSlack:
     adminSlackId = 'U0750FXN07N' 
-    fitnessChannelId = 'C0759B20XJ8'
+    fitnessChannelId = 'C074RMR2FLN'
     botDebugChannelId = 'C07L51TBWFJ'
     
     def __init__(self, json_data):
