@@ -228,6 +228,7 @@ class MischiefSlack:
     def execute_commands(self):
         count = 0
         print("is repeat: ", self._repeat)
+        print("self: ", self)
         print("lowerText: ", self._lower_text)
         if not self._repeat:
             ## put the fun stuff here
