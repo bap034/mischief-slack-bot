@@ -303,7 +303,7 @@ def get_group_info(print_values):
     url = "https://slack.com/api/users.list"
     json = requests.get(url, headers=__auth__).json()
     if print_values:
-        print("Slack user list: ", json)
+        print("Slack user list2: ", json)
     return json
 
 
