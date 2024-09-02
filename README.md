@@ -29,13 +29,13 @@ A variation of the tribe-workout-bots repo. Done on Render since Heroku removed 
 ## Set up Environment Variables
 1. Open three tabs - one for your web service, one for your DB, and one for the Slack app. (IF YOU HAVEN'T CREATED THE APP IN SLACK ALREADY, DO SO PER INSTRUCTIONS HERE -> https://github.com/samloop/tribe-workout-bots/blob/master/README.md) 
 1a. Web service and DB can be found from the Render dashboard. Slack app can be found here (must be logged into workspace): https://api.slack.com/apps
-2. On the DB tab, scroll down to "Connections." You should see values for hostname, port, and database, as well as hidden values for password, internal url, and external url. Copy the internal url.
+2. On the DB tab, scroll down to "Connections." You should see values for hostname, port, and database, as well as hidden values for password, internal url, and external url. Copy the internal url (you'll use this in step 4).
 3. On the Slack apps page, navigate to your app, then click "OAuth & Permissions" on the left.  
 4. Now on the web service tab, click "Environment" on the left. From there, you want to click "Add Environment Variable." Copy and paste the following for key:value:
-- DATABASE_URL: <internal url you copied in step 2>
-- BOT_OAUTH_ACCESS_TOKEN: <Bot User OAuth Token from Slack page>
-- OAUTH_ACCESS_TOKEN: <User OAuth Token from Slack page>
-*This may be all you need for now, but check your code for other environment variables that may need to be added.*	
+- DATABASE_URL: [internal url you copied in step 2]
+- BOT_OAUTH_ACCESS_TOKEN: [insert Bot User OAuth Token from Slack page]
+- OAUTH_ACCESS_TOKEN: [insert User OAuth Token from Slack page]
+  - *This may be all you need for now, but check your code for other environment variables that may need to be added.*	
 5. Save your environment variables. 
 
 
