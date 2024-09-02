@@ -27,11 +27,14 @@ def send_calendar_message(msg):
     send_message(msg, channel="#bot-beta-testing", bot_name='Workout-Bot V.1')
 
 
-def get_group_info():
+def get_group_info(print_values=False):
     url = "https://slack.com/api/users.list"
     combinedHeaders = {**__auth__, **{'limit' : '100'}} # Stricter rate limiting if not using pagination: https://api.slack.com/docs/rate-limits#pagination    
     json = requests.get(url, headers=combinedHeaders).json()    
-    print("Slack user list: ", json)
+    
+    if print_values:
+        print("Slack user list: ", json)
+        
     return json
 
 
