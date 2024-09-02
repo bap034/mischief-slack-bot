@@ -299,14 +299,6 @@ def collect_stats(datafield, rev):
 #     except (Exception, psycopg2.DatabaseError) as error:
 #         send_debug_message(error)        
 
-def get_group_info(print_values):
-    url = "https://slack.com/api/users.list"
-    json = requests.get(url, headers=__auth__).json()
-    if print_values:
-        print("Slack user list2: ", json)
-    return json
-
-
 def get_emojis():
     url = 'https://slack.com/api/emoji.list'
     json = requests.get(url, headers=__auth__).json()
