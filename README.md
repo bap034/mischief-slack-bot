@@ -40,7 +40,8 @@ A variation of the tribe-workout-bots repo. Done on Render since Heroku removed 
 
 
 ## Create DB Table - optional, depending on version of Slack
-I believe I created a command `!create-new-table` to do the database creation. [Can consult the `mischief_season_challenge.py` for the command.](https://github.com/bap034/mischief-slack-bot/blob/307f588e01686e1aa0afcf18dce58e78a6cc68f2/mischief_season_challenge.py#L315)
+* I believe I created a command `!create-new-table` to do the database creation. [Can consult the `mischief_season_challenge.py` for the command.](https://github.com/bap034/mischief-slack-bot/blob/307f588e01686e1aa0afcf18dce58e78a6cc68f2/mischief_season_challenge.py#L315)
+* Make sure to update the [`adminSlackId`, `fitnessChannelId`, and `botDebugChannelId`](https://github.com/bap034/mischief-slack-bot/blob/307f588e01686e1aa0afcf18dce58e78a6cc68f2/mischief_season_challenge.py#L8) values
 
 Original instructions:
 1. You have to create the table that will hold all the Slack information. Navigate to your DB in Render.
