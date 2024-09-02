@@ -5,9 +5,9 @@ from datetime import datetime
 import operator
 
 class MischiefSlack:
-    adminSlackId = 'U05BDFHGQQL' 
-    fitnessChannelId = 'C05B44X6P3R'
-    botDebugChannelId = 'C05PYDSSMUK'
+    adminSlackId = 'U0750FXN07N' 
+    fitnessChannelId = 'C0759B20XJ8'
+    botDebugChannelId = 'C07L51TBWFJ'
     
     def __init__(self, json_data):
         self._event = json_data['event']
