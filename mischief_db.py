@@ -1,4 +1,5 @@
 import os
+import re
 import urllib.parse
 import urllib.request
 import psycopg2
@@ -149,7 +150,7 @@ def fill_table_v2(member_info):
             if member["is_bot"] == True: 
                 continue
     
-            realName = member["profile"]["real_name"] # Note: deleted users do not have a `member["real_name"]` value but all users have a `profile` with a `real_name`
+            realName = re.escape(member["profile"]["real_name"]) # Note: deleted users do not have a `member["real_name"]` value but all users have a `profile` with a `real_name`. Using `re.escape()` in case names have apostrophes or other characters.
             print("Member real_name: ", realName)
             print("Member id: ", member['id'])                
             insertCommand = """
