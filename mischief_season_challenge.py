@@ -411,43 +411,45 @@ class MischiefSlack:
         return newScore
 
     def getBattleOfBaysLeaderboardText(self, table):
-        eastBaySlackIds = ['U05BAUGSUAX',    # beth
-                           'U05BB2SN49Y',    # munis
-                           'U05KVP65DHQ',    # cody
-                           'U05B4CVD0T0',    # phellon
-                           'U05BFAWCLP4',    # gu
-                           'U05BB2S8KDY',    # cory
-                           'U05BU08K8D7',    # lupa
-                           'U05BDFHGQQL',    # brett
-                           'U05B84JNRPF',    # viv
-                           #'U05BAUGDLCB',    # berry  
-                           'U05BFAW8Z50',    # cass
-                           'U05B84JA353']    # dre
+        eastBaySlackIds = ['U074HEY4SKH',         # Wyatt Berreman
+                            # 'U074JBW9NF5',         # Andrew Berry
+                           'U074LV628JG',         # phellon
+                           'U074S9UM9KR',         # Conor Bauman
+                           'U0750FXEDQU',         # Chris Bernard
+                           'U0750FXN07N',         # prett
+                           'U0750FY3GKE',         # andrea dree dre
+                           'U07516KU4G1',         # Beth
+                           'U075792JJJU',         # Cody Kirkland
+                           'U075A6KJE9G',         # Beth's Chris’ Steakhouse
+                           'U075DV39A77',         # Cory Fauver
+                           'U075M46BC4E',         # Patrick Xu
+                           'U0760TH22M9',         # Vicki
+                           'U07630Q6RJ7',         # he’s behind that paper i swear
+                           'U07B59DDW5U']         # Vivian Chu
                           
-        cityBaySlackIds = ['U05AWGDEKF1',    # vicki
-                           'U05BRFCEYLW',    # josh
-                           'U05BDFHA1V2',    # craw
-                           'U05MT0UE144',    # james
-                           'U05BF779VEX',    # mars
-                           'U05B8LZC154',    # jess
-                           'U05BCCP2N13',    # addy
-                           'U05C2D8GFA8',    # liam
-                           'U05BPMJ727K',    # manks
-                           'U05CE8N36D8',    # allan
-                           # 'U05C0PGPGQY',    # nate
-                           'U05B4CV6CS2',    # jeff
-                           'U05BB2SF4US',    # mitch
-                           'U05C526NQ2U',    # sonja
-                           'U05BPMJDLUR']    # pin
+        cityBaySlackIds = ['U074V4RJ4ER',         # Ailita Eddy (she/they)
+                           'U074W9ZUALR',         # Pin-Wen Wang
+                           'U074X5F5CMP',         # Liam Jay
+                           'U074XU25PV1',         # Jess Brownschidle
+                           'U074Y1Y3LAE',         # Adeleen Khem
+                           'U074Y1Y7K0A',         # Aaron Rosenthal
+                           'U075157SC57',         # Mitchell Sayasene
+                           'U07516LBWMP',         # julia mankoff
+                           'U075AMLTA8H']         # sonja
         
-        southBaySlackIds = ['U05BDFH3D3N',    # chris lung
-                            'U05C5261Z0Q',    # milan
-                            'U05BAUGL2QK',    # lily
-                            'U05B84JGC93',    # kyle
-                            'U05C0PH11CG',    # robin
-                            'U05BG9U74V9',    # jackie
-                            'U05AWGCPGJ3',    # kitty  
-                            'U05ML4F8284']    # dylan                                                    
+        southBaySlackIds = ['U074FHZLEHK',         # Kyle Johnson
+                            # 'U074LV60PFE',         # Nathan Young
+                            'U074R0WJBT6',         # Chris Lung
+                            'U074UNSAMHU',         # Robin Meyers
+                            'U074V4RGSVB',         # Will
+                            'U074VHK1DRV',         # Dylan Burns
+                            'U074X5F1ML1',         # Jaclyn Wataoka
+                            'U074Y1Y264A',         # Keenan
+                            'U0750MZS90C',         # Milan Moslehi
+                            'U0753RXJ9EG',         # Lily
+                            'U0753RXTN8L',         # Christine Chen
+                            'U075C9UL552',         # Charlize
+                            'U075M1WQ20G']         # Kitty Cheung
         
         outerBaySlackIds = []    
         
