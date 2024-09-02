@@ -150,6 +150,11 @@ def fill_table_v2(member_info):
                 continue
     
             realName = member["profile"]["real_name"] # Note: deleted users do not have a `member["real_name"]` value but all users have a `profile` with a `real_name`.
+
+            # Because beth's chris' name has a rich text apostrophe
+            if member['id] == 'U075A6KJE9G': 
+                realName = 'Steakhouse'
+            
             print("Member real_name: ", realName)
             print("Member id: ", member['id'])                
             insertCommand = """
@@ -190,7 +195,7 @@ def fill_table_v2(member_info):
             )
             print("Executing: ", insertCommand) 
             cursor.execute(insertCommand)
-            # send_debug_message("%s is new to Mischief" % realName)
+            send_debug_message("%s is new to Mischief" % realName)
                 
         commitAndCloseSQLConnection(sqlConnection)
         return True
