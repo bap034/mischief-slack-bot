@@ -45,6 +45,7 @@ class MischiefSlack:
             self._calendar = False
         if 'text' in list(self._event.keys()):
             self._text = self._event['text']
+            self._lower_text = self._text.lower()
         else:
             self._text = ''
         self._subtype = self._event['subtype'] if 'subtype' in list(self._event.keys()) else 'message'
@@ -116,7 +117,7 @@ class MischiefSlack:
                 self._all_ids = self._mentions
 
             self.match_names_to_ids()
-            self._lower_text = self._text.lower()
+            # self._lower_text = self._text.lower()
             self.parse_for_additions()
 
     def parse_text_for_mentions(self):
@@ -228,7 +229,7 @@ class MischiefSlack:
     def execute_commands(self):
         count = 0
         print("is repeat: ", self._repeat)
-        print("self: ", self)
+        print("text: ", self.text)
         print("lowerText: ", self._lower_text)
         if not self._repeat:
             ## put the fun stuff here
