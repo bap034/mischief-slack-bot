@@ -15,7 +15,7 @@ def send_message(msg, channel="#bot-beta-testing", url='', bot_name='Workout-Bot
         sc.api_call("chat.postMessage", channel=channel, text=msg, username=bot_name, icon_url=url)
 
 
-def send_debug_message(msg, bot_name='im dumb'):
+def send_debug_message(msg, bot_name='bot debug'):
     send_message(msg, channel="#bot-debug", bot_name=bot_name)
 
 
