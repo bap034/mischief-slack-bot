@@ -511,12 +511,12 @@ class MischiefSlack:
                   record['num_volunteer'] * self.VOLUNTEER_POINTS,
                   record['num_visualize_white'] * self.VISUALIZE_WHITE_POINTS,
                   record['num_visualize_red'] * self.VISUALIZE_RED_POINTS,
-                  record['num_visualize_black'] * self.VISUALIZE_BLACK_POINTS],
+                  record['num_visualize_black'] * self.VISUALIZE_BLACK_POINTS,
                   record['num_cross_pod'] * self.CROSS_POD,
                   record['num_dinner'] * self.DINNER,
                   record['num_truddy_check_in'] * self.TRUDDY_CHECK_IN,
                   record['num_film'] * self.FILM,
-                  record['num_pump_up'] * self.PUMP_UP,
+                  record['num_pump_up'] * self.PUMP_UP]
         newScore = sum(scores)
         print("Name: %s Score: %d -> %d" % (name, oldScore, newScore))
         return newScore
