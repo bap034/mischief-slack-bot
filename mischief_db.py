@@ -66,7 +66,12 @@ def create_new_table_v2():
                 num_volunteer SMALLINT,
                 num_visualize_white SMALLINT,
                 num_visualize_red SMALLINT,
-                num_visualize_black SMALLINT
+                num_visualize_black SMALLINT,
+                num_cross_pod SMALLINT,
+                num_dinner SMALLINT,
+                num_truddy_check_in SMALLINT,
+                num_film SMALLINT,
+                num_pump_up SMALLINT                
             )
         """.format(
             table_name = __table_name__
@@ -105,7 +110,12 @@ def insert_into_table_v2(slackId, name):
                 {num_volunteer},
                 {num_visualize_white},
                 {num_visualize_red},
-                {num_visualize_black}
+                {num_visualize_black},
+                {num_cross_pod},
+                {num_dinner},
+                {num_truddy_check_in},
+                {num_film},
+                {num_pump_up}
             )
         """.format(
             table_name = __table_name__,
@@ -123,7 +133,12 @@ def insert_into_table_v2(slackId, name):
             num_volunteer = 0, 
             num_visualize_white = 0,
             num_visualize_red = 0,
-            num_visualize_black = 0
+            num_visualize_black = 0,
+            num_cross_pod = 0,
+            num_dinner = 0,
+            num_truddy_check_in = 0,
+            num_film = 0,
+            num_pump_up = 0
         )
         print("Executing: ", insertCommand) 
         cursor.execute(insertCommand)
@@ -173,7 +188,12 @@ def fill_table_v2(member_info):
                     {num_volunteer}, 
                     {num_visualize_white},
                     {num_visualize_red},
-                    {num_visualize_black}
+                    {num_visualize_black},
+                    {num_cross_pod},
+                    {num_dinner},
+                    {num_truddy_check_in},
+                    {num_film},
+                    {num_pump_up}
                 )
             """.format(
                 table_name = __table_name__,
@@ -191,7 +211,12 @@ def fill_table_v2(member_info):
                 num_volunteer = 0, 
                 num_visualize_white = 0,
                 num_visualize_red = 0,
-                num_visualize_black = 0
+                num_visualize_black = 0,
+                num_cross_pod = 0,
+                num_dinner = 0,
+                num_truddy_check_in = 0,
+                num_film = 0,
+                num_pump_up = 0
             )
             print("Executing: ", insertCommand) 
             cursor.execute(insertCommand)
@@ -261,7 +286,7 @@ def collect_stats(datafield, rev):
         leaderboard = cursor.fetchall()
         string1 = "Stats:\n"
         for x in range(0, len(leaderboard)):
-            string1 += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` \n".format(
+            string1 += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` `cross pod: {13}` `dinner: {14}` `truddy check-in: {15}` `film: {16}` `pump-up: {17}` \n".format(
                 x + 1, 
                 leaderboard[x]['name'],
                 leaderboard[x]['score'],
@@ -274,7 +299,12 @@ def collect_stats(datafield, rev):
                 leaderboard[x]['num_volunteer'],
                 leaderboard[x]['num_visualize_white'], 
                 leaderboard[x]['num_visualize_red'],
-                leaderboard[x]['num_visualize_black']
+                leaderboard[x]['num_visualize_black'],
+                leaderboard[x]['num_cross_pod'],
+                leaderboard[x]['num_dinner'],
+                leaderboard[x]['num_truddy_check_in'],
+                leaderboard[x]['num_film'],
+                leaderboard[x]['num_pump_up']
             )
         cursor.close()
         sqlConnection.close()
@@ -335,7 +365,12 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
                     num_volunteer=num_volunteer+{volunteer_num_key},
                     num_visualize_white=num_visualize_white+{visualize_white_num_key},
                     num_visualize_red=num_visualize_red+{visualize_red_num_key},
-                    num_visualize_black=num_visualize_black+{visualize_black_num_key}
+                    num_visualize_black=num_visualize_black+{visualize_black_num_key},
+                    num_cross_pod=num_cross_pod+{num_cross_pod_key},
+                    num_dinner=num_dinner+{num_dinner_key},
+                    num_truddy_check_in=num_truddy_check_in+{num_truddy_check_in_key},
+                    num_film=num_film+{num_film_key},
+                    num_pump_up=num_pump_up+{num_pump_up_key}
                 WHERE slack_id = '{slack_id}'
             """.format(
                 table_name = __table_name__,
@@ -351,7 +386,12 @@ def add_to_db(channel_id, names, addition, lift_num, cardio_num, sprint_num, thr
                 volunteer_num_key = str(volunteer_num), 
                 visualize_white_num_key = str(visualize_white_num),
                 visualize_red_num_key = str(visualize_red_num),
-                visualize_black_num_key = str(visualize_black_num)
+                visualize_black_num_key = str(visualize_black_num),
+                num_cross_pod_key = str(num_cross_pod),
+                num_dinner_key = str(num_dinner),
+                num_truddy_check_in_key = str(num_truddy_check_in),
+                num_film_key = str(num_film),
+                num_pump_up_key = str(num_pump_up)
             )
             print("Executing: ", updateCommand) 
             cursor.execute(updateCommand)
@@ -433,7 +473,12 @@ def reset_scores():  # reset the scores of everyone
                 num_volunteer={volunteer_num_key},
                 num_visualize_white={visualize_white_num_key},
                 num_visualize_red={visualize_red_num_key},
-                num_visualize_black={visualize_black_num_key}
+                num_visualize_black=num_visualize_black+{visualize_black_num_key},
+                num_cross_pod=num_cross_pod+{num_cross_pod_key},
+                num_dinner=num_dinner+{num_dinner_key},
+                num_truddy_check_in=num_truddy_check_in+{num_truddy_check_in_key},
+                num_film=num_film+{num_film_key},
+                num_pump_up=num_pump_up+{num_pump_up_key}
             WHERE score != -1
         """.format(
             table_name = __table_name__,
@@ -448,7 +493,12 @@ def reset_scores():  # reset the scores of everyone
             volunteer_num_key = 0, 
             visualize_white_num_key = 0,
             visualize_red_num_key = 0,
-            visualize_black_num_key = 0
+            visualize_black_num_key = 0,
+            num_cross_pod_key = 0,
+            num_dinner_key = 0,
+            num_truddy_check_in_key = 0,
+            num_film_key = 0,
+            num_pump_up_key = 0
         )
         print("Executing: ", updateCommand) 
         cursor.execute(updateCommand)
@@ -486,7 +536,7 @@ def insert_column(col_name): # insert a column to table
 
         insertCommand = """
             ALTER TABLE {table_name}            
-            ADD {column_name} int NOT NULL DEFAULT({default_value})            
+            ADD {column_name} SMALLINT NOT NULL DEFAULT({default_value})            
         """.format(
             table_name = __table_name__,
             column_name = col_name
