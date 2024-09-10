@@ -347,12 +347,12 @@ class MischiefSlack:
                 count += 1
                 leaderboard = get_table()
                 to_print = self.getLeaderboardText(leaderboard)
-                send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                send_message(to_print, channel=self._channel)
             if "!battle-of-the-bays" in self._lower_text:
                 count += 1
                 leaderboard = get_table()
                 to_print = self.getBattleOfBaysLeaderboardText(leaderboard)
-                send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                send_message(to_print, channel=self._channel)
             if "!stats" in self._lower_text:
                 count += 1
                 leaderboard = get_table()
@@ -361,27 +361,27 @@ class MischiefSlack:
                     if leaderboard[x]['score'] <= 0:
                         continue
                         
-                to_print += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` `cross pod: {13}` `dinner: {14}` `truddy check-in: {15}` `film: {16}` `pump-up: {17}` \n".format(
-                    x + 1, 
-                    leaderboard[x]['name'],
-                    leaderboard[x]['score'],
-                    leaderboard[x]['num_lifts'], 
-                    leaderboard[x]['num_cardio'],
-                    leaderboard[x]['num_sprints'],
-                    leaderboard[x]['num_throws'], 
-                    leaderboard[x]['num_regen'],  
-                    leaderboard[x]['num_play'],   
-                    leaderboard[x]['num_volunteer'],
-                    leaderboard[x]['num_visualize_white'], 
-                    leaderboard[x]['num_visualize_red'],
-                    leaderboard[x]['num_visualize_black'],
-                    leaderboard[x]['num_cross_pod'],
-                    leaderboard[x]['num_dinner'],
-                    leaderboard[x]['num_truddy_check_in'],
-                    leaderboard[x]['num_film'],
-                    leaderboard[x]['num_pump_up']
-                )
-                send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                    to_print += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` `cross pod: {13}` `dinner: {14}` `truddy check-in: {15}` `film: {16}` `pump-up: {17}` \n".format(
+                        x + 1, 
+                        leaderboard[x]['name'],
+                        leaderboard[x]['score'],
+                        leaderboard[x]['num_lifts'], 
+                        leaderboard[x]['num_cardio'],
+                        leaderboard[x]['num_sprints'],
+                        leaderboard[x]['num_throws'], 
+                        leaderboard[x]['num_regen'],  
+                        leaderboard[x]['num_play'],   
+                        leaderboard[x]['num_volunteer'],
+                        leaderboard[x]['num_visualize_white'], 
+                        leaderboard[x]['num_visualize_red'],
+                        leaderboard[x]['num_visualize_black'],
+                        leaderboard[x]['num_cross_pod'],
+                        leaderboard[x]['num_dinner'],
+                        leaderboard[x]['num_truddy_check_in'],
+                        leaderboard[x]['num_film'],
+                        leaderboard[x]['num_pump_up']
+                    )
+                send_message(to_print, channel=self._channel)
             if '!yummy' in self._lower_text:  # displays the leaderboard for who posts the most
                 count += 1
                 to_print = collect_stats(1, True)
@@ -413,14 +413,14 @@ class MischiefSlack:
                 count += 1
             if "!create-new-table" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 create_new_table_v2()
-                send_message("Created new table", channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                send_message("Created new table", channel=self._channel)
                 count += 1
             insert_column_command = "!insert-new-column"
             if insert_column_command in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 parameters = self._lower_text.split()
                 col_name = parameters[1]                
                 insert_column(col_name)
-                send_message("Inserting column %s" % col_name, channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                send_message("Inserted column %s" % col_name, channel=self._channel)
                 count += 1
             insert_into_command = "!insert"
             if insert_into_command in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
@@ -428,12 +428,12 @@ class MischiefSlack:
                 slackId = parameters[1]
                 name = parameters[2]
                 insert_into_table_v2(slackId, name)
-                send_message("Inserted member", channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                send_message("Inserted member", channel=self._channel)
                 count += 1
             if "!fill-table" in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 groupInfo = get_group_info(True)     
                 fill_table_v2(groupInfo)
-                send_message("Filled table with slack members", channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                send_message("Filled table with slack members", channel=self._channel)
                 count += 1
             get_table_command = "!get-table"            
             if get_table_command in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
