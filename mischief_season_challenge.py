@@ -148,10 +148,11 @@ class MischiefSlack:
         info = get_group_info()
         
         for id in mention_ids:
-            for member in info['members']:
-                if member['id'] == id:
-                    mention_names.append(member['profile']['real_name'])
-                    self._all_avatars.append(member['profile']['image_512'])
+            if 'members' in info:
+                for member in info['members']:
+                    if member['id'] == id:
+                        mention_names.append(member['profile']['real_name'])
+                        self._all_avatars.append(member['profile']['image_512'])
         self._all_names = mention_names
         if len(self._all_names) > 0:
             self._name = self._all_names[-1]
