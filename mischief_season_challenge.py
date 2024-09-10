@@ -24,6 +24,11 @@ class MischiefSlack:
         self.VISUALIZE_WHITE_POINTS = 4.0
         self.VISUALIZE_RED_POINTS = 8.0
         self.VISUALIZE_BLACK_POINTS = 6.0
+        self.CROSS_POD = 2.0
+        self.DINNER = 1.0
+        self.TRUDDY_CHECK_IN = 3.0
+        self.FILM = 1.0
+        self.PUMP_UP = 1.0
         self._additions = []
         self._reaction_added = False
         self._reaction_removed = False
@@ -174,7 +179,12 @@ class MischiefSlack:
         self.visualize_white_req_filled = 0
         self.visualize_red_req_filled = 0
         self.visualize_black_req_filled = 0
-        self._req_filled = 0
+        self.cross_pod_req_filled = 0
+        self.dinner_req_filled= 0
+        self.truddy_check_in_req_filled = 0
+        self.film_req_filled = 0
+        self.pump_up_req_filled = 0
+        self._req_filled_req_filled = 0
         if '!lift' in self._lower_text:
             self._points_to_add += self.LIFT_POINTS
             self.lift_req_filled += 1
@@ -215,12 +225,51 @@ class MischiefSlack:
             self._points_to_add += self.VISUALIZE_BLACK_POINTS
             self.visualize_black_req_filled += 1
             self._additions.append('!visualize-black')
+        if '!cross-pod' in self._lower_text:
+            self._points_to_add += self.CROSS_POD
+            self.cross_pod_req_filled += 1
+            self._additions.append('!cross-pod')    
+        if '!dinner' in self._lower_text:
+            self._points_to_add += self.DINNER
+            self.dinner_req_filled += 1
+            self._additions.append('!dinner')    
+        if '!truddy-check-in' in self._lower_text:
+            self._points_to_add += self.TRUDDY_CHECK_IN
+            self.truddy_check_in_req_filled += 1
+            self._additions.append('!truddy-check-in')    
+        if '!film' in self._lower_text:
+            self._points_to_add += self.FILM
+            self.film_req_filled += 1
+            self._additions.append('!film')    
+        if '!pump-up' in self._lower_text:
+            self._points_to_add += self.PUMP_UP
+            self.pump_up_req_filled += 1
+            self._additions.append('!pump-up')    
+        
 
     def handle_db(self):
         #added reqs
         if not self._repeat:
-            num = add_to_db(self._channel, self._all_names, self._points_to_add, self.lift_req_filled, self.cardio_req_filled, self.sprint_req_filled,
-                self.throw_req_filled, self.regen_req_filled, self.play_req_filled, self.volunteer_req_filled, self.visualize_white_req_filled, self.visualize_red_req_filled, self.visualize_black_req_filled, len(self._additions), self._all_ids)
+            num = add_to_db(self._channel, 
+                            self._all_names, 
+                            self._points_to_add, 
+                            self.lift_req_filled, 
+                            self.cardio_req_filled, 
+                            self.sprint_req_filled,
+                            self.throw_req_filled, 
+                            self.regen_req_filled, 
+                            self.play_req_filled, 
+                            self.volunteer_req_filled, 
+                            self.visualize_white_req_filled, 
+                            self.visualize_red_req_filled, 
+                            self.visualize_black_req_filled, 
+                            self.cross_pod_req_filled,
+                            self.dinner_req_filled,
+                            self.truddy_check_in_req_filled,
+                            self.film_req_filled,
+                            self.pump_up_req_filled,
+                            len(self._additions), 
+                            self._all_ids)
             # for i in range(len(self._all_names)):
             #     for workout in self._additions:
             #         add_workout(self._all_names[i], self._all_ids[i], workout)
@@ -252,11 +301,46 @@ class MischiefSlack:
                  !regen/!yoga/!stretch/!pt
                  !play/!goalty/!mini/!tryouts
                  !volunteer
-                 !visualize-[white/red/black]""", channel=self._channel, bot_name="tracker")
+                 !visualize-[white/red/black]
+                 !cross-pod
+                 !dinner
+                 !truddy-check-in
+                 !film
+                 !pump-up
+                 """, channel=self._channel, bot_name="tracker")
             if "!points" in self._lower_text:
-                send_tribe_message("Point Values:\nlift: %.1f\ncardio: %.1f\nsprint: %.1f\nthrow: %.1f\nregen: %.1f\nplay: %.1f\nvolunteer: %.1f\nvisualize-white: %.1f\nvisualize-red: %.1f\nvisualize-black: %.1f"
-                                   % (self.LIFT_POINTS, self.CARDIO_POINTS, self.SPRINT_POINTS, self.THROW_POINTS, self.REGEN_POINTS, 
-                                    self.PLAY_POINTS, self.VOLUNTEER_POINTS, self.VISUALIZE_WHITE_POINTS, self.VISUALIZE_RED_POINTS, self.VISUALIZE_BLACK_POINTS), channel=self._channel)
+                send_tribe_message("""
+                Point Values:
+                    lift: %.1f
+                    cardio: %.1f
+                    sprint: %.1f
+                    throw: %.1f
+                    regen: %.1f
+                    play: %.1f
+                    volunteer: %.1f
+                    visualize-white: %.1f
+                    visualize-red: %.1f
+                    visualize-black: %.1f
+                    cross-pod: %.1f
+                    dinner: %.1f
+                    truddy-check-in: %.1f
+                    film: %.1f
+                    pump-up: %.1f
+                    """ % (self.LIFT_POINTS, 
+                              self.CARDIO_POINTS, 
+                              self.SPRINT_POINTS, 
+                              self.THROW_POINTS, 
+                              self.REGEN_POINTS,
+                              self.PLAY_POINTS, 
+                              self.VOLUNTEER_POINTS, 
+                              self.VISUALIZE_WHITE_POINTS, 
+                              self.VISUALIZE_RED_POINTS, 
+                              self.VISUALIZE_BLACK_POINTS,
+                              self.CROSS_POD,
+                              self.DINNER,
+                              self.TRUDDY_CHECK_IN,
+                              self.FILM,
+                              self.PUMP_UP), channel=self._channel)
             if "!leaderboard" in self._lower_text:
                 count += 1
                 leaderboard = get_table()
@@ -275,21 +359,26 @@ class MischiefSlack:
                     if leaderboard[x]['score'] <= 0:
                         continue
                         
-                    to_print += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` \n".format(
-                        x + 1, 
-                        leaderboard[x]['name'],
-                        leaderboard[x]['score'],
-                        leaderboard[x]['num_lifts'], 
-                        leaderboard[x]['num_cardio'],
-                        leaderboard[x]['num_sprints'],
-                        leaderboard[x]['num_throws'], 
-                        leaderboard[x]['num_regen'],  
-                        leaderboard[x]['num_play'],   
-                        leaderboard[x]['num_volunteer'],
-                        leaderboard[x]['num_visualize_white'], 
-                        leaderboard[x]['num_visualize_red'],
-                        leaderboard[x]['num_visualize_black']
-                    )
+                to_print += "{0:>2}) {1:<20} `points: {2}` `lifts: {3}` `cardio: {4}` `sprints: {5}` `throws: {6}` `regen: {7}` `playing: {8}` `volunteer: {9}` `visualize-white: {10}` `visualize-red: {11}` `visualize-black: {12}` `cross pod: {13}` `dinner: {14}` `truddy check-in: {15}` `film: {16}` `pump-up: {17}` \n".format(
+                    x + 1, 
+                    leaderboard[x]['name'],
+                    leaderboard[x]['score'],
+                    leaderboard[x]['num_lifts'], 
+                    leaderboard[x]['num_cardio'],
+                    leaderboard[x]['num_sprints'],
+                    leaderboard[x]['num_throws'], 
+                    leaderboard[x]['num_regen'],  
+                    leaderboard[x]['num_play'],   
+                    leaderboard[x]['num_volunteer'],
+                    leaderboard[x]['num_visualize_white'], 
+                    leaderboard[x]['num_visualize_red'],
+                    leaderboard[x]['num_visualize_black'],
+                    leaderboard[x]['num_cross_pod'],
+                    leaderboard[x]['num_dinner'],
+                    leaderboard[x]['num_truddy_check_in'],
+                    leaderboard[x]['num_film'],
+                    leaderboard[x]['num_pump_up']
+                )
                 send_message(to_print, channel=self._channel, bot_name=self._name, url=self._avatar_url)
             if '!yummy' in self._lower_text:  # displays the leaderboard for who posts the most
                 count += 1
@@ -422,7 +511,12 @@ class MischiefSlack:
                   record['num_volunteer'] * self.VOLUNTEER_POINTS,
                   record['num_visualize_white'] * self.VISUALIZE_WHITE_POINTS,
                   record['num_visualize_red'] * self.VISUALIZE_RED_POINTS,
-                  record['num_visualize_black'] * self.VISUALIZE_BLACK_POINTS]
+                  record['num_visualize_black'] * self.VISUALIZE_BLACK_POINTS],
+                  record['num_cross_pod'] * self.CROSS_POD,
+                  record['num_dinner'] * self.DINNER,
+                  record['num_truddy_check_in'] * self.TRUDDY_CHECK_IN,
+                  record['num_film'] * self.FILM,
+                  record['num_pump_up'] * self.PUMP_UP,
         newScore = sum(scores)
         print("Name: %s Score: %d -> %d" % (name, oldScore, newScore))
         return newScore
