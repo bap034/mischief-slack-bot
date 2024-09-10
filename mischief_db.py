@@ -477,67 +477,66 @@ def reset_talkative():  # reset the num_posts of everyone
             cursor.close()
             sqlConnection.close()
 
-# def add_workout(name, slack_id, workout_type):
-#     cursor = None
-#     conn = None
-#     try:
-#         urllib.parse.uses_netloc.append("postgres")
-#         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-#         conn = psycopg2.connect(
-#             database=url.path[1:],
-#             user=url.username,
-#             password=url.password,
-#             host=url.hostname,
-#             port=url.port
-#         )
-#     except (Exception, psycopg2.DatabaseError) as error:
-#         send_debug_message(str(error))
-#     finally:
-#         if cursor is not None:
-#             cursor.close()
-#             conn.close()
+def insert_column(col_name): # insert a column to table
+    print("Inserting %s into table" % col_name)
+    
+    try:
+        sqlConnection = getSQLConnection()
+        cursor = sqlConnection.cursor()
 
-# def get_workouts_after_date(date, type, slack_id):
-#     cursor = None
-#     conn = None
-#     workouts = []
-#     try:
-#         urllib.parse.uses_netloc.append("postgres")
-#         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-#         conn = psycopg2.connect(
-#             database=url.path[1:],
-#             user=url.username,
-#             password=url.password,
-#             host=url.hostname,
-#             port=url.port
-#         )
-#     except (Exception, psycopg2.DatabaseError) as error:
-#         send_debug_message(str(error))
-#     finally:
-#         if cursor is not None:
-#             cursor.close()
-#             conn.close()
-#     return workouts
+        insertCommand = """
+                INSERT INTO {table_name} VALUES (
+                    '{slack_id}',
+                    '{name}', 
+                    {score}, 
+                    {last_post},
+                    {num_posts}, 
+                    {num_lifts}, 
+                    {num_cardio}, 
+                    {num_sprints}, 
+                    {num_throws}, 
+                    {num_regen},
+                    {num_play}, 
+                    {num_volunteer}, 
+                    {num_visualize_white},
+                    {num_visualize_red},
+                    {num_visualize_black}
+                )
+        """.format(
+            table_name = __table_name__,
+            slack_id = member['id'],
+            name = realName, 
+            score = 0, 
+            last_post = "now()",
+            num_posts = 0, 
+            num_lifts = 0, 
+            num_cardio = 0, 
+            num_sprints = 0, 
+            num_throws = 0, 
+            num_regen = 0,
+            num_play = 0, 
+            num_volunteer = 0, 
+            num_visualize_white = 0,
+            num_visualize_red = 0,
+            num_visualize_black = 0
+        )
 
-# def get_group_workouts_after_date(date, type):
-#     cursor = None
-#     conn = None
-#     workouts = []
-#     print(date, type)
-#     try:
-#         urllib.parse.uses_netloc.append("postgres")
-#         url = urllib.parse.urlparse(os.environ["DATABASE_URL"])
-#         conn = psycopg2.connect(
-#             database=url.path[1:],
-#             user=url.username,
-#             password=url.password,
-#             host=url.hostname,
-#             port=url.port
-#         )
-#     except (Exception, psycopg2.DatabaseError) as error:
-#         send_debug_message(str(error))
-#     finally:
-#         if cursor is not None:
-#             cursor.close()
-#             conn.close()
-#     return workouts
+        insertCommand = """
+            ALTER TABLE {table_name}            
+            ADD {column_name} int NOT NULL DEFAULT({default_value})            
+        """.format(
+            table_name = __table_name__,
+            column_name = col_name
+            default_value = 0
+        )
+        
+        print("Executing: ", insertCommand) 
+        cursor.execute(insertCommand)
+        send_debug_message("Successfully added %s to table %s" % (col_name, __table_name__)
+                
+        commitAndCloseSQLConnection(sqlConnection)
+        return True
+    except (Exception, psycopg2.DatabaseError) as error:
+        send_debug_message(error)
+        return False
+    
