@@ -324,6 +324,13 @@ class MischiefSlack:
                 create_new_table_v2()
                 send_message("Created new table", channel=self._channel, bot_name=self._name, url=self._avatar_url)
                 count += 1
+            insert_column_command = "!insert-new-column"
+            if insert_column_command in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
+                parameters = self._lower_text.split()
+                col_name = parameters[1]                
+                insert_column(col_name)
+                send_message("Inserting column %s" % col_name, channel=self._channel, bot_name=self._name, url=self._avatar_url)
+                count += 1
             insert_into_command = "!insert"
             if insert_into_command in self._lower_text and self._user_id == MischiefSlack.adminSlackId:
                 parameters = self._lower_text.split()
