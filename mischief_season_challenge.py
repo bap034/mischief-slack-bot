@@ -18,7 +18,7 @@ class MischiefSlack:
         self.CARDIO_POINTS = 0.0
         self.SPRINT_POINTS = 0.0
         self.THROW_POINTS = 1.0
-        self.REGEN_POINTS = 2.0
+        self.REGEN_POINTS = 1.0
         self.PLAY_POINTS = 0.0
         self.VOLUNTEER_POINTS = 0.0
         self.VISUALIZE_WHITE_POINTS = 4.0
@@ -275,6 +275,8 @@ class MischiefSlack:
             #         add_workout(self._all_names[i], self._all_ids[i], workout)
             if num == len(self._all_names):
                 self.like_message()
+                message = "Logged: %s" % self._additions 
+                send_threaded_message(message, self._channel, self._thread_ts)
             else:
                 self.like_message(reaction='skull_and_crossbones')
 
