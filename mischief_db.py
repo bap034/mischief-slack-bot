@@ -353,11 +353,11 @@ def add_to_db(channel_id,
               visualize_white_num,
               visualize_red_num, 
               visualize_black_num,
-              num_cross_pod, 
-              num_dinner, 
-              num_truddy_check_in, 
-              num_film, 
-              num_pump_up, 
+              cross_pod_num, 
+              dinner_num, 
+              truddy_check_in_num, 
+              film_num, 
+              pump_up_num, 
               num_workouts, 
               ids):  # add "addition" to each of the "names" in the db
     cursor = None
@@ -385,11 +385,11 @@ def add_to_db(channel_id,
                     num_visualize_white=num_visualize_white+{visualize_white_num_key},
                     num_visualize_red=num_visualize_red+{visualize_red_num_key},
                     num_visualize_black=num_visualize_black+{visualize_black_num_key},
-                    num_cross_pod=num_cross_pod+{num_cross_pod_key},
-                    num_dinner=num_dinner+{num_dinner_key},
-                    num_truddy_check_in=num_truddy_check_in+{num_truddy_check_in_key},
-                    num_film=num_film+{num_film_key},
-                    num_pump_up=num_pump_up+{num_pump_up_key}
+                    num_cross_pod=num_cross_pod+{cross_pod_num_key},
+                    num_dinner=num_dinner+{dinner_num_key},
+                    num_truddy_check_in=num_truddy_check_in+{truddy_check_in_num_key},
+                    num_film=num_film+{film_num_key},
+                    num_pump_up=num_pump_up+{pump_up_num_key}
                 WHERE slack_id = '{slack_id}'
             """.format(
                 table_name = __table_name__,
@@ -406,11 +406,11 @@ def add_to_db(channel_id,
                 visualize_white_num_key = str(visualize_white_num),
                 visualize_red_num_key = str(visualize_red_num),
                 visualize_black_num_key = str(visualize_black_num),
-                num_cross_pod_key = str(num_cross_pod),
-                num_dinner_key = str(num_dinner),
-                num_truddy_check_in_key = str(num_truddy_check_in),
-                num_film_key = str(num_film),
-                num_pump_up_key = str(num_pump_up)
+                cross_pod_num_key = str(cross_pod_num),
+                dinner_num_key = str(dinner_num),
+                truddy_check_in_num_key = str(truddy_check_in_num),
+                film_num_key = str(film_num),
+                pump_up_num_key = str(pump_up_num)
             )
             print("Executing: ", updateCommand) 
             cursor.execute(updateCommand)
