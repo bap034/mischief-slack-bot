@@ -21,9 +21,9 @@ class MischiefSlack:
         self.REGEN_POINTS = 2.0
         self.PLAY_POINTS = 0.0
         self.VOLUNTEER_POINTS = 0.0
-        self.VISUALIZE_WHITE_POINTS = 2.0
-        self.VISUALIZE_RED_POINTS = 4.0
-        self.VISUALIZE_BLACK_POINTS = 3.0
+        self.VISUALIZE_WHITE_POINTS = 4.0
+        self.VISUALIZE_RED_POINTS = 8.0
+        self.VISUALIZE_BLACK_POINTS = 6.0
         self._additions = []
         self._reaction_added = False
         self._reaction_removed = False
