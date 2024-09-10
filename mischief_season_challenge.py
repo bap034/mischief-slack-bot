@@ -363,7 +363,7 @@ class MischiefSlack:
                 req = get_req(self._user_id)
                 send_message(req, channel=self._channel, bot_name=self._name)
                 count += 1
-            if '!threadTest' in self._lower_text:
+            if '!thread-test' in self._lower_text:
                 send_threaded_message("Thread response test", self._channel, self._thread_ts)
                 count += 1
             if '!test' in self._lower_text:
