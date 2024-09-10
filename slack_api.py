@@ -14,7 +14,7 @@ def send_message(msg, channel="#bot-beta-testing", url='', bot_name='Workout-Bot
     else:
         sc.api_call("chat.postMessage", channel=channel, text=msg, username=bot_name, icon_url=url)
 
-def send_threaded_message(msg, channel="#bot_debug", thread_ts):
+def send_threaded_message(msg, channel, thread_ts):
     slack_token = os.getenv('BOT_OAUTH_ACCESS_TOKEN')
     sc = SlackClient(slack_token)
     sc.api_call("chat.postMessage", channel=channel, text=msg, thread_ts=thread_ts)    
