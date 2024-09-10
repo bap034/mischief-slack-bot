@@ -485,43 +485,6 @@ def insert_column(col_name): # insert a column to table
         cursor = sqlConnection.cursor()
 
         insertCommand = """
-                INSERT INTO {table_name} VALUES (
-                    '{slack_id}',
-                    '{name}', 
-                    {score}, 
-                    {last_post},
-                    {num_posts}, 
-                    {num_lifts}, 
-                    {num_cardio}, 
-                    {num_sprints}, 
-                    {num_throws}, 
-                    {num_regen},
-                    {num_play}, 
-                    {num_volunteer}, 
-                    {num_visualize_white},
-                    {num_visualize_red},
-                    {num_visualize_black}
-                )
-        """.format(
-            table_name = __table_name__,
-            slack_id = member['id'],
-            name = realName, 
-            score = 0, 
-            last_post = "now()",
-            num_posts = 0, 
-            num_lifts = 0, 
-            num_cardio = 0, 
-            num_sprints = 0, 
-            num_throws = 0, 
-            num_regen = 0,
-            num_play = 0, 
-            num_volunteer = 0, 
-            num_visualize_white = 0,
-            num_visualize_red = 0,
-            num_visualize_black = 0
-        )
-
-        insertCommand = """
             ALTER TABLE {table_name}            
             ADD {column_name} int NOT NULL DEFAULT({default_value})            
         """.format(
