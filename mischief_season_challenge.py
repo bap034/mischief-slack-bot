@@ -280,7 +280,7 @@ class MischiefSlack:
             #         add_workout(self._all_names[i], self._all_ids[i], workout)
             if num == len(self._all_names):
                 self.like_message()
-                message = "Logged: `%s pts` from %s" % (self._additions, self._points_to_add)
+                message = "Logged: `%s pts` from %s" % (self._points_to_add, self._additions)
                 send_threaded_message(message, self._channel, self._thread_ts)
             else:
                 self.like_message(reaction='skull_and_crossbones')
