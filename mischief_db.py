@@ -539,7 +539,7 @@ def insert_column(col_name): # insert a column to table
             ADD {column_name} SMALLINT NOT NULL DEFAULT({default_value})            
         """.format(
             table_name = __table_name__,
-            column_name = col_name
+            column_name = col_name,
             default_value = 0
         )
         
