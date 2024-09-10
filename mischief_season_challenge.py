@@ -503,6 +503,8 @@ class MischiefSlack:
                 self.like_message(reaction='ghost')    
             if 'breath' in self._lower_text:
                 self.like_message(reaction='phellon-inside-voice')
+            if 'follow along' in self._lower_text:
+                send_threaded_message("F O L L O W A L O N G", self._channel, self._thread_ts)
             if count >= 1:
                 self.like_message(reaction='jack_o_lantern')
 
