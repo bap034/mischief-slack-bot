@@ -545,7 +545,7 @@ def insert_column(col_name): # insert a column to table
         
         print("Executing: ", insertCommand) 
         cursor.execute(insertCommand)
-        send_debug_message("Successfully added %s to table %s" % (col_name, __table_name__)
+        send_debug_message("Successfully added %s to table %s" % (col_name, __table_name__))
                 
         commitAndCloseSQLConnection(sqlConnection)
         return True
