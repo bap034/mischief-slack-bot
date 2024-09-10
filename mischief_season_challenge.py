@@ -32,6 +32,12 @@ class MischiefSlack:
         self._bot = 'bot_id' in list(self._event.keys()) and self._event['bot_id'] != None
         self._event_type = self._event['type']
 
+        self._ts = self._event['ts']
+        if self._event['thread_ts'] != None:
+            self._thread_ts = self._event['thread_ts'] 
+        else:
+            self._thread_ts = self._ts # if no `thread_ts`, then it's the parent message so to send a reply we want to use that message's `ts`        
+
         # right now tbh too scared to play around with this but i am fairly sure i can remove a chunk of it
         if 'files' in list(self._event.keys()):
             self._files = self._event['files']
@@ -356,6 +362,9 @@ class MischiefSlack:
             if '!self' in self._lower_text:
                 req = get_req(self._user_id)
                 send_message(req, channel=self._channel, bot_name=self._name)
+                count += 1
+            if '!threadTest' in self._lower_text:
+                send_threaded_message("Thread response test", self._channel, self._thread_ts)
                 count += 1
             if '!test' in self._lower_text:
                 pass
