@@ -40,7 +40,7 @@ class MischiefSlack:
         # assume that if `message_changed` but no `edited`, then was automated url edit and want to skip this message (aka mark as repeat)
         if 'subtype' in self._event and self._event['subtype'] == 'message_changed':
             if 'message' in self._event and not ('edited' in self._event['message']): 
-                self.repeat = True
+                self._bot = True
         
         if 'ts' in self._event:
             self._ts = self._event['ts']
