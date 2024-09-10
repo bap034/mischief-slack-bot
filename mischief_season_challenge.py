@@ -32,12 +32,11 @@ class MischiefSlack:
         self._bot = 'bot_id' in list(self._event.keys()) and self._event['bot_id'] != None
         self._event_type = self._event['type']
 
-        if self._event['ts'] != None
+        if 'ts' in self._event:
             self._ts = self._event['ts']
             self._thread_ts = self._ts # if no `thread_ts`, then it's the parent message so to send a reply we want to use that message's `ts` 
-        if self._event['thread_ts'] != None:
-            self._thread_ts = self._event['thread_ts'] 
-                   
+        if 'thread_ts' in self._event:
+            self._thread_ts = self._event['thread_ts']                    
 
         # right now tbh too scared to play around with this but i am fairly sure i can remove a chunk of it
         if 'files' in list(self._event.keys()):
