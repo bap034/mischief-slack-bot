@@ -37,6 +37,11 @@ class MischiefSlack:
         self._bot = 'bot_id' in list(self._event.keys()) and self._event['bot_id'] != None
         self._event_type = self._event['type']
 
+        # assume that if `message_changed` but no `edited`, then was automated url edit and want to skip this message (aka mark as repeat)
+        if 'subtype' in self._event and self._event['subtype'] == 'message_changed:
+            if 'message' in self._event and not ('edited' in self._event['message']): 
+                self.repeat = True
+        
         if 'ts' in self._event:
             self._ts = self._event['ts']
             self._thread_ts = self._ts # if no `thread_ts`, then it's the parent message so to send a reply we want to use that message's `ts` 
