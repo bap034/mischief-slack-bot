@@ -535,53 +535,71 @@ class MischiefSlack:
         return newScore
 
     def getBattleOfBaysLeaderboardText(self, table):
-        eastBaySlackIds = ['U074HEY4SKH',         # Wyatt Berreman
-                            # 'U074JBW9NF5',         # Andrew Berry
-                           'U074LV628JG',         # phellon
-                           'U074S9UM9KR',         # Conor Bauman
-                           'U0750FXEDQU',         # Chris Bernard
-                           'U0750FXN07N',         # prett
-                           'U0750FY3GKE',         # andrea dree dre
-                           'U07516KU4G1',         # Beth
-                           'U075792JJJU',         # Cody Kirkland
-                           'U075A6KJE9G',         # Beth's Chris’ Steakhouse
-                           'U075DV39A77',         # Cory Fauver
-                           'U075M46BC4E',         # Patrick Xu
-                           'U0760TH22M9',         # Vicki
-                           'U07630Q6RJ7',         # he’s behind that paper i swear
-                           'U07B59DDW5U']         # Vivian Chu
-                          
-        cityBaySlackIds = ['U074V4RJ4ER',         # Ailita Eddy (she/they)
-                           'U074W9ZUALR',         # Pin-Wen Wang
-                           'U074X5F5CMP',         # Liam Jay
-                           'U074XU25PV1',         # Jess Brownschidle
-                           'U074Y1Y3LAE',         # Adeleen Khem
-                           'U074Y1Y7K0A',         # Aaron Rosenthal
-                           'U075157SC57',         # Mitchell Sayasene
-                           'U07516LBWMP',         # julia mankoff
-                           'U075AMLTA8H']         # sonja
-        
-        southBaySlackIds = ['U074FHZLEHK',         # Kyle Johnson
-                            # 'U074LV60PFE',         # Nathan Young
-                            'U074R0WJBT6',         # Chris Lung
-                            'U074UNSAMHU',         # Robin Meyers
-                            'U074V4RGSVB',         # Will
-                            'U074VHK1DRV',         # Dylan Burns
-                            'U074X5F1ML1',         # Jaclyn Wataoka
-                            'U074Y1Y264A',         # Keenan
-                            'U0750MZS90C',         # Milan Moslehi
-                            'U0753RXJ9EG',         # Lily
-                            'U0753RXTN8L',         # Christine Chen
-                            'U075C9UL552',         # Charlize
-                            'U075M1WQ20G']         # Kitty Cheung
-        
-        outerBaySlackIds = []    
+        groupA = [
+        	'U074Y1Y3LAE',         # Adeleen Khem
+        	'U075A6KJE9G',         # Beth's Chris’ Steakhouse
+        	'U074UNSAMHU',         # Robin Meyers
+        	'U075AMLTA8H',         # sonja
+        	'U074Y1Y264A',         # Keenan
+        	'U074X5F5CMP'          # Liam Jay
+        ]	        
+        groupB = [
+        	'U074V4RJ4ER',         # Ailita Eddy (she/they)
+        	'U0753RXTN8L',         # Christine Chen
+        	'U075157SC57',         # Mitchell Sayasene
+        	'U074X5F1ML1',         # Jaclyn Wataoka
+        	'U075C9UL552',         # Charlize
+        	'U07516KU4G1'          # Beth
+        ]        
+        groupC = [
+        	'U075M1WQ20G',         # Kitty Cheung
+        	'U0750FXN07N',         # prett
+        	'U075DV39A77',         # Cory Fauver
+        	'U0753RXJ9EG',         # Lily
+        	'U074V4RGSVB',         # Will
+        	'U074FHZLEHK'          # Kyle Johnson
+        ]        
+        groupD = [
+        	'U074LV628JG',         # phellon
+        	'U0760TH22M9',         # Vicki
+        	'U074S9UM9KR',         # Conor Bauman
+        	'U074XU25PV1',         # Jess Brownschidle
+        	'U074Y1Y7K0A',         # Aaron Rosenthal
+        	'U0750FXEDQU'          # Chris Bernard
+        ]        
+        groupE = [
+        	'U07516LBWMP',         # julia mankoff
+        	'U074VHK1DRV',         # Dylan Burns
+        	'U0750MZS90C',         # Milan Moslehi
+        	'U074W9ZUALR',         # Pin-Wen Wang
+        	'U075M46BC4E',         # Patrick Xu
+        	'U075792JJJU'          # Cody Kirkland
+        ]        
+        groupF = [
+        	'U0750FY3GKE',         # andrea dree dre
+        	'U074HEY4SKH',         # Wyatt Berreman
+        	'U074R0WJBT6',         # Chris Lung
+        	'U07630Q6RJ7',         # he’s behind that paper i swear
+        	'U074JBW9NF5'          # Andrew Berry
+        	# 'U07B59DDW5U',         # Vivian Chu
+        	# 'U074LV60PFE'          # Nathan Young
+        ]        
+        eastBaySlackIds = []
+        cityBaySlackIds = []
+        southBaySlackIds = []
+        outerBaySlackIds = []   
         
         # Add overall ranking
         table.sort(key=operator.itemgetter('score'), reverse=True)
         for x in range(0, len(table)):
             table[x]['rank'] = x+1
-        
+
+        groupRecordsA = []
+        groupRecordsB = []
+        groupRecordsC = []
+        groupRecordsD = []
+        groupRecordsE = []
+        groupRecordsF = []
         eastBayRecords = []
         cityBayRecords = []
         southBayRecords = []
@@ -598,44 +616,101 @@ class MischiefSlack:
                 southBayRecords.append(record)
             elif record['slack_id'] in outerBaySlackIds:
                 outerBayRecords.append(record)
+            elif record['slack_id'] in groupA:
+                groupRecordsA.append(record)
+            elif record['slack_id'] in groupB:
+                groupRecordsB.append(record)
+            elif record['slack_id'] in groupC:
+                groupRecordsC.append(record)
+            elif record['slack_id'] in groupD:
+                groupRecordsD.append(record)
+            elif record['slack_id'] in groupE:
+                groupRecordsE.append(record)
+            elif record['slack_id'] in groupF:
+                groupRecordsF.append(record)
+            
+                
     
         eastBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
         cityBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
         southBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
         outerBayRecords.sort(key=operator.itemgetter('score'), reverse=True)
+        groupRecordsA.sort(key=operator.itemgetter('score'), reverse=True)
+        groupRecordsB.sort(key=operator.itemgetter('score'), reverse=True)
+        groupRecordsC.sort(key=operator.itemgetter('score'), reverse=True)
+        groupRecordsD.sort(key=operator.itemgetter('score'), reverse=True)
+        groupRecordsE.sort(key=operator.itemgetter('score'), reverse=True)
+        groupRecordsF.sort(key=operator.itemgetter('score'), reverse=True)
         
         eastBayScoreText = self.getScoreText(eastBayRecords)
         cityBayScoreText = self.getScoreText(cityBayRecords)
         southBayScoreText = self.getScoreText(southBayRecords)
         outerBayScoreText = self.getScoreText(outerBayRecords)
+        groupAScoreText = self.getScoreText(groupRecordsA)
+        groupBScoreText = self.getScoreText(groupRecordsB)
+        groupCScoreText = self.getScoreText(groupRecordsC)
+        groupDScoreText = self.getScoreText(groupRecordsD)
+        groupEScoreText = self.getScoreText(groupRecordsE)
+        groupFScoreText = self.getScoreText(groupRecordsF)
         
-        leaderboardText = "Battle of the Bays Leaderboard:"
-        leaderboardText += "\n\n"
-        leaderboardText += "`Beast Bay: {scoreText}`".format(scoreText=eastBayScoreText)
-        leaderboardText += "\n"
-        leaderboardText += self.getLeaderboardText(eastBayRecords, showZero=True)
+        leaderboardText = "Battle of the (Buddy Truddy) Bays Leaderboard:"
+        # leaderboardText += "\n\n"
+        # leaderboardText += "`Beast Bay: {scoreText}`".format(scoreText=eastBayScoreText)
+        # leaderboardText += "\n"
+        # leaderboardText += self.getLeaderboardText(eastBayRecords, showZero=True)
         
-        leaderboardText += "\n\n"
-        leaderboardText += "`City Bay: {scoreText}`".format(scoreText=cityBayScoreText)
-        leaderboardText += "\n"
-        leaderboardText += self.getLeaderboardText(cityBayRecords, showZero=True)
+        # leaderboardText += "\n\n"
+        # leaderboardText += "`City Bay: {scoreText}`".format(scoreText=cityBayScoreText)
+        # leaderboardText += "\n"
+        # leaderboardText += self.getLeaderboardText(cityBayRecords, showZero=True)
         
-        leaderboardText += "\n\n"
-        leaderboardText += "`South Bay: {scoreText}`".format(scoreText=southBayScoreText)
-        leaderboardText += "\n"
-        leaderboardText += self.getLeaderboardText(southBayRecords, showZero=True)
+        # leaderboardText += "\n\n"
+        # leaderboardText += "`South Bay: {scoreText}`".format(scoreText=southBayScoreText)
+        # leaderboardText += "\n"
+        # leaderboardText += self.getLeaderboardText(southBayRecords, showZero=True)
         
         # leaderboardText += "\n\n"
         # leaderboardText += "`Outer Bay: {scoreText}`".format(scoreText=outerBayScoreText)
         # leaderboardText += "\n"
         # leaderboardText += self.getLeaderboardText(outerBayRecords, showZero=True)
+
+        leaderboardText += "\n\n"
+        leaderboardText += "`Group A: {scoreText}`".format(scoreText=groupAScoreText)
+        leaderboardText += "\n"
+        leaderboardText += self.getLeaderboardText(groupA, showZero=True)
+
+        leaderboardText += "\n\n"
+        leaderboardText += "`Group B: {scoreText}`".format(scoreText=groupBScoreText)
+        leaderboardText += "\n"
+        leaderboardText += self.getLeaderboardText(groupB, showZero=True)
+
+        leaderboardText += "\n\n"
+        leaderboardText += "`Group C: {scoreText}`".format(scoreText=groupCScoreText)
+        leaderboardText += "\n"
+        leaderboardText += self.getLeaderboardText(groupC, showZero=True)
+
+        leaderboardText += "\n\n"
+        leaderboardText += "`Group D: {scoreText}`".format(scoreText=groupDScoreText)
+        leaderboardText += "\n"
+        leaderboardText += self.getLeaderboardText(groupD, showZero=True)
+
+        leaderboardText += "\n\n"
+        leaderboardText += "`Group E: {scoreText}`".format(scoreText=groupEScoreText)
+        leaderboardText += "\n"
+        leaderboardText += self.getLeaderboardText(groupE, showZero=True)
+
+        leaderboardText += "\n\n"
+        leaderboardText += "`Group F: {scoreText}`".format(scoreText=groupFScoreText)
+        leaderboardText += "\n"
+        leaderboardText += self.getLeaderboardText(groupF, showZero=True)
+        
         return leaderboardText
 
     def getLeaderboardText(self, records, showZero=False):
         to_print = "Leaderboard:"
         for x in range(0, len(records)):
             record = records[x]
-            if not showZero and record['score'] <= 0:
+            if not showZero and record['score'] < 0:
                 continue
             if 'rank' in record:
                 rank = record['rank']
