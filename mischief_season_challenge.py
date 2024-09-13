@@ -677,32 +677,32 @@ class MischiefSlack:
         leaderboardText += "\n\n"
         leaderboardText += "`Group A: {scoreText}`".format(scoreText=groupAScoreText)
         leaderboardText += "\n"
-        leaderboardText += self.getLeaderboardText(groupA, showZero=True)
+        leaderboardText += self.getLeaderboardText(groupRecordsA, showZero=True)
 
         leaderboardText += "\n\n"
         leaderboardText += "`Group B: {scoreText}`".format(scoreText=groupBScoreText)
         leaderboardText += "\n"
-        leaderboardText += self.getLeaderboardText(groupB, showZero=True)
+        leaderboardText += self.getLeaderboardText(groupRecordsB, showZero=True)
 
         leaderboardText += "\n\n"
         leaderboardText += "`Group C: {scoreText}`".format(scoreText=groupCScoreText)
         leaderboardText += "\n"
-        leaderboardText += self.getLeaderboardText(groupC, showZero=True)
+        leaderboardText += self.getLeaderboardText(groupRecordsC, showZero=True)
 
         leaderboardText += "\n\n"
         leaderboardText += "`Group D: {scoreText}`".format(scoreText=groupDScoreText)
         leaderboardText += "\n"
-        leaderboardText += self.getLeaderboardText(groupD, showZero=True)
+        leaderboardText += self.getLeaderboardText(groupRecordsD, showZero=True)
 
         leaderboardText += "\n\n"
         leaderboardText += "`Group E: {scoreText}`".format(scoreText=groupEScoreText)
         leaderboardText += "\n"
-        leaderboardText += self.getLeaderboardText(groupE, showZero=True)
+        leaderboardText += self.getLeaderboardText(groupRecordsE, showZero=True)
 
         leaderboardText += "\n\n"
         leaderboardText += "`Group F: {scoreText}`".format(scoreText=groupFScoreText)
         leaderboardText += "\n"
-        leaderboardText += self.getLeaderboardText(groupF, showZero=True)
+        leaderboardText += self.getLeaderboardText(groupRecordsF, showZero=True)
         
         return leaderboardText
 
