@@ -606,7 +606,7 @@ class MischiefSlack:
         outerBayRecords = []
         
         for record in table:
-            if record['score'] == 0:
+            if record['score'] < 0:
                 continue
             if record['slack_id'] in eastBaySlackIds:
                 eastBayRecords.append(record)
@@ -710,7 +710,7 @@ class MischiefSlack:
         to_print = "Leaderboard:"
         for x in range(0, len(records)):
             record = records[x]
-            if not showZero and record['score'] < 0:
+            if not showZero and record['score'] <= 0:
                 continue
             if 'rank' in record:
                 rank = record['rank']
